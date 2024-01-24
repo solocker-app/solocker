@@ -1,0 +1,44 @@
+@unocss all;
+
+.bg-container-gradient {
+    background: linear-gradient(180deg, rgba(24.35, 23.38, 35.06, 0.50) 0%, rgba(24.35, 23.38, 35.06, 0) 100%);
+}
+
+.bg-container-gradient-2 {
+    background: linear-gradient(190deg, #0D0C18 42%, #03020E 100%);
+}
+
+.bg-gradient-primary,
+.text-gradient-primary,
+.btn-gradient-primary {
+    background: linear-gradient(109deg, #8B4FF6 0%, #18F198 100%);
+}
+
+.bg-linear-gradient {
+    background: linear-gradient(#000958 0%, #360562 100%) no-repeat;
+}
+
+.btn {
+    @apply p-2 md:px-4 rounded-lg;
+}
+
+.btn-gradient-primary {
+    color: black;
+}
+
+.text-gradient {
+    @apply text-transparent bg-clip-text;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+body {
+    scrollbar-width: 0;
+}
+
+input {
+    @apply bg-transparent outline-none;
+}

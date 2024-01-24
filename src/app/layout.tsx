@@ -12,7 +12,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="en">
       <body
         className={join(
-          "relative bg-dark text-white text-[15px] overflow-x-hidden",
+          "fixed inset-0 bg-dark text-white text-[15px] overflow-x-hidden",
           defaultFont.className
         )}
       >

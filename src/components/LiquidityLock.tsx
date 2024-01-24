@@ -1,8 +1,18 @@
 import DefaultCoinSelect from "./DefaultCoinSelect";
 
-export default function LiquidityLock() {
+type LiquidityLockProps = {
+  onSubmit: () => void;
+};
+
+export default function LiquidityLock({ onSubmit }: LiquidityLockProps) {
   return (
-    <form className="self-center w-88 md:w-sm flex flex-col space-y-6 bg-container-gradient-2 px-4 py-8 border border-primary/30 rounded-lg overflow-x-hidden">
+    <form
+      className="form-container"
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit();
+      }}
+    >
       <div className="flex flex-col space-y-2">
         <label className="text-lg">Select Token</label>
         <DefaultCoinSelect />

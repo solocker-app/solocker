@@ -3,8 +3,8 @@
 import Image from "next/image";
 
 import { join } from "@/lib/utils";
+import { orbitronFont } from "@/fonts";
 import { IlDecentralizeBank } from "@/assets";
-import { orbitronFont } from "@/app/page";
 
 export default function HomeHeroSection() {
   return (

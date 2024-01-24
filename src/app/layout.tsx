@@ -3,13 +3,9 @@ import { Poppins } from "next/font/google";
 
 import "@/global.css";
 import { join } from "@/lib/utils";
+import { defaultFont } from "@/fonts";
 import LayoutHeader from "@/components/LayoutHeader";
 import LayoutFooter from "@/components/LayoutFooter";
-
-const defaultFont = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (

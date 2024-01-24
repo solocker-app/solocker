@@ -7,7 +7,7 @@ export default function HomeStep() {
         <header>
           <h1 className="text-2xl font-medium">How it works</h1>
         </header>
-        <div className="self-center w-4/5 flex flex-col md:flex-row">
+        <div className="flex flex-col md:self-center md:w-4/5 md:flex-row">
           {homeSteps.map((step, index) => (
             <div
               key={index}

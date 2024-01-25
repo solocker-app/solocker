@@ -1,44 +1,39 @@
 "use client";
-import Link from "next/link";
+
 import Image from "next/image";
 
-import { IlSolockerBrandInverse } from "@/assets";
+import { layoutSocials } from "@/data/social";
+import { IlSolockerBrand } from "@/assets";
+
 export default function LayoutFooter() {
   return (
-    <footer className="flex space-x-4 p-8">
-      <div className="flex-1 flex flex-col space-y-8 md:flex-none md:w-1/3">
+    <footer  
+      className="flex flex-col space-y-8 text-base text-highlight md:text-lg p-4 md:p-8">
+      <div className="flex space-x-4">
+        {layoutSocials.map((social, index) => (
+          <a
+            key={index}
+            className="w-12 h-12 flex items-center justify-center bg-container rounded-full"
+          >
+            <Image
+              src={social.icon}
+              alt={social.name}
+              className="w-8 h-8"
+            />
+          </a>
+        ))}
+      </div>
+      <hr className="border-highlight border-dashed" />
+      <div className="flex flex-col space-y-8">
         <div>
           <Image
-            src={IlSolockerBrandInverse}
-            alt="Solocker"
+            src={IlSolockerBrand}
+            alt="Solocker branding"
           />
+          <p>support@sololocker.com</p>
         </div>
-        <p className="text-highlight">
-          Unlocking Solana's Liquidity Potential: Secure, Efficient and
-          Empowering
-        </p>
-      </div>
-      <div className="flex-1 items-end flex flex-col space-y-4">
-        <h1>Social Media</h1>
-        <div className="flex flex-col  text-center font-light text-highlight md:flex-row md:space-x-8">
-          <Link
-            href="/"
-            className="py-2 md:p-0"
-          >
-            Twitter
-          </Link>
-          <Link
-            href="/"
-            className="py-2 md:p-0"
-          >
-            Telegram
-          </Link>
-          <Link
-            href="/"
-            className="py-2 md:p-0"
-          >
-            Discord
-          </Link>
+        <div>
+          <p>Build with love by BackLog ❤</p>
         </div>
       </div>
     </footer>

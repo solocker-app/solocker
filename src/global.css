@@ -1,48 +1,22 @@
 @unocss all;
 
-.bg-container-gradient {
-    background: linear-gradient(180deg, rgba(24.35, 23.38, 35.06, 0.50) 0%, rgba(24.35, 23.38, 35.06, 0) 100%);
-}
-
-.form-container {
-    background: linear-gradient(190deg, #0D0C18 42%, #03020E 100%);
-}
-
-.bg-gradient-primary,
-.text-gradient-primary,
-.btn-gradient-primary {
-    background: linear-gradient(109deg, #8B4FF6 0%, #18F198 100%);
-}
-
-.bg-linear-gradient {
-    background: linear-gradient(#000958 0%, #360562 100%) no-repeat;
-}
-
 .btn {
-    @apply p-2 md:px-4 rounded-lg;
+    @apply px-8 py-2;
 }
 
-.btn-gradient-primary {
-    color: black;
+.btn-primary {
+    @apply bg-primary rounded-full;
 }
 
-.text-gradient {
-    @apply text-transparent bg-clip-text;
+.text-primary {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
 }
 
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+.bg-secondary {
+    background: linear-gradient(109deg, #8b4ff6, #18f198);
 }
+
 
 body {
-    scrollbar-width: 0;
-}
-
-input {
-    @apply bg-transparent outline-none;
-}
-
-.form-container {
-    @apply self-center w-88 md:w-lg flex flex-col space-y-6 px-4 py-8 border border-primary/30 rounded-lg overflow-x-hidden;
+    @apply bg-[url(/assets/images/dotted-background.png)] bg-cover bg-fixed;
 }

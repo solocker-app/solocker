@@ -15,4 +15,7 @@ export default defineConfig({
       container: "#201F2B",
     },
   },
+  shortcuts: {
+    "bg-primary": "bg-gradient-to-r from-primary/50 to-secondary/50",
+  },
 });

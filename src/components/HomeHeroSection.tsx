@@ -1,37 +1,26 @@
-"use client";
-
 import Image from "next/image";
-
-import { join } from "@/lib/utils";
-import { orbitronFont } from "@/fonts";
 import { IlDecentralizeBank } from "@/assets";
 
 export default function HomeHeroSection() {
   return (
-    <div className="flex flex-col px-4 md:flex-row md:px-8">
-      <div className="md:w-1/2 flex flex-col items-start space-y-4">
-        <div
-          className={join(
-            "inline-block text-2xl md:text-4xl font-bold md:tracking-wider md:leading-10",
-            orbitronFont.className
-          )}
-        >
-          <span>Empowering the </span>
-          <span className="text-gradient text-gradient-primary">
-            Solana Community
-          </span>
-          <span> with Secure </span>
-          <span className="text-gradient text-gradient-primary">
-            Liquidity Pool Locking
-          </span>
+    <div className="flex flex-col md:flex-row md:relative">
+      <div className="flex flex-col space-y-4 px-4 md:px-8 md:w-2xl">
+        <div className="text-4xl capitalize font-extrabold">
+          <span>empowering the</span>
+          <span className="text-primary"> solana community</span>
+          <span> with secure</span>
+          <span className="text-primary"> liquidity pool locking</span>
         </div>
-        <button className="btn !px-8 btn-gradient-primary">Learn More</button>
+        <p className="text-sm text-highlight">
+          Solocker helps you keep transparency and secure liquidity lock with
+          user friendly interface for your projects.
+        </p>
+        <button className="self-start btn btn-primary">Learn More</button>
       </div>
-      <div>
+      <div className="flex items-center justify-center md:flex-1 md:w-sm md:h-sm md:absolute md:right-0 md:top-0">
         <Image
           src={IlDecentralizeBank}
-          alt="decentralize bank"
-          className="md:w-full md:h-sm"
+          alt="Decentralize bank"
         />
       </div>
     </div>

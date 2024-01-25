@@ -20,7 +20,7 @@ export const homeFeatures: Feature[] = [
   },
   {
     image: IlUserFriendly,
-    title: "User-Friendly Interface",
+    title: "User Friendly Interface",
     description:
       "Streamlined and intuitive design for an effortless user experience.",
   },

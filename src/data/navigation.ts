@@ -8,7 +8,7 @@ type Navigation = {
 export const layoutNavigation: Navigation[] = [
   {
     name: "Liquidity",
-    href: "/liquidity",
+    href: "https://raydium.io/liquidity/add/",
     external: true,
   },
   {

@@ -1,7 +1,8 @@
 type Navigation = {
   name: string;
   href: string;
-  external?: boolean,
+  external?: boolean;
+  menu?: boolean;
 };
 
 export const layoutNavigation: Navigation[] = [
@@ -11,12 +12,13 @@ export const layoutNavigation: Navigation[] = [
     external: true,
   },
   {
-    name: "Lock LP Token",
-    href: "/liquidity",
+    name: "Token Lock",
+    href: "/token-lock",
   },
   {
-    name: "Locked Assets",
-    href: "/locked",
+    name: "Network",
+    href: "/#network",
+    menu: true,
   },
   {
     name: "Faq",

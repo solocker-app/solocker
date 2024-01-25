@@ -12,7 +12,7 @@ export const layoutNavigation: Navigation[] = [
     external: true,
   },
   {
-    name: "Liquidity Pool Lock",
+    name: "LP Lock",
     href: "/token-lock",
   },
   {

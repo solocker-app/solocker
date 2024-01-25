@@ -14,10 +14,10 @@ export default function TokenLockEmptyState({
         <IoLockClosed className="text-2xl text-highlight" />
       </div>
       <div className="text-center px-8">
-        <h1 className="text-xl font-bold">No Token Locks</h1>
+        <h1 className="text-xl font-bold">No Liquidity Pool Locked</h1>
         <p className="text-highlight text-start">
-          Lock tokens into audited smart contracts that unlock to the recipient
-          after the lock time expires.
+          Lock liquidity into audited smart contracts that unlock to the
+          recipient after the lock time expires.
         </p>
       </div>
       <button
@@ -25,7 +25,7 @@ export default function TokenLockEmptyState({
         onClick={onCreateLockToken}
       >
         <IoAdd />
-        <span>Lock Token</span>
+        <span>Lock Liquidity</span>
       </button>
     </div>
   );

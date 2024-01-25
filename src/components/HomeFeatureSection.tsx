@@ -9,7 +9,7 @@ export default function HomeFeatureSection() {
       <div className="text-center">
         <h1 className="text-2xl font-extrabold">
           <span>Solocker </span>
-          <span className="text-primary">Token Lock</span>
+          <span className="text-primary">LP Lock</span>
         </h1>
         <p className="text-highlight text-sm">
           Introducing our Token Lock feature, designed to safeguard your assets.

@@ -5,7 +5,6 @@ import { join } from "@/lib/utils";
 import { defaultFont } from "@/fonts";
 
 import LayoutHeader from "@/components/LayoutHeader";
-import LayoutFooter from "@/components/LayoutFooter";
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
@@ -19,7 +18,6 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
         <div className="flex-1 flex flex-col overflow-y-scroll">
           <LayoutHeader />
           {children}
-          <LayoutFooter />
         </div>
       </body>
     </html>

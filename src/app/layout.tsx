@@ -23,13 +23,12 @@ import "@/global.css";
 import { join } from "@/lib/utils";
 import { defaultFont } from "@/fonts";
 
+import { devnet } from "@/data";
 import LayoutHeader from "@/components/LayoutHeader";
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
+  const endpoint = devnet;
   const network = WalletAdapterNetwork.Mainnet;
-
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
   const wallets = useMemo(
     () => [
       new CoinbaseWalletAdapter(),

@@ -1,6 +1,8 @@
 import { Formik, Field, ErrorMessage } from "formik";
 import { object, date, string } from "yup";
 
+import { useWallet } from "@solana/wallet-adapter-react";
+
 import SelectCoin from "./widgets/SelectCoin";
 
 type TokenLockConfigurationProps = {
@@ -15,6 +17,8 @@ export default function TokenLockConfiguration({
     startDate: date().required(),
     startTime: string().required(),
   });
+
+  const wallet = useWallet();
 
   return (
     <div className="flex-1 flex flex-col space-y-4 p-4">
@@ -41,11 +45,14 @@ export default function TokenLockConfiguration({
             <div className="flex-1 flex flex-col space-y-4">
               <div className="flex flex-col">
                 <label className="text-lg text-stone font-medium">Token</label>
-                <SelectCoin
-                  name="token"
-                  value={values.token}
-                  setValue={() => setFieldValue("token", null)}
-                />
+                {wallet.wallet && (
+                  <SelectCoin
+                    name="token"
+                    value={values.token}
+                    wallet={wallet.wallet}
+                    setValue={() => setFieldValue("token", null)}
+                  />
+                )}
               </div>
               <div className="flex flex-col space-y-2">
                 <div className="flex flex-col">

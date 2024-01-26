@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { MdArrowDropDown, MdSearch } from "react-icons/md";
+import { useEffect, useMemo, useState, useContext } from "react";
+import { MdArrowDropDown, MdSearch, MdQuestion } from "react-icons/md";
 
 import { Popover } from "@headlessui/react";
 
@@ -12,6 +12,8 @@ import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { devnet } from "@/data";
 import solanaTokenMap from "@/data/token";
 import { SolanaWallet } from "@/lib/solana";
+
+import { TokenAccountContext } from "@/providers/TokenAccount";
 
 type SelectCoinProps = {
   name: string;
@@ -26,34 +28,34 @@ export default function SelectCoin({
   value,
   setValue,
 }: SelectCoinProps) {
-  const connection = useConnection();
-
-  const umi = useMemo(() => createUmi(devnet), []);
-
-  const solanaConnect = new SolanaWallet(
-    connection.connection,
-    umi,
-    wallet.adapter
-  );
-
-  const metadata = useMemo(() => solanaTokenMap[value], [value]);
-  const pTokenAccounts = useMemo(() => solanaConnect.getTokenAccounts(), []);
-
-  const [tokenAccounts, setTokenAccounts] =
-    useState<Awaited<typeof pTokenAccounts>>();
-
+  const tokenAccounts = useContext(TokenAccountContext);
+  const tokenMetadata = useMemo(() => {
+    const result = new Map();
+    
+    tokenAccounts.forEach(tokenAccount => {
+      const info = tokenAccount.account.data.parsed.info;
+      const mint = info.mint;
+      
+      const metadata = solanaTokenMap[mint];
+      result.set(mint, metadata);
+    });
+    
+    return result;
+  }, [tokenAccounts]);
+  
+  const [metadata, setMetadata] = useState();
+  
   useEffect(() => {
-    pTokenAccounts
-      .then(setTokenAccounts)
-      .then(() => {
-        const tokenAccount = tokenAccounts.at(0);
-        if (tokenAccount) {
-          const info = tokenAccount.account.data.parsed["info"];
-          setValue(info["mint"]);
-        }
-      })
-      .catch(console.log);
-  });
+    const tokenAccount = tokenAccounts.at(0);
+  
+    if(tokenAccount && value === null){
+      const info = tokenAccount.account.data.parsed.info;
+      const mint = info.mint;
+      /// select default
+      setValue(mint);
+      setMetadata(tokenMetadata[mint]);
+    }
+  }, [tokenAccounts, setValue]);
 
   return (
     <Popover className="relative">
@@ -62,16 +64,23 @@ export default function SelectCoin({
         className="flex flex-col"
       >
         <div className="flex items-center bg-container/70 px-2 rounded-md">
-          <Image
-            src={metadata?.logoUrl}
-            alt={metadata?.name}
-            className="w-8 h-8 rounded-full"
-            width={24}
-            height={24}
-          />
+          {
+            metadata ? (
+              <Image
+                src={metadata.logoUrl}
+                alt={metadata.name}
+                className="w-8 h-8 rounded-full"
+                width={24}
+                height={24}
+              />
+            ) :
+            <div className="w-8 h-8 flex items-center justify-center bg-highlight/50 text-black rounded-full">
+              <MdQuestion className="text-lg" />
+            </div>
+          }
           <Field
             name={name}
-            value={metadata?.name}
+            value={metadata ? metadata.name : "Select a token"}
             className="flex-1 bg-transparent p-2 outline-none pointer-events-none"
             disabled
           />
@@ -90,8 +99,8 @@ export default function SelectCoin({
           <input placeholder="Search tokens..." />
         </div>
         <div className="flex flex-col">
-          {tokenAccounts &&
-            tokenAccounts.map((tokenAccount, index) => {
+          {tokenAccounts ?
+           tokenAccounts.length > 0 ?   tokenAccounts.map((tokenAccount, index) => {
               const info = tokenAccount.account.data.parsed["info"];
               const metadata = solanaTokenMap[info["mint"]];
 
@@ -121,7 +130,14 @@ export default function SelectCoin({
                   </div>
                 </div>
               );
-            })}
+            }) : 
+             <div className="self-center m-auto flex flex-col items-center justify-center space-y-4">
+                <h1 className="text-lg font-medium"> No LP Token </h1>
+                <button className="btn btn-primary">Add Liquidity</button>
+             </div>
+            :
+            <div className="self-center m-auto w-8 h-8 border-3 border-secondary border-t-transparent rounded-full animate-spin" />
+          }
         </div>
       </Popover.Panel>
     </Popover>

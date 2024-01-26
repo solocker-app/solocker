@@ -5,8 +5,14 @@ import { useWallet } from "@solana/wallet-adapter-react";
 
 import SelectCoin from "./widgets/SelectCoin";
 
+export type TokenConfiguration = {
+  token: string;
+  startDate: string;
+  startTime: string;
+};
+
 type TokenLockConfigurationProps = {
-  onSave?(): void;
+  onSave(value: TokenConfiguration): void;
 };
 
 export default function TokenLockConfiguration({
@@ -33,11 +39,9 @@ export default function TokenLockConfiguration({
           startDate: new Date().toISOString().split("T").at(0),
           startTime: new Date().toTimeString().substring(0, 8),
         }}
-        onSubmit={() => {
-          onSave();
-        }}
+        onSubmit={onSave}
       >
-        {({ values, setFieldValue, errors, handleSubmit }) => (
+        {({ values, setFieldValue, handleSubmit }) => (
           <form
             className="flex-1 flex flex-col space-y-4"
             onSubmit={handleSubmit}
@@ -50,7 +54,7 @@ export default function TokenLockConfiguration({
                     name="token"
                     value={values.token}
                     wallet={wallet.wallet}
-                    setValue={() => setFieldValue("token", null)}
+                    setValue={(value) => setFieldValue("token", value)}
                   />
                 )}
               </div>

@@ -27,7 +27,7 @@ export default forwardRef<LayoutNavigationElement>(function LayoutNavigation(
     <div
       ref={innerRef}
       className={join(
-        "fixed inset-0 flex flex-col bg-black transition-opacity md:flex-1 md:flex-row md:static",
+        "fixed inset-0 flex flex-col bg-black transition-opacity md:flex-1 md:flex-row md:static z-100",
         visible ? "lt-md:opacity-100" : "lt-md:opacity-0 lt-md:pointer-events-none"
       )}
     >

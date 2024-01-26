@@ -7,14 +7,12 @@ import LayoutNavigation, {
   type LayoutNavigationElement,
 } from "./LayoutNavigation";
 
-type LayoutHeaderProps = {
-  toggleMenu: () => void;
-};
+import WalletConnect from "./widgets/WalletConnect";
 
 export default function LayoutHeader() {
   const navigationRef = useRef<LayoutNavigationElement>();
   return (
-    <header className="flex items-center space-x-4 px-8 py-4 md:py-8">
+    <header className="flex items-center space-x-2 p-4 md:py-8">
       <div className="lt-md:flex-1">
         <Link
           href="/"
@@ -25,9 +23,7 @@ export default function LayoutHeader() {
       </div>
       <LayoutNavigation ref={navigationRef} />
       <div className="flex items-center space-x-4">
-        <button className="btn btn-primary md:after:content-['Wallet']">
-          Connect{" "}
-        </button>
+        <WalletConnect />
         <button
           className="border p-2 rounded-full md:hidden"
           onClick={() => navigationRef.current!.toggle(true)}

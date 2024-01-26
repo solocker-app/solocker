@@ -1,11 +1,16 @@
 @unocss all;
 
 .btn {
-    @apply px-8 py-2;
+    @apply px-8 py-2 font-normal;
 }
 
-.btn-primary {
-    @apply bg-primary rounded-full;
+.wallet-adapter-button-trigger {
+    @apply !px-4 !py-1 !font-normal;
+}
+
+.btn-primary,
+.wallet-adapter-button-trigger {
+    @apply !bg-primary !rounded-full;
 }
 
 .text-primary {
@@ -17,6 +22,37 @@
 }
 
 
-body {
+.bg-dotted {
     @apply bg-[url(/assets/images/dotted-background.png)] bg-cover bg-fixed;
+}
+
+input {
+    @apply bg-transparent outline-none;
+}
+
+.input,
+.input-container {
+    @apply bg-container/70 p-2 border border-container rounded-md outline-none;
+}
+
+.input:focus-within,
+.input-container:focus-within {
+    @apply border-1 border-primary;
+}
+
+.input-container {
+    @apply flex items-center space-x-2 py-0;
+}
+
+.input-container input {
+    @apply flex-1 py-2;
+}
+
+.input-container:focus-within svg {
+    @apply text-primary;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }

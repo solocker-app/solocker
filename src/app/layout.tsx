@@ -25,6 +25,7 @@ import { defaultFont } from "@/fonts";
 
 import { devnet } from "@/data";
 import LayoutHeader from "@/components/LayoutHeader";
+import TokenAccount from "@/providers/TokenAccount";
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   const endpoint = devnet;
@@ -56,7 +57,9 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
             <WalletModalProvider>
               <div className="flex-1 flex flex-col overflow-y-scroll">
                 <LayoutHeader />
-                {children}
+                <TokenAccount>
+                 {children}
+                </TokenAccount>
               </div>
             </WalletModalProvider>
           </WalletProvider>

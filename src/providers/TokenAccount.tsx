@@ -3,7 +3,7 @@ import { createContext, useState, useEffect, useMemo } from "react";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
-import { devnet } from "@/lib/rpc";
+import { devnet } from "@/data";
 import { SolanaWallet } from "@/lib/solana";
 
 type TokenAccount = ReturnType<SolanaWallet["getTokenAccounts"]>[number];

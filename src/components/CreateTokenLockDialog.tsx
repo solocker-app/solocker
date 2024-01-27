@@ -109,7 +109,9 @@ export default function CreateTokenLockDialog({
           visible={reviewDialogVisible}
           setVisible={setReviewDialogVisible}
           onCreateLockContract={() =>
-            streamFlow.lockToken(formData).catch((error) => {
+            streamFlow.lockToken(formData)
+.then(() => setVisible(false))
+.catch((error) => {
               console.log(error);
               throw error;
             })

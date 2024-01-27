@@ -4,6 +4,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useMemo } from "react";
+import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import {
@@ -24,6 +25,7 @@ import "@/global.css";
 import { join } from "@/lib/utils";
 import { defaultFont } from "@/fonts";
 
+import { store } from "@/store";
 import { devnet } from "@/data";
 import Firebase from "@/providers/Firebase";
 import LayoutHeader from "@/components/LayoutHeader";
@@ -60,11 +62,13 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
             >
               <WalletModalProvider>
                 <Repository>
-                  <div className="flex-1 flex flex-col overflow-y-scroll">
-                    <LayoutHeader />
-                    <DigitalAsset>{children}</DigitalAsset>
-                    <ToastContainer />
-                  </div>
+                  <Provider store={store}>
+                      <div className="flex-1 flex flex-col overflow-y-scroll">
+                        <LayoutHeader />
+                        <DigitalAsset>{children}</DigitalAsset>
+                        <ToastContainer />
+                      </div>
+                  </Provider>
                 </Repository>
               </WalletModalProvider>
             </WalletProvider>

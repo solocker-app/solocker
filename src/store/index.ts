@@ -1,7 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
+
+import { tokenLockReducer } from "./tokenLockSlice";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    tokenLock: tokenLockReducer,
+  },
 })
 
 export type AppDispatch = typeof store.dispatch;

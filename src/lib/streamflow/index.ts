@@ -47,7 +47,7 @@ export default class StreamFlow {
   }
   
   getLockedTokens(){
-    return client.get({
+    return this.client.get({
       address: this.wallet.publicKey.toBase58(),
       type: Types.StreamType.All,
       type: Types.StreamDirection.All,

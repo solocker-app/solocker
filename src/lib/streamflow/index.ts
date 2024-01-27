@@ -46,11 +46,15 @@ export default class StreamFlow {
     });
   }
   
+  getLockToken(id){
+    return this.client.getOne({ id });
+  }
+  
   getLockedTokens(){
     return this.client.get({
       address: this.wallet.publicKey.toBase58(),
       type: Types.StreamType.All,
-      type: Types.StreamDirection.All,
+      direction: Types.StreamDirection.All,
     });
   }
 }

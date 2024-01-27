@@ -3,7 +3,7 @@ import { createSlice, createEntityAdapter, createAsyncThunk } from "@reduxjs/too
 import StreamFlow from  "@/lib/streamflow";
 
 type LoadingState = "idle" | "pending" | "error" | "success";
-type TokenLock = Awaited<StreamFlow["getLockedTokens"]>[number];
+type TokenLock = Awaited<ReturnType<StreamFlow["getLockedTokens"]>>[number];
 
 export const getLockedTokens = createAsyncThunk(
   "tokenLock/getLockedTokens", 

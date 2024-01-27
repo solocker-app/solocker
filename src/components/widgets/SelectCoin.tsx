@@ -1,25 +1,28 @@
 import Image from "next/image";
-import { useEffect, useMemo, useState, useContext } from "react";
-import { MdArrowDropDown, MdSearch, MdQuestion } from "react-icons/md";
+import { useContext } from "react";
+import { MdArrowDropDown } from "react-icons/md";
 
 import { Popover } from "@headlessui/react";
 
 import { ErrorMessage, Field } from "formik";
 
-import { useConnection, Wallet } from "@solana/wallet-adapter-react";
-import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { Wallet } from "@solana/wallet-adapter-react";
 
-import { devnet } from "@/data";
-import solanaTokenMap from "@/data/token";
-import { SolanaWallet } from "@/lib/solana";
+import { join } from "@/lib/utils";
+import { DigitalAssetWithTokenUiAmount } from "@/lib/metaplex";
 
-import { TokenAccountContext } from "@/providers/TokenAccount";
+import { DigitalAsset } from "@/providers/DigitalAsset";
+
+import EmptyIcon from "./EmptyIcon";
+
 
 type SelectCoinProps = {
   name: string;
-  value?: string;
+  value?: DigitalAssetWithTokenUiAmount;
   wallet: Wallet;
-  setValue: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setValue: React.Dispatch<
+    React.SetStateAction<DigitalAssetWithTokenUiAmount | undefined>
+  >;
 };
 
 export default function SelectCoin({
@@ -28,34 +31,7 @@ export default function SelectCoin({
   value,
   setValue,
 }: SelectCoinProps) {
-  const tokenAccounts = useContext(TokenAccountContext);
-  const tokenMetadata = useMemo(() => {
-    const result = new Map();
-    
-    tokenAccounts.forEach(tokenAccount => {
-      const info = tokenAccount.account.data.parsed.info;
-      const mint = info.mint;
-      
-      const metadata = solanaTokenMap[mint];
-      result.set(mint, metadata);
-    });
-    
-    return result;
-  }, [tokenAccounts]);
-  
-  const [metadata, setMetadata] = useState();
-  
-  useEffect(() => {
-    const tokenAccount = tokenAccounts.at(0);
-  
-    if(tokenAccount && value === null){
-      const info = tokenAccount.account.data.parsed.info;
-      const mint = info.mint;
-      /// select default
-      setValue(mint);
-      setMetadata(tokenMetadata[mint]);
-    }
-  }, [tokenAccounts, setValue]);
+  const { value: digitalAssets, loadingState } = useContext(DigitalAsset);
 
   return (
     <Popover className="relative">
@@ -64,23 +40,20 @@ export default function SelectCoin({
         className="flex flex-col"
       >
         <div className="flex items-center bg-container/70 px-2 rounded-md">
-          {
-            metadata ? (
-              <Image
-                src={metadata.logoUrl}
-                alt={metadata.name}
-                className="w-8 h-8 rounded-full"
-                width={24}
-                height={24}
-              />
-            ) :
-            <div className="w-8 h-8 flex items-center justify-center bg-highlight/50 text-black rounded-full">
-              <MdQuestion className="text-lg" />
-            </div>
-          }
+          {value ? (
+            <Image
+              src={value.metadata.network.image}
+              alt={value.metadata.name}
+              className="w-8 h-8 rounded-full"
+              width={24}
+              height={24}
+            />
+          ) : (
+            <EmptyIcon />
+          )}
           <Field
             name={name}
-            value={metadata ? metadata.name : "Select a token"}
+            value={value ? value.metadata.name : "Select a token"}
             className="flex-1 bg-transparent p-2 outline-none pointer-events-none"
             disabled
           />
@@ -92,52 +65,66 @@ export default function SelectCoin({
       </Popover.Button>
       <Popover.Panel
         as="div"
-        className="absolute mt-2 w-full h-xs flex flex-col space-y-2 bg-container p-4 rounded-md shadow shadow-white/10 overflow-y-scroll"
+        className="absolute mt-2 w-full h-xs flex flex-col space-y-2 bg-container px-4 rounded-md shadow shadow-white/10 overflow-y-scroll"
       >
-        <div className="input-container text-base !bg-stone-900 !hidden">
-          <MdSearch className="text-xl" />
-          <input placeholder="Search tokens..." />
-        </div>
-        <div className="flex flex-col">
-          {tokenAccounts ?
-           tokenAccounts.length > 0 ?   tokenAccounts.map((tokenAccount, index) => {
-              const info = tokenAccount.account.data.parsed["info"];
-              const metadata = solanaTokenMap[info["mint"]];
+        <div className={join("flex-1 flex flex-col")}>
+          {loadingState === "success" ? (
+            digitalAssets.length > 0 ? (
+              digitalAssets.map((digitalAsset, index) => {
+                const metadata = digitalAsset.metadata;
+                const mint = digitalAsset.mint.publicKey.toString();
+                const selected = mint === value?.metadata.mint;
 
-              return (
-                <div
-                  key={index}
-                  className="flex px-4 py-2 cursor-pointer"
-                  onClick={() => {
-                    setValue(info["mint"]);
-                  }}
-                >
-                  <div className="flex-1 flex items-center">
-                    <Image
-                      src={metadata?.logoUrl}
-                      alt={metadata?.name}
-                      className="w-8 h-8 rounded-full"
-                      width={24}
-                      height={24}
-                    />
-                    <div className="text-base">
-                      <h1 className="font-medium">{metadata?.symbol}</h1>
-                      <p className="text-highlight">{metadata?.name}</p>
+                return (
+                  <div
+                    key={index}
+                    className="flex py-2 cursor-pointer"
+                    onClick={() => setValue(digitalAsset)}
+                  >
+                    <div className="flex-1 flex items-center space-x-2">
+                      {metadata.network ? (
+                        <Image
+                          src={metadata.network.image}
+                          alt={metadata.name}
+                          className="w-8 h-8 rounded-full"
+                          width={24}
+                          height={24}
+                        />
+                      ) : (
+                        <EmptyIcon />
+                      )}
+                      <div className="text-base">
+                        <h1
+                          className={join(
+                            "font-medium",
+                            selected ? "text-secondary" : null
+                          )}
+                        >
+                          {metadata.symbol}
+                        </h1>
+                        <p className="text-highlight">{name}</p>
+                      </div>
+                    </div>
+                    <div>
+                      {Number(digitalAsset.token.uiAmount)} {metadata.symbol}
                     </div>
                   </div>
-                  <div>
-                    {info["tokenAmount"]["uiAmount"]} {metadata?.symbol}
-                  </div>
+                );
+              })
+            ) : (
+              <div className="m-auto flex flex-col items-center justify-center space-y-2">
+                <div className="text-center">
+                  <h1 className="text-lg font-medium"> No Liquidity Token </h1>
+                  <p className="text-highlight">
+                    Lock your liquidity token on solocker
+                  </p>
                 </div>
-              );
-            }) : 
-             <div className="self-center m-auto flex flex-col items-center justify-center space-y-4">
-                <h1 className="text-lg font-medium"> No LP Token </h1>
                 <button className="btn btn-primary">Add Liquidity</button>
-             </div>
-            :
-            <div className="self-center m-auto w-8 h-8 border-3 border-secondary border-t-transparent rounded-full animate-spin" />
-          }
+              </div>
+            )
+          ) : (
+            <div className="m-auto w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
+          )}
         </div>
       </Popover.Panel>
     </Popover>

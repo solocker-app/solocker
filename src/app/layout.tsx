@@ -1,10 +1,11 @@
 "use client";
 import "@unocss/reset/tailwind.css";
 import "@solana/wallet-adapter-react-ui/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import { useMemo } from "react";
+import { ToastContainer } from "react-toastify";
 
-import { clusterApiUrl } from "@solana/web3.js";
 import {
   ConnectionProvider,
   WalletProvider,
@@ -24,8 +25,10 @@ import { join } from "@/lib/utils";
 import { defaultFont } from "@/fonts";
 
 import { devnet } from "@/data";
+import Firebase from "@/providers/Firebase";
 import LayoutHeader from "@/components/LayoutHeader";
-import TokenAccount from "@/providers/TokenAccount";
+import DigitalAsset from "@/providers/DigitalAsset";
+import Repository from "@/providers/Repository";
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   const endpoint = devnet;
@@ -49,21 +52,24 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
           defaultFont.className
         )}
       >
-        <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider
-            wallets={wallets}
-            autoConnect={true}
-          >
-            <WalletModalProvider>
-              <div className="flex-1 flex flex-col overflow-y-scroll">
-                <LayoutHeader />
-                <TokenAccount>
-                 {children}
-                </TokenAccount>
-              </div>
-            </WalletModalProvider>
-          </WalletProvider>
-        </ConnectionProvider>
+        <Firebase>
+          <ConnectionProvider endpoint={endpoint}>
+            <WalletProvider
+              wallets={wallets}
+              autoConnect={true}
+            >
+              <WalletModalProvider>
+                <Repository>
+                  <div className="flex-1 flex flex-col overflow-y-scroll">
+                    <LayoutHeader />
+                    <DigitalAsset>{children}</DigitalAsset>
+                    <ToastContainer />
+                  </div>
+                </Repository>
+              </WalletModalProvider>
+            </WalletProvider>
+          </ConnectionProvider>
+        </Firebase>
       </body>
     </html>
   );

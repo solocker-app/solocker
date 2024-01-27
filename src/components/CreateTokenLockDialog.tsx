@@ -1,19 +1,27 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { useState, Fragment, useContext } from "react";
 import { IoClose } from "react-icons/io5";
 
 import { Tab } from "@headlessui/react";
 
 import { join } from "@/lib/utils";
+import { Repository } from "@/providers/Repository";
 
-import TokenLockRecipient from "./TokenLockRecipient";
+import TokenLockRecipient, { type TokenRecipient } from "./TokenLockRecipient";
 import TokenLockReviewDialog from "./TokenLockReviewDialog";
-import TokenLockConfiguration from "./TokenLockConfiguration";
+import TokenLockConfiguration, {
+  type TokenConfiguration,
+} from "./TokenLockConfiguration";
 
 type CreateTokenLockDialogProps = {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type TokenLock = {
+  configuration: TokenConfiguration | null;
+  recipients: TokenRecipient[] | null;
 };
 
 export default function CreateTokenLockDialog({
@@ -21,7 +29,13 @@ export default function CreateTokenLockDialog({
   setVisible,
 }: CreateTokenLockDialogProps) {
   const [formIndex, setFormIndex] = useState(0);
+  const { streamFlow } = useContext(Repository);
   const [reviewDialogVisible, setReviewDialogVisible] = useState(false);
+
+  const [formData, setFormData] = useState({
+    configuration: null as TokenConfiguration | null,
+    recipients: null as TokenRecipient[] | null,
+  });
 
   return (
     <>
@@ -55,25 +69,53 @@ export default function CreateTokenLockDialog({
                 as="div"
                 className="flex-1 flex flex-col"
               >
-                <TokenLockConfiguration onSave={() => setFormIndex(1)} />
+                <TokenLockConfiguration
+                  onSave={(value) => {
+                    setFormData((formData) => {
+                      formData.configuration = value;
+                      return formData;
+                    });
+
+                    setFormIndex(1);
+                  }}
+                />
               </Tab.Panel>
               <Tab.Panel
                 as="div"
                 className="flex-1 flex flex-col"
               >
-                <TokenLockRecipient
-                  onBack={() => setFormIndex(0)}
-                  onSave={() => setReviewDialogVisible(true)}
-                />
+                {formData.configuration && (
+                  <TokenLockRecipient
+                    token={formData.configuration.token}
+                    onBack={() => setFormIndex(0)}
+                    onSave={(value) => {
+                      setFormData((formData) => {
+                        formData.recipients = value.recipients;
+                        return formData;
+                      });
+
+                      setReviewDialogVisible(true);
+                    }}
+                  />
+                )}
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
         </div>
       </div>
-      <TokenLockReviewDialog
-        visible={reviewDialogVisible}
-        setVisible={setReviewDialogVisible}
-      />
+      {formData.configuration && formData.recipients && (
+        <TokenLockReviewDialog
+          tokenLock={formData}
+          visible={reviewDialogVisible}
+          setVisible={setReviewDialogVisible}
+          onCreateLockContract={() =>
+            streamFlow.lockToken(formData).catch((error) => {
+              console.log(error);
+              throw error;
+            })
+          }
+        />
+      )}
     </>
   );
 }

@@ -6,31 +6,40 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { devnet } from "@/data";
 import { SolanaWallet } from "@/lib/solana";
 
-type TokenAccount = ReturnType<SolanaWallet["getTokenAccounts"]>[number];
+type TokenAccount = Awaited<
+  ReturnType<SolanaWallet["getTokenAccounts"]>
+>[number];
 
-export const TokenAccountContext = createContext<TokenAccount[] | undefined>(undefined);
+export const TokenAccountContext = createContext<TokenAccount[] | undefined>(
+  undefined
+);
 
-export default function TokenAccountState({ children }: React.PropsWithChildren<{}>) {
+export default function TokenAccountState({
+  children,
+}: React.PropsWithChildren<{}>) {
   const { wallet } = useWallet();
   const { connection } = useConnection();
   const umi = useMemo(() => createUmi(devnet), []);
   const [tokenAccounts, setTokenAccounts] = useState<TokenAccount[]>();
   const solanaWallet = useMemo(
-    () => new SolanaWallet(connection, umi, wallet!.adapter), 
+    () => (wallet ? new SolanaWallet(connection, umi, wallet!.adapter) : null),
     [connection, umi, wallet]
   );
 
   useEffect(() => {
     if (wallet) {
-      solanaWallet.getTokenAccounts()
+      solanaWallet
+        ?.getTokenAccounts()
         .then(setTokenAccounts)
         .catch(console.error);
     }
   }, [wallet, setTokenAccounts, solanaWallet]);
 
-  return wallet ? (
+  return wallet && solanaWallet ? (
     <TokenAccountContext.Provider value={tokenAccounts}>
       {children}
     </TokenAccountContext.Provider>
-  ) : children;
+  ) : (
+    children
+  );
 }

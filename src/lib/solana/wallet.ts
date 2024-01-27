@@ -1,21 +1,24 @@
 import { Connection } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 
-import { publicKey } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import {
-  fetchAllDigitalAsset,
-  mplTokenMetadata,
-} from "@metaplex-foundation/mpl-token-metadata";
+import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
+import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
+
+import Metaplex from "../metaplex";
 
 export class SolanaWallet {
+  public readonly metaplex: Metaplex;
+
   constructor(
     private readonly connection: Connection,
     private readonly umi: ReturnType<typeof createUmi>,
     private readonly wallet: ReturnType<typeof useWallet>["wallet"]["adapter"]
   ) {
     this.umi.use(mplTokenMetadata());
+    this.umi.use(walletAdapterIdentity(wallet));
+    this.metaplex = new Metaplex(this.umi);
   }
 
   async getTokenAccounts() {
@@ -34,15 +37,5 @@ export class SolanaWallet {
       );
 
     return [tokenAccounts.value, token2022Accounts.value].flat();
-  }
-
-  getTokenMetadata(
-    tokenAccounts: Awaited<ReturnType<typeof this.getTokenAccounts>>
-  ) {
-    const mints = tokenAccounts.map((tokenAccount) =>
-      publicKey(tokenAccount.account.data.parsed["mint"])
-    );
-
-    return fetchAllDigitalAsset(this.umi, mints);
   }
 }

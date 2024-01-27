@@ -1,5 +1,7 @@
 "use client";
+import { toast } from "react-toastify";
 import { IoLockClosed, IoAdd } from "react-icons/io5";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 type TokenLockEmptyStateProps = {
   onCreateLockToken: () => void;
@@ -8,6 +10,12 @@ type TokenLockEmptyStateProps = {
 export default function TokenLockEmptyState({
   onCreateLockToken,
 }: TokenLockEmptyStateProps) {
+  const { connected } = useWallet();
+  const createLockToken = () => {
+    if (connected) onCreateLockToken();
+    else toast.error("Wallet not connected. Please connect wallet");
+  };
+
   return (
     <div className="flex-1 flex flex-col space-y-4 items-center justify-center">
       <div className="w-14 h-14 flex items-center justify-center bg-container rounded-xl">
@@ -22,7 +30,7 @@ export default function TokenLockEmptyState({
       </div>
       <button
         className="btn btn-primary flex space-x-2 items-center"
-        onClick={onCreateLockToken}
+        onClick={createLockToken}
       >
         <IoAdd />
         <span>Lock Liquidity</span>

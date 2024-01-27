@@ -3,12 +3,14 @@ import { object, date, string } from "yup";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 
+import { DigitalAssetWithTokenUiAmount } from "@/lib/metaplex";
+
 import SelectCoin from "./widgets/SelectCoin";
 
 export type TokenConfiguration = {
-  token: string;
   startDate: string;
   startTime: string;
+  token: DigitalAssetWithTokenUiAmount;
 };
 
 type TokenLockConfigurationProps = {
@@ -19,7 +21,9 @@ export default function TokenLockConfiguration({
   onSave,
 }: TokenLockConfigurationProps) {
   const validationSchema = object().shape({
-    token: string().required(),
+    token: object().shape({
+
+    }).required(),
     startDate: date().required(),
     startTime: string().required(),
   });
@@ -35,9 +39,11 @@ export default function TokenLockConfiguration({
       <Formik
         validationSchema={validationSchema}
         initialValues={{
-          token: "HEY",
           startDate: new Date().toISOString().split("T").at(0),
           startTime: new Date().toTimeString().substring(0, 8),
+          token: undefined as
+            | DigitalAssetWithTokenUiAmount
+            | undefined,
         }}
         onSubmit={onSave}
       >

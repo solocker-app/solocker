@@ -35,4 +35,4 @@ export const tokenLockSlice = createSlice({
 });
 
 export const tokenLockReducer = tokenLockSlice.reducer;
-export const tokenLockSelector = tokenLockAdapter.getSelector();
+export const tokenLockSelector = tokenLockAdapter.getSelectors();

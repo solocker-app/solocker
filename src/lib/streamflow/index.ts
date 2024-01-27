@@ -22,7 +22,8 @@ export default class StreamFlow {
 
   constructor(private wallet: SignerWalletAdapter, cluster?: Cluster) {
     this.client = new StreamflowSolana.SolanaStreamClient(
-      clusterApiUrl(cluster)
+      clusterApiUrl(cluster),
+      Types.ICluster.Devnet,
     );
   }
 

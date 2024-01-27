@@ -38,6 +38,7 @@ export default class StreamFlow {
       (recipient) =>
         ({
           name: "",
+          amount: getBN(recipient.amount, mint.decimals),
           recipient: recipient.recipient,
           cliffAmount: getBN(0, mint.decimals),
           amountPerPeriod: getBN(recipient.amount, mint.decimals),

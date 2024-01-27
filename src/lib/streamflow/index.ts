@@ -6,7 +6,7 @@ import { SignerWalletAdapter } from "@solana/wallet-adapter-base";
 import {
   doc,
   collection,
-  setDoc,
+  addDoc,
   getDocs,
   getFirestore,
   Firestore,
@@ -75,7 +75,7 @@ export default class StreamFlow {
       )
     );
 
-    return setDoc(streamRef, {
+    return addDoc(streamRef, {
       ...input,
       createdAt: Date.now(),
     });

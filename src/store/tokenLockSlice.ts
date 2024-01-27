@@ -29,7 +29,7 @@ export const tokenLockSlice = createSlice({
     })
     .addCase(getLockedTokens.fulfilled, (state, data) => {
       state.loadingState = "success";
-      tokenLockAdapter.setMany(state, data);
+      tokenLockAdapter.setAll(state, data);
     })
   }
 });

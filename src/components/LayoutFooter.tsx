@@ -33,7 +33,7 @@ export default function LayoutFooter() {
           <p>support@sololocker.com</p>
         </div>
         <div>
-          <p class name="hidden">Build with love by BackLog ❤</p>
+          <p className="hidden">Build with love by BackLog ❤</p>
           <p>Copyright © Solocker™ </p>
         </div>
       </div>

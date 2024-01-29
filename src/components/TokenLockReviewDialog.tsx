@@ -60,9 +60,9 @@ export default function TokenLockReviewDialog({
           <div className="bg-container/70 p-4 rounded-md">
             <p className="text-sm">Total Locked Amount</p>
             <div className="flex items-center space-x-2">
-              {tokenLock.configuration.token.metadata.network ? (
+              {tokenLock.configuration.token.baseTokenMetadata.network ? (
                 <img
-                  src={tokenLock.configuration.token.metadata.network.image}
+                  src={tokenLock.configuration.token.baseTokenMetadata.network.image}
                   className="w-8 h-8 rounded-full"
                   width={24}
                   height={24}
@@ -75,7 +75,7 @@ export default function TokenLockReviewDialog({
                   {tokenLock.recipients.reduce((a, b) => a + b.amount, 0)}
                 </h1>
                 <span className="text-highlight">
-                  {tokenLock.configuration.token.metadata.symbol}
+                  {tokenLock.configuration.token.baseTokenMetadata.symbol}
                 </span>
               </div>
             </div>

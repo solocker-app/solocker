@@ -11,7 +11,6 @@ import { object, number, string, array } from "yup";
 import { Formik, Field, ErrorMessage } from "formik";
 
 import Toggle from "./widgets/Toggle";
-import { DigitalAssetWithTokenUiAmount } from "@/lib/metaplex";
 import { LpInfo } from "@/lib/api/models/raydium.model";
 
 export type TokenRecipient = {

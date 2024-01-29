@@ -18,16 +18,16 @@ export default class StreamFlow extends InjectBaseRepository {
   }
 
   async lockToken(tokenLock: NonNullable<TokenLock>) {
-    const { mint } = tokenLock.configuration.token;
+    const { lpMint, lpDecimal } = tokenLock.configuration.token;
     const { startDate, startTime } = tokenLock.configuration;
     const recipients = tokenLock.recipients.map<Types.IRecipient>(
       (recipient) =>
         ({
           name: "Solocker #test",
-          amount: getBN(recipient.amount, mint.decimals),
+          amount: getBN(recipient.amount, lpDecimal),
           recipient: recipient.recipient,
-          cliffAmount: getBN(0, mint.decimals),
-          amountPerPeriod: getBN(recipient.amount, mint.decimals),
+          cliffAmount: getBN(0, lpDecimal),
+          amountPerPeriod: getBN(recipient.amount, lpDecimal),
         } as Types.IRecipient)
     );
     const start = new Date(startDate + " " + startTime);
@@ -35,7 +35,7 @@ export default class StreamFlow extends InjectBaseRepository {
       recipients,
       period: 1,
       canTopup: false,
-      tokenId: mint.publicKey,
+      tokenId: lpMint,
       cancelableBySender: true,
       cancelableByRecipient: false,
       transferableBySender: true,

@@ -4,7 +4,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"test": "jest --detectOpenHandles"
+		"test": "jest "
 	},
 	"dependencies": {
 		"@headlessui/react": "^1.7.18",

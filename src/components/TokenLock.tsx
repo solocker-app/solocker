@@ -1,14 +1,18 @@
-import Image from "next/image";
-import { MdSearch, MdAdd, MdLockOutline, MdMoreHoriz } from "react-icons/md";
+import { MdSearch, MdAdd } from "react-icons/md";
 
-import LockStatus from "./widgets/LockStatus";
+import StreamFlow from "@/lib/streamflow";
+
 import TokenLockListItem from "./TokenLockListItem";
 
 type TokenLockProps = {
-  onCreateLock: () => void;
+  lockedTokens: Awaited<ReturnType<StreamFlow["getLockedTokens"]>>;
+  onCreateLockToken: () => void;
 };
 
-export default function TokenLock({ onCreateLock }: TokenLockProps) {
+export default function TokenLock({
+  lockedTokens,
+  onCreateLockToken,
+}: TokenLockProps) {
   return (
     <div className="flex-1 flex flex-col space-y-8">
       <header className="flex items-center px-4">
@@ -22,7 +26,7 @@ export default function TokenLock({ onCreateLock }: TokenLockProps) {
         <div className="flex-1 flex items-center justify-end">
           <button
             className="btn btn-secondary !px-4 !rounded-md"
-            onClick={onCreateLock}
+            onClick={onCreateLockToken}
           >
             <MdAdd className="text-lg" />
             <span>Create New</span>
@@ -39,7 +43,12 @@ export default function TokenLock({ onCreateLock }: TokenLockProps) {
             <td>Status</td>
             <td></td>
           </tr>
-          <TokenLockListItem />
+          {lockedTokens.map((lockedToken, index) => (
+            <TokenLockListItem
+              key={index}
+              lockedToken={lockedToken}
+            />
+          ))}
         </table>
       </div>
     </div>

@@ -27,5 +27,6 @@ export class BaseRepository {
     this.solana = new Solana(this);
     this.raydium = new Raydium(this);
     this.metaplex = new Metaplex(this);
+    this.streamflow = new StreamFlow(this);
   }
 }

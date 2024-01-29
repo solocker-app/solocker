@@ -3,7 +3,13 @@ import { MdMoreHoriz } from "react-icons/md";
 import { IoIosSend } from "react-icons/io";
 import { FaMoneyBill, FaUnlock } from "react-icons/fa";
 
-export default function TokenLockItemMenu() {
+import { Types } from "@streamflow/stream";
+
+type TokenLockItemMenuProps = {
+  stream: Types.Stream;
+};
+
+export default function TokenLockItemMenu({ stream }: TokenLockItemMenuProps) {
   return (
     <Menu
       as="div"

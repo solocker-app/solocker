@@ -8,9 +8,13 @@ import CreateTokenLockDialog from "@/components/CreateTokenLockDialog";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getDigitalAssets } from "@/store/slices/raydiumLpAsset";
+import { streamflowSelector, getLockedTokens } from "@/store/slices/streamflow";
 
 import { Repository } from "@/providers/Repository";
 import { DigitalAsset } from "@/providers/DigitalAsset";
+
+import Loading from "@/components/widgets/Loading";
+import ErrorMessage from "@/components/widgets/ErrorMessage";
 
 function LockPageRestrictToConnectedWallet() {
   const [createLockTokenDialogVisible, setCreateLockTokenDialogVisible] =
@@ -19,6 +23,9 @@ function LockPageRestrictToConnectedWallet() {
   const { repository } = useContext(Repository);
   const { value: digitalAssets } = useContext(DigitalAsset);
   const { loadingState } = useAppSelector((state) => state.raydiumAsset);
+  const streamflowState = useAppSelector((state) => state.streamFlow);
+  const { loadingState: streamflowLoadingState } = streamflowState;
+  const lockedTokens = streamflowSelector.selectAll(streamflowState);
 
   useEffect(() => {
     if (loadingState === "idle")
@@ -30,7 +37,15 @@ function LockPageRestrictToConnectedWallet() {
         .unwrap()
         .then(console.log)
         .catch(console.log);
-  }, [loadingState, dispatch]);
+  }, [loadingState, dispatch, streamflowLoadingState]);
+
+  useEffect(() => {
+    if (streamflowLoadingState === "idle")
+      dispatch(getLockedTokens(repository.streamflow.getLockedTokens()))
+        .unwrap()
+        .then(console.log)
+        .catch(console.log);
+  }, [streamflowLoadingState, dispatch]);
 
   return (
     <>
@@ -38,12 +53,25 @@ function LockPageRestrictToConnectedWallet() {
         <header className="px-4 hidden">
           <h1 className="text-xl font-extrabold">Token Lock</h1>
         </header>
-        {true ? (
-          <TokenLock />
+        {streamflowLoadingState === "success" ? (
+          lockedTokens.length > 0 ? (
+            <TokenLock
+              lockedTokens={lockedTokens}
+              onCreateLockToken={() => setCreateLockTokenDialogVisible(true)}
+            />
+          ) : (
+            <TokenEmptyState
+              onCreateLockToken={() => setCreateLockTokenDialogVisible(true)}
+            />
+          )
         ) : (
-          <TokenEmptyState
-            onCreateLockToken={() => setCreateLockTokenDialogVisible(true)}
-          />
+          <div className="flex-1 flex flex-col items-center justify-center">
+            {streamflowLoadingState === "pending" ? (
+              <Loading />
+            ) : (
+              <ErrorMessage />
+            )}
+          </div>
         )}
         <CreateTokenLockDialog
           visible={createLockTokenDialogVisible}

@@ -8,24 +8,19 @@ import { ErrorMessage, Field } from "formik";
 import { Wallet } from "@solana/wallet-adapter-react";
 
 import { join } from "@/lib/utils";
-import {
-  transformTokenAccount,
-  type TransformTokenAccount,
-} from "@/lib/metaplex/transform";
 
 import { useAppSelector } from "@/store/hooks";
-import { raydiumLpAssetSelector } from "@/store/slices/raydiumLpAsset";
+import { raydiumLpInfoSelector } from "@/store/slices/raydiumLpInfo";
 
 import EmptyIcon from "./EmptyIcon";
 import OverlapIcon from "./OverlapIcon";
+import { LpInfo } from "@/lib/api/models/raydium.model";
 
 type SelectCoinProps = {
   name: string;
-  value?: TransformTokenAccount;
+  value?: LpInfo;
   wallet: Wallet;
-  setValue: React.Dispatch<
-    React.SetStateAction<TransformTokenAccount | undefined>
-  >;
+  setValue: React.Dispatch<React.SetStateAction<LpInfo | undefined>>;
 };
 
 export default function SelectCoin({
@@ -34,10 +29,10 @@ export default function SelectCoin({
   value,
   setValue,
 }: SelectCoinProps) {
-  const raydiumLpAssetState = useAppSelector((state) => state.raydiumAsset);
+  const raydiumLpInfoState = useAppSelector((state) => state.raydiumLpInfo);
 
-  const { loadingState } = raydiumLpAssetState;
-  const digitalAssets = raydiumLpAssetSelector.selectAll(raydiumLpAssetState);
+  const { loadingState } = raydiumLpInfoState;
+  const lpInfos = raydiumLpInfoSelector.selectAll(raydiumLpInfoState);
 
   return (
     <Menu
@@ -51,8 +46,8 @@ export default function SelectCoin({
         <div className="flex items-center bg-container/70 px-2 rounded-md">
           {value ? (
             <Image
-              src={value.metadata.network.image}
-              alt={value.metadata.name}
+              src={value.baseTokenMetadata.network.image}
+              alt={value.baseTokenMetadata.name}
               className="w-8 h-8 rounded-full"
               width={24}
               height={24}
@@ -62,7 +57,7 @@ export default function SelectCoin({
           )}
           <Field
             name={name}
-            value={value ? value.metadata.name : "Select a token"}
+            value={value ? value.baseTokenMetadata.name : "Select a token"}
             className="flex-1 bg-transparent p-2 outline-none pointer-events-none"
             disabled
           />
@@ -78,36 +73,34 @@ export default function SelectCoin({
       >
         <div className={join("flex-1 flex flex-col")}>
           {loadingState === "success" ? (
-            digitalAssets.length > 0 ? (
-              digitalAssets.map((digitalAsset, index) => {
-                const tokenAccount = digitalAsset.tokenAccount;
-                const metadata = tokenAccount.metadata;
-                const mint = tokenAccount.mint.publicKey.toString();
-                const selected = mint === value?.metadata.mint;
+            lpInfos.length > 0 ? (
+              lpInfos.map((lpInfo, index) => {
+                const { baseTokenMetadata, quoteTokenMetadata, addedLpAmount } =
+                  lpInfo;
+                const selected =
+                  lpInfo.baseTokenMetadata.mint ===
+                  value?.baseTokenMetadata.mint;
 
                 return (
                   <Menu.Item
                     as="button"
                     key={index}
                     className="flex py-2 cursor-pointer"
-                    onClick={() =>
-                      setValue(transformTokenAccount(digitalAsset.tokenAccount))
-                    }
+                    onClick={() => setValue(lpInfo)}
                   >
                     <div className="flex-1 flex items-center space-x-2">
-                      {metadata.network ? (
-                        <OverlapIcon
-                          images={[
-                            { src: metadata.network!.image, alt: metadata.name },
-                            {
-                              src: digitalAsset.quoteMetadata.network.image,
-                              alt: digitalAsset.quoteMetadata.name,
-                            },
-                          ]}
-                        />
-                      ) : (
-                        <EmptyIcon />
-                      )}
+                      <OverlapIcon
+                        images={[
+                          {
+                            src: baseTokenMetadata.network!.image,
+                            alt: baseTokenMetadata.name,
+                          },
+                          {
+                            src: quoteTokenMetadata.network.image,
+                            alt: quoteTokenMetadata.name,
+                          },
+                        ]}
+                      />
                       <div className="text-base">
                         <h1
                           className={join(
@@ -115,13 +108,15 @@ export default function SelectCoin({
                             selected ? "text-secondary" : null
                           )}
                         >
-                          {metadata.symbol}
+                          {baseTokenMetadata.symbol +
+                            "/" +
+                            quoteTokenMetadata.symbol}
                         </h1>
                         <p className="text-highlight">{name}</p>
                       </div>
                     </div>
                     <div>
-                      {Number(tokenAccount.token.uiAmount)} {metadata.symbol}
+                      {Number(addedLpAmount)} {baseTokenMetadata.symbol}
                     </div>
                   </Menu.Item>
                 );

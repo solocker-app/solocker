@@ -6,11 +6,12 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { DigitalAssetWithTokenUiAmount } from "@/lib/metaplex";
 
 import SelectCoin from "./widgets/SelectCoin";
+import { LpInfo } from "@/lib/api/models/raydium.model";
 
 export type TokenConfiguration = {
   startDate: string;
   startTime: string;
-  token: DigitalAssetWithTokenUiAmount;
+  token: LpInfo;
 };
 
 type TokenLockConfigurationProps = {
@@ -42,7 +43,7 @@ export default function TokenLockConfiguration({
           startDate: new Date().toISOString().split("T").at(0),
           startTime: new Date().toTimeString().substring(0, 8),
           token: undefined as
-            | DigitalAssetWithTokenUiAmount
+            | LpInfo
             | undefined,
         }}
         onSubmit={onSave}

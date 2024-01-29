@@ -7,11 +7,10 @@ import TokenEmptyState from "@/components/TokenLockEmptyState";
 import CreateTokenLockDialog from "@/components/CreateTokenLockDialog";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { getDigitalAssets } from "@/store/slices/raydiumLpAsset";
+import { getLiquidityPoolInfos } from "@/store/slices/raydiumLpInfo";
 import { streamflowSelector, getLockedTokens } from "@/store/slices/streamflow";
 
 import { Repository } from "@/providers/Repository";
-import { DigitalAsset } from "@/providers/DigitalAsset";
 
 import Loading from "@/components/widgets/Loading";
 import ErrorMessage from "@/components/widgets/ErrorMessage";
@@ -19,21 +18,19 @@ import ErrorMessage from "@/components/widgets/ErrorMessage";
 function LockPageRestrictToConnectedWallet() {
   const [createLockTokenDialogVisible, setCreateLockTokenDialogVisible] =
     useState(false);
+  const { wallet } = useWallet();
   const dispatch = useAppDispatch();
   const { repository } = useContext(Repository);
-  const { value: digitalAssets } = useContext(DigitalAsset);
-  const { loadingState } = useAppSelector((state) => state.raydiumAsset);
+
   const streamflowState = useAppSelector((state) => state.streamFlow);
+  const { loadingState } = useAppSelector((state) => state.raydiumLpInfo);
+
   const { loadingState: streamflowLoadingState } = streamflowState;
   const lockedTokens = streamflowSelector.selectAll(streamflowState);
 
   useEffect(() => {
     if (loadingState === "idle")
-      dispatch(
-        getDigitalAssets(
-          repository.raydium.getLiquidityPoolInfos(digitalAssets)
-        )
-      )
+      dispatch(getLiquidityPoolInfos(wallet.adapter.publicKey.toBase58()))
         .unwrap()
         .then(console.log)
         .catch(console.log);

@@ -2,14 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { tokenLockReducer } from "./slices/tokenLock";
 import { digitalAssetReducer } from "./slices/digitalAsset";
-import { raydiumLpAssetReducer } from "./slices/raydiumLpAsset";
+import { raydiumLpInfoReducer } from "./slices/raydiumLpInfo";
 import { streamflowReducer } from "./slices/streamflow";
 
 export const store = configureStore({
   reducer: {
     tokenLock: tokenLockReducer,
     digitalAsset: digitalAssetReducer,
-    raydiumAsset: raydiumLpAssetReducer,
+    raydiumLpInfo: raydiumLpInfoReducer,
     streamFlow: streamflowReducer,
   },
 });

@@ -12,6 +12,7 @@ import { Formik, Field, ErrorMessage } from "formik";
 
 import Toggle from "./widgets/Toggle";
 import { DigitalAssetWithTokenUiAmount } from "@/lib/metaplex";
+import { LpInfo } from "@/lib/api/models/raydium.model";
 
 export type TokenRecipient = {
   amount: number;
@@ -20,7 +21,7 @@ export type TokenRecipient = {
 
 type TokenLockRecipientProps = {
   onBack(): void;
-  token: DigitalAssetWithTokenUiAmount;
+  token: LpInfo;
   onSave(value: { recipients: TokenRecipient[] }): void;
 };
 
@@ -119,8 +120,8 @@ export default function TokenLockRecipient({
                         <div className="flex items-center space-x-4">
                           <MdQuestionMark />
                           <div className="flex items-center space-x-2 text-highlight">
-                            <b>{Number(token.token.uiAmount)}</b>
-                            <span>{token.metadata.symbol}</span>
+                            <b>{Number(token.totalLpAmount)}</b>
+                            <span>{token.baseTokenMetadata.symbol}</span>
                           </div>
                         </div>
                       </div>

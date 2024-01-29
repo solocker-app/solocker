@@ -24,18 +24,18 @@ function InnerComponent({
   const [value, setValue] = useState<ContextState["value"]>([]);
   const [state, setState] = useState<ContextState["loadingState"]>("pending");
 
-  const { solanaWallet } = useContext(Repository);
+  const { repository } = useContext(Repository);
 
   const fetchDigitalAssets = async () => {
     setState("pending");
-    await solanaWallet.metaplex
-      .fetchAllDigitalAssetWithTokenByOwner(wallet.adapter.publicKey.toBase58())
+    await repository.metaplex
+      .fetchAllDigitalAssetWithTokenByOwner()
       .then(setValue)
       .then(() => console.log(value))
       .then(() => setState("success"))
-      .catch(() => {
+      .catch((error) => {
         setState("error");
-        return fetchDigitalAssets();
+        console.log(error);
       });
   };
 

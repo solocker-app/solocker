@@ -1,27 +1,30 @@
 import Image from "next/image";
-import { useContext } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 
-import { Popover } from "@headlessui/react";
+import { Menu } from "@headlessui/react";
 
 import { ErrorMessage, Field } from "formik";
 
 import { Wallet } from "@solana/wallet-adapter-react";
 
 import { join } from "@/lib/utils";
-import { DigitalAssetWithTokenUiAmount } from "@/lib/metaplex";
+import {
+  transformTokenAccount,
+  type TransformTokenAccount,
+} from "@/lib/metaplex/transform";
 
-import { DigitalAsset } from "@/providers/DigitalAsset";
+import { useAppSelector } from "@/store/hooks";
+import { raydiumLpAssetSelector } from "@/store/slices/raydiumLpAsset";
 
 import EmptyIcon from "./EmptyIcon";
-
+import OverlapIcon from "./OverlapIcon";
 
 type SelectCoinProps = {
   name: string;
-  value?: DigitalAssetWithTokenUiAmount;
+  value?: TransformTokenAccount;
   wallet: Wallet;
   setValue: React.Dispatch<
-    React.SetStateAction<DigitalAssetWithTokenUiAmount | undefined>
+    React.SetStateAction<TransformTokenAccount | undefined>
   >;
 };
 
@@ -31,11 +34,17 @@ export default function SelectCoin({
   value,
   setValue,
 }: SelectCoinProps) {
-  const { value: digitalAssets, loadingState } = useContext(DigitalAsset);
+  const raydiumLpAssetState = useAppSelector((state) => state.raydiumAsset);
+
+  const { loadingState } = raydiumLpAssetState;
+  const digitalAssets = raydiumLpAssetSelector.selectAll(raydiumLpAssetState);
 
   return (
-    <Popover className="relative">
-      <Popover.Button
+    <Menu
+      as="div"
+      className="relative"
+    >
+      <Menu.Button
         as="div"
         className="flex flex-col"
       >
@@ -62,8 +71,8 @@ export default function SelectCoin({
         <div className="text-sm text-red first-letter:capitalize">
           <ErrorMessage name={name} />
         </div>
-      </Popover.Button>
-      <Popover.Panel
+      </Menu.Button>
+      <Menu.Items
         as="div"
         className="absolute mt-2 w-full h-xs flex flex-col space-y-2 bg-container px-4 rounded-md shadow shadow-white/10 overflow-y-scroll"
       >
@@ -71,24 +80,30 @@ export default function SelectCoin({
           {loadingState === "success" ? (
             digitalAssets.length > 0 ? (
               digitalAssets.map((digitalAsset, index) => {
-                const metadata = digitalAsset.metadata;
-                const mint = digitalAsset.mint.publicKey.toString();
+                const tokenAccount = digitalAsset.tokenAccount;
+                const metadata = tokenAccount.metadata;
+                const mint = tokenAccount.mint.publicKey.toString();
                 const selected = mint === value?.metadata.mint;
 
                 return (
-                  <div
+                  <Menu.Item
+                    as="button"
                     key={index}
                     className="flex py-2 cursor-pointer"
-                    onClick={() => setValue(digitalAsset)}
+                    onClick={() =>
+                      setValue(transformTokenAccount(digitalAsset.tokenAccount))
+                    }
                   >
                     <div className="flex-1 flex items-center space-x-2">
                       {metadata.network ? (
-                        <Image
-                          src={metadata.network.image}
-                          alt={metadata.name}
-                          className="w-8 h-8 rounded-full"
-                          width={24}
-                          height={24}
+                        <OverlapIcon
+                          images={[
+                            { src: metadata.network!.image, alt: metadata.name },
+                            {
+                              src: digitalAsset.quoteMetadata.network.image,
+                              alt: digitalAsset.quoteMetadata.name,
+                            },
+                          ]}
                         />
                       ) : (
                         <EmptyIcon />
@@ -106,9 +121,9 @@ export default function SelectCoin({
                       </div>
                     </div>
                     <div>
-                      {Number(digitalAsset.token.uiAmount)} {metadata.symbol}
+                      {Number(tokenAccount.token.uiAmount)} {metadata.symbol}
                     </div>
-                  </div>
+                  </Menu.Item>
                 );
               })
             ) : (
@@ -126,7 +141,7 @@ export default function SelectCoin({
             <div className="m-auto w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
           )}
         </div>
-      </Popover.Panel>
-    </Popover>
+      </Menu.Items>
+    </Menu>
   );
 }

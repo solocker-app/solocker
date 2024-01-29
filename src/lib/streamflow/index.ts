@@ -1,19 +1,22 @@
 import { StreamflowSolana, getBN, Types } from "@streamflow/stream";
-import { clusterApiUrl, Cluster } from "@solana/web3.js";
-import { SignerWalletAdapter } from "@solana/wallet-adapter-base";
 
 import type { TokenLock } from "@/components/CreateTokenLockDialog";
 
-export default class StreamFlow {
+import type { BaseRepository } from "..";
+import { InjectBaseRepository } from "../injector";
+
+export default class StreamFlow extends InjectBaseRepository {
   client: StreamflowSolana.SolanaStreamClient;
 
-  constructor(private readonly wallet: SignerWalletAdapter, cluster?: Cluster) {
+  constructor(repository: BaseRepository) {
+    super(repository);
+
     this.client = new StreamflowSolana.SolanaStreamClient(
-      clusterApiUrl(cluster),
-      Types.ICluster.Devnet,
+      this.repository.connection.rpcEndpoint,
+      Types.ICluster.Devnet
     );
   }
-  
+
   async lockToken(tokenLock: NonNullable<TokenLock>) {
     const { mint } = tokenLock.configuration.token;
     const { startDate, startTime } = tokenLock.configuration;
@@ -31,28 +34,63 @@ export default class StreamFlow {
     const params = {
       recipients,
       period: 1,
-      cliff: 0,
       canTopup: false,
       tokenId: mint.publicKey,
       cancelableBySender: true,
       cancelableByRecipient: false,
       transferableBySender: true,
       transferableByRecipient: false,
-      start: start.getTime() / 1000,
+      start: Date.now() / 1000,
+      cliff: start.getTime() / 100,
     };
-    
+
     return this.client.createMultiple(params, {
-      sender: this.wallet,
+      sender: this.repository.wallet as any,
     });
   }
-  
-  getLockToken(id){
+
+  topup(id: string, amount: number, decimal: number) {
+    return this.client.topup(
+      {
+        id,
+        amount: getBN(amount, decimal),
+      },
+      {
+        invoker: this.repository.wallet as any,
+      }
+    );
+  }
+
+  transfer(id: string, recipient: string) {
+    return this.client.transfer(
+      {
+        id,
+        newRecipient: recipient,
+      },
+      {
+        invoker: this.repository.wallet as any,
+      }
+    );
+  }
+
+  cancel(id: string) {
+    return this.client.cancel(
+      {
+        id,
+      },
+      {
+        invoker: this.repository.wallet as any,
+      }
+    );
+  }
+
+  getLockToken(id: string) {
     return this.client.getOne({ id });
   }
-  
-  getLockedTokens(){
+
+  getLockedTokens() {
     return this.client.get({
-      address: this.wallet.publicKey.toBase58(),
+      address: this.repository.wallet.publicKey.toBase58(),
       type: Types.StreamType.All,
       direction: Types.StreamDirection.All,
     });

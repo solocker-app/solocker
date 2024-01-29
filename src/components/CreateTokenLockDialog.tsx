@@ -29,7 +29,7 @@ export default function CreateTokenLockDialog({
   setVisible,
 }: CreateTokenLockDialogProps) {
   const [formIndex, setFormIndex] = useState(0);
-  const { streamFlow } = useContext(Repository);
+  const { repository } = useContext(Repository);
   const [reviewDialogVisible, setReviewDialogVisible] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -109,12 +109,13 @@ export default function CreateTokenLockDialog({
           visible={reviewDialogVisible}
           setVisible={setReviewDialogVisible}
           onCreateLockContract={() =>
-            streamFlow.lockToken(formData)
-.then(() => setVisible(false))
-.catch((error) => {
-              console.log(error);
-              throw error;
-            })
+            repository.streamflow
+              .lockToken(formData)
+              .then(() => setVisible(false))
+              .catch((error) => {
+                console.log(error);
+                throw error;
+              })
           }
         />
       )}

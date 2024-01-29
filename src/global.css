@@ -1,7 +1,7 @@
 @unocss all;
 
 .btn {
-    @apply px-8 py-2 font-normal;
+    @apply flex space-x-2 items-center justify-center px-8 py-2 font-normal;
 }
 
 .wallet-adapter-button-trigger {
@@ -11,6 +11,10 @@
 .btn-primary,
 .wallet-adapter-button-trigger {
     @apply !bg-primary !rounded-full;
+}
+
+.btn-secondary {
+    @apply bg-secondary text-black;
 }
 
 .text-primary {
@@ -55,4 +59,29 @@ input {
 ::-webkit-scrollbar {
     width: 0;
     height: 0;
+}
+
+.table-container {
+    @apply overflow-x-scroll;
+}
+
+.table-container th {
+    @apply sticky top-0 bg-container text-highlight;
+}
+
+th {
+    @apply p-2 text-center text-normal font-normal text-nowrap border-r-1 border-b-1;
+}
+
+td {
+    @apply p-2 text-center text-nowrap vertical-middle;
+}
+
+th,
+td {
+    @apply px-4 text-center;
+}
+
+table {
+    @apply w-full;
 }

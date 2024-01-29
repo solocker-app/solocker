@@ -1,22 +1,18 @@
 "use client";
-
 import { createContext, useMemo } from "react";
 
 import { Wallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 
 import { devnet } from "@/data";
-import { SolanaWallet } from "@/lib/solana";
-import StreamFlow from "@/lib/streamflow";
+import { BaseRepository } from "@/lib";
 
 type ContextState = {
-  streamFlow: StreamFlow;
-  solanaWallet: SolanaWallet;
+  repository: BaseRepository | null;
 };
 
 export const Repository = createContext<ContextState>({
-  streamFlow: null,
-  solanaWallet: null,
+  repository: null,
 });
 
 function InnerComponent({
@@ -25,19 +21,13 @@ function InnerComponent({
 }: React.PropsWithChildren & { wallet: Wallet }) {
   const { connection } = useConnection();
   const umi = useMemo(() => createUmi(devnet), []);
-  const solanaWallet = useMemo(
-    () => new SolanaWallet(connection, umi, wallet.adapter),
+  const repository = useMemo(
+    () => new BaseRepository(connection, umi, wallet.adapter),
     [connection, wallet]
-  );
-  const streamFlow = useMemo(
-    () => new StreamFlow(wallet.adapter as any),
-    [wallet]
   );
 
   return (
-    <Repository.Provider value={{ solanaWallet, streamFlow }}>
-      {children}
-    </Repository.Provider>
+    <Repository.Provider value={{ repository }}>{children}</Repository.Provider>
   );
 }
 

@@ -32,7 +32,7 @@ export default class StreamFlow extends InjectBaseRepository {
         }) as Types.IRecipient,
     );
 
-    const period = new Date(endDate + " " + endTime).getTime() / 1000;
+    const period = Math.round(new Date(endDate + " " + endTime).getTime() / 1000);
 
     const params: Types.ICreateMultipleStreamData = {
       recipients,

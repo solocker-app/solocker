@@ -5,18 +5,13 @@ type Cache = Map<string, LpInfo>;
 
 export default class RaydiumApi extends InjectAxios {
   path: string = "/raydium/lp-infos/";
-  private static mCache: Cache;
 
-  get cache() {
-    if (RaydiumApi.mCache === null) RaydiumApi.mCache = new Map();
-
-    return RaydiumApi.mCache;
-  }
-
-  fetchLpInfos(wallet: string) {
-    return this.axios.post<LpInfo[]>(this.path, {
+  async fetchLpInfos(wallet: string) {
+    const lpInfos = await this.axios.post<LpInfo[]>(this.path, {
       wallet,
     });
+    
+    return lpInfos;
   }
 
   fetchLpInfo(wallet: string, mint: string) {

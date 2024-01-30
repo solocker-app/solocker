@@ -7,11 +7,9 @@ export default class RaydiumApi extends InjectAxios {
   path: string = "/raydium/lp-infos/";
 
   async fetchLpInfos(wallet: string) {
-    const lpInfos = await this.axios.post<LpInfo[]>(this.path, {
+    return this.axios.post<LpInfo[]>(this.path, {
       wallet,
     });
-    
-    return lpInfos;
   }
 
   fetchLpInfo(wallet: string, mint: string) {

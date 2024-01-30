@@ -54,7 +54,7 @@ export default function TokenLockRecipient({
             },
           })
           .required("recipient is a required field"),
-      })
+      }),
     ),
   });
 
@@ -71,7 +71,7 @@ export default function TokenLockRecipient({
         }}
         onSubmit={onSave}
       >
-        {({ handleSubmit, setFieldValue }) => (
+        {({ values, handleSubmit, setFieldValue }) => (
           <form
             className="flex-1 flex flex-col space-y-4"
             onSubmit={handleSubmit}
@@ -118,9 +118,17 @@ export default function TokenLockRecipient({
                         </h1>
                         <div className="flex items-center space-x-4">
                           <MdQuestionMark />
-                          <div className="flex items-center space-x-2 text-highlight">
-                            <b>{Number(token.totalLpAmount)}</b>
-                            <span>{token.baseTokenMetadata.symbol}</span>
+                          <div className="flex items-center space-x-1 text-highlight">
+                            <b>
+                              {Number(
+                                token.addedLpAmount -
+                                  values.recipients.reduce(
+                                    (a, b) => a + b.amount,
+                                    0,
+                                  ),
+                              )}
+                            </b>
+                            <span>{token.lpTokenMetadata.symbol}</span>
                           </div>
                         </div>
                       </div>
@@ -132,7 +140,7 @@ export default function TokenLockRecipient({
                             const checked = (event.target as HTMLInputElement)
                               .checked;
                             const name = `recipients[${index}.recipient]`;
-                            if (checked) setFieldValue(name, publicKey);
+                            if (checked) setFieldValue(name, publicKey.toBase58());
                             else setFieldValue(name, "");
                           }}
                         />

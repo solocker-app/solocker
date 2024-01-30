@@ -4,7 +4,6 @@ import { createContext, useMemo } from "react";
 import { Wallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 
-import { devnet } from "@/data";
 import { BaseRepository } from "@/lib";
 
 type ContextState = {
@@ -20,10 +19,13 @@ function InnerComponent({
   wallet,
 }: React.PropsWithChildren & { wallet: Wallet }) {
   const { connection } = useConnection();
-  const umi = useMemo(() => createUmi(devnet), []);
+  const umi = useMemo(
+    () => createUmi(process.env.NEXT_PUBLIC_RPC_ENDPOINT),
+    [],
+  );
   const repository = useMemo(
     () => new BaseRepository(connection, umi, wallet.adapter),
-    [connection, wallet]
+    [connection, wallet],
   );
 
   return (

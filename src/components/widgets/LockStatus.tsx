@@ -13,5 +13,11 @@ export default function LockStatus({ status }: LockStatusProps) {
     paused: "bg-container text-highlight/50",
   };
 
-  return <div className={join("uppercase px-2 text-sm rounded", colorScheme[status])}>{status}</div>;
+  return (
+    <div
+      className={join("uppercase px-2 text-sm rounded", colorScheme[status])}
+    >
+      {status}
+    </div>
+  );
 }

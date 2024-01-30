@@ -13,36 +13,42 @@ export default class StreamFlow extends InjectBaseRepository {
 
     this.client = new StreamflowSolana.SolanaStreamClient(
       this.repository.connection.rpcEndpoint,
-      Types.ICluster.Devnet
+      Types.ICluster.Mainnet,
     );
   }
 
   async lockToken(tokenLock: NonNullable<TokenLock>) {
-    const { lpMint, lpDecimal } = tokenLock.configuration.token;
-    const { startDate, startTime } = tokenLock.configuration;
+    const { lpTokenMetadata, baseTokenDecimal } = tokenLock.configuration.token;
+    const { endDate, endTime} = tokenLock.configuration;
+
     const recipients = tokenLock.recipients.map<Types.IRecipient>(
       (recipient) =>
         ({
           name: "Solocker #test",
-          amount: getBN(recipient.amount, lpDecimal),
+          amount: getBN(recipient.amount, baseTokenDecimal),
           recipient: recipient.recipient,
-          cliffAmount: getBN(0, lpDecimal),
-          amountPerPeriod: getBN(recipient.amount, lpDecimal),
-        } as Types.IRecipient)
+          cliffAmount: getBN(0, baseTokenDecimal),
+          amountPerPeriod: getBN(recipient.amount, baseTokenDecimal),
+        }) as Types.IRecipient,
     );
-    const start = new Date(startDate + " " + startTime);
-    const params = {
+
+    const period = new Date(endDate + " " + endTime).getTime() / 1000;
+
+    const params: Types.ICreateMultipleStreamData = {
       recipients,
-      period: 1,
+      period,
+      cliff: 0,
       canTopup: false,
-      tokenId: lpMint,
+      tokenId: lpTokenMetadata.mint,
       cancelableBySender: true,
       cancelableByRecipient: false,
       transferableBySender: true,
       transferableByRecipient: false,
       start: Date.now() / 1000,
-      cliff: start.getTime() / 100,
+      partner: null,
     };
+
+    console.log(params);
 
     return this.client.createMultiple(params, {
       sender: this.repository.wallet as any,
@@ -57,7 +63,7 @@ export default class StreamFlow extends InjectBaseRepository {
       },
       {
         invoker: this.repository.wallet as any,
-      }
+      },
     );
   }
 
@@ -69,7 +75,7 @@ export default class StreamFlow extends InjectBaseRepository {
       },
       {
         invoker: this.repository.wallet as any,
-      }
+      },
     );
   }
 
@@ -80,7 +86,7 @@ export default class StreamFlow extends InjectBaseRepository {
       },
       {
         invoker: this.repository.wallet as any,
-      }
+      },
     );
   }
 

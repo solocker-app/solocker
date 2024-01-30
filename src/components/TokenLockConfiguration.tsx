@@ -3,14 +3,12 @@ import { object, date, string } from "yup";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 
-import { DigitalAssetWithTokenUiAmount } from "@/lib/metaplex";
-
 import SelectCoin from "./widgets/SelectCoin";
 import { LpInfo } from "@/lib/api/models/raydium.model";
 
 export type TokenConfiguration = {
-  startDate: string;
-  startTime: string;
+  endDate: string;
+  endTime: string;
   token: LpInfo;
 };
 
@@ -22,11 +20,9 @@ export default function TokenLockConfiguration({
   onSave,
 }: TokenLockConfigurationProps) {
   const validationSchema = object().shape({
-    token: object().shape({
-
-    }).required(),
-    startDate: date().required(),
-    startTime: string().required(),
+    token: object().shape({}).required(),
+    endDate: date().required(),
+    endTime: string().required(),
   });
 
   const wallet = useWallet();
@@ -40,11 +36,9 @@ export default function TokenLockConfiguration({
       <Formik
         validationSchema={validationSchema}
         initialValues={{
-          startDate: new Date().toISOString().split("T").at(0),
-          startTime: new Date().toTimeString().substring(0, 8),
-          token: undefined as
-            | LpInfo
-            | undefined,
+          endDate: new Date().toISOString().split("T").at(0),
+          endTime: new Date().toTimeString().substring(0, 8),
+          token: undefined as LpInfo | undefined,
         }}
         onSubmit={onSave}
       >
@@ -60,7 +54,6 @@ export default function TokenLockConfiguration({
                   <SelectCoin
                     name="token"
                     value={values.token}
-                    wallet={wallet.wallet}
                     setValue={(value) => setFieldValue("token", value)}
                   />
                 )}
@@ -75,19 +68,19 @@ export default function TokenLockConfiguration({
                 <div className="flex flex-col space-y-2">
                   <div className="flex space-x-4">
                     <Field
-                      name="startDate"
+                      name="endDate"
                       type="date"
                       className="flex-1 p-2 bg-container/70 rounded-md"
                     />
                     <Field
-                      name="startTime"
+                      name="endTime"
                       type="time"
                       className="flex-1 p-2 bg-container/70 rounded-md"
                     />
                   </div>
                   <div className="text-red-500 text-sm first-letter:capitalize">
-                    <ErrorMessage name="startDate" />
-                    <ErrorMessage name="startTime" />
+                    <ErrorMessage name="endDate" />
+                    <ErrorMessage name="endTime" />
                   </div>
                 </div>
               </div>

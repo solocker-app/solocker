@@ -1,13 +1,17 @@
-import { createSlice, createEntityAdapter, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createEntityAdapter,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 
-import StreamFlow from  "@/lib/streamflow";
+import StreamFlow from "@/lib/streamflow";
 
 type LoadingState = "idle" | "pending" | "error" | "success";
 type TokenLock = Awaited<ReturnType<StreamFlow["getLockedTokens"]>>[number];
 
 export const getLockedTokens = createAsyncThunk(
-  "tokenLock/getLockedTokens", 
-  (streamflow: StreamFlow) => streamflow.getLockedTokens()
+  "tokenLock/getLockedTokens",
+  (streamflow: StreamFlow) => streamflow.getLockedTokens(),
 );
 
 export const tokenLockAdapter = createEntityAdapter<TokenLock>({
@@ -20,18 +24,19 @@ export const tokenLockSlice = createSlice({
     loadingState: "idle" as LoadingState,
   }),
   reducers: {},
-  extraReducers(builder){
-    builder.addCase(getLockedTokens.pending, (state) => {
-      state.loadingState = "pending";
-    })
-    .addCase(getLockedTokens.rejected, (state) => {
-      state.loadingState = "error";
-    })
-    .addCase(getLockedTokens.fulfilled, (state, data) => {
-      state.loadingState = "success";
-      tokenLockAdapter.setAll(state, data);
-    })
-  }
+  extraReducers(builder) {
+    builder
+      .addCase(getLockedTokens.pending, (state) => {
+        state.loadingState = "pending";
+      })
+      .addCase(getLockedTokens.rejected, (state) => {
+        state.loadingState = "error";
+      })
+      .addCase(getLockedTokens.fulfilled, (state, data) => {
+        state.loadingState = "success";
+        tokenLockAdapter.setAll(state, data);
+      });
+  },
 });
 
 export const tokenLockReducer = tokenLockSlice.reducer;

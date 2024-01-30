@@ -42,13 +42,13 @@ export default function CreateTokenLockDialog({
       <div
         className={join(
           "fixed inset-0  flex flex-col bg-black/50 transition-200 md:items-end overflow-y-scroll",
-          visible ? "opacity-100" : "opacity-0 pointer-events-none"
+          visible ? "opacity-100" : "opacity-0 pointer-events-none",
         )}
       >
         <div
           className={join(
             "flex-1 flex flex-col bg-stone-950 md:w-1/3 overflow-y-scroll",
-            visible ? "animate-bounce-in" : "animate-bounce-out"
+            visible ? "animate-bounce-in" : "animate-bounce-out",
           )}
         >
           <header className="flex flex-col">
@@ -108,14 +108,10 @@ export default function CreateTokenLockDialog({
           tokenLock={formData}
           visible={reviewDialogVisible}
           setVisible={setReviewDialogVisible}
-          onCreateLockContract={() =>
-            repository.streamflow
+          onCreateLockContract={async () =>
+            await repository.streamflow
               .lockToken(formData)
               .then(() => setVisible(false))
-              .catch((error) => {
-                console.log(error);
-                throw error;
-              })
           }
         />
       )}

@@ -8,8 +8,10 @@ export type MetadataWithNetwork = {
 } & Metadata;
 
 export type LpInfo = {
-  lpMint: string,
-  lpDecimal: number,
+  lpTokenDecimal: number,
+  baseTokenDecimal: number,
+  quoteTokenDecimal: number,
+  lpTokenMetadata: MetadataWithNetwork;
   quoteTokenMetadata: MetadataWithNetwork;
   baseTokenMetadata: MetadataWithNetwork;
   baseValueBalance: number;

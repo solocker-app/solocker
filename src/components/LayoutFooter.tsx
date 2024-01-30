@@ -7,8 +7,7 @@ import { IlSolockerBrand } from "@/assets";
 
 export default function LayoutFooter() {
   return (
-    <footer  
-      className="flex flex-col space-y-8 text-base text-highlight md:text-lg p-4 md:p-8">
+    <footer className="flex flex-col space-y-8 text-base text-highlight md:text-lg p-4 md:p-8">
       <div className="flex space-x-4">
         {layoutSocials.map((social, index) => (
           <a

@@ -26,14 +26,12 @@ import { join } from "@/lib/utils";
 import { defaultFont } from "@/fonts";
 
 import { store } from "@/store";
-import { devnet } from "@/data";
 import Firebase from "@/providers/Firebase";
 import LayoutHeader from "@/components/LayoutHeader";
-import DigitalAsset from "@/providers/DigitalAsset";
 import Repository from "@/providers/Repository";
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
-  const endpoint = devnet;
+  const endpoint = process.env.NEXT_PUBLIC_RPC_ENDPOINT;
   const network = WalletAdapterNetwork.Mainnet;
   const wallets = useMemo(
     () => [
@@ -43,7 +41,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
       new TorusWalletAdapter(),
       new SolflareWalletAdapter({ network }),
     ],
-    [network]
+    [network],
   );
 
   return (
@@ -51,7 +49,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
       <body
         className={join(
           "fixed inset-0 flex flex-col bg-black text-white text-[15px]",
-          defaultFont.className
+          defaultFont.className,
         )}
       >
         <Firebase>
@@ -63,11 +61,11 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
               <WalletModalProvider>
                 <Repository>
                   <Provider store={store}>
-                      <div className="flex-1 flex flex-col overflow-y-scroll">
-                        <LayoutHeader />
-                        <DigitalAsset>{children}</DigitalAsset>
-                        <ToastContainer />
-                      </div>
+                    <div className="flex-1 flex flex-col overflow-y-scroll">
+                      <LayoutHeader />
+                      {children}
+                      <ToastContainer />
+                    </div>
                   </Provider>
                 </Repository>
               </WalletModalProvider>

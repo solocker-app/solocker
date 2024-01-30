@@ -7,23 +7,39 @@ type OverlapIconProps = {
   images: { alt?: string; src?: string }[];
 };
 
+
+export function getCoinImageProps(metadata) {
+  return {
+    alt: metadata.name,
+    src:
+      metadata.network?.image ??
+      `https://img.raydium.io/icon/${metadata.mint}.png`,
+  };
+}
+
 export default function OverlapIcon({ images }: OverlapIconProps) {
   return (
     <div className="flex items-center">
-      {images.map((image, index) => (
-        image.src ?
+      {images.map((image, index) =>
+        image.src ? (
           <Image
             key={index}
             src={image.src}
             alt={image.alt}
             className={join(
               "w-6 h-6 rounded-full border border-highlight/50",
-              index > 0 ? "-ml-2" : null
+              index > 0 ? "-ml-2" : null,
             )}
             width={24}
-            height={24} /> : 
-          <EmptyIcon />
-      ))}
+            height={24}
+          />
+        ) : (
+          <EmptyIcon
+            key={index}
+            className={index > 0 ? "-ml-2" : " "}
+          />
+        ),
+      )}
     </div>
   );
 }

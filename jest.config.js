@@ -1,6 +1,6 @@
 const { pathsToModuleNameMapper } = require("ts-jest");
 const nextJest = require("next/jest.js");
-const {compilerOptions} = require("./tsconfig.json");
+const { compilerOptions } = require("./tsconfig.json");
 
 /**
  * @type {import("next/jest")}

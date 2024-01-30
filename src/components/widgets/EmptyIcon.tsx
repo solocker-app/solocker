@@ -1,4 +1,4 @@
-import { MdArrowDropDown, MdSearch, MdQuestionMark } from "react-icons/md";
+import { MdQuestionMark } from "react-icons/md";
 import { join } from "@/lib/utils";
 
 type EmptyIconProps = {
@@ -6,13 +6,11 @@ type EmptyIconProps = {
 };
 
 export default function EmptyIcon({ className }: EmptyIconProps) {
-  const mClassName = className ?? "w-6 h-6";
-
   return (
     <div
       className={join(
-        "flex items-center justify-center bg-highlight/50 text-black rounded-full",
-        mClassName
+        "w-6 h-6 flex items-center justify-center bg-highlight/50 text-black rounded-full",
+        className,
       )}
     >
       <MdQuestionMark className="text-lg" />

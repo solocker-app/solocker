@@ -12,7 +12,7 @@ export const streamflowAdapter = createEntityAdapter<LockedToken>();
 
 export const getLockedTokens = createAsyncThunk(
   "streamflow/getLockedTokens",
-  (lockedTokens: Promise<LockedToken[]>) => lockedTokens
+  (lockedTokens: Promise<LockedToken[]>) => lockedTokens,
 );
 
 export const streamflowSlice = createSlice({

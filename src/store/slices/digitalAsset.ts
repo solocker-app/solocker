@@ -16,7 +16,7 @@ export const digitalAssetAdapter =
 
 export const getDigitalAssets = createAsyncThunk(
   "digitalAssets/getDigitalAssets",
-  (fetch: Metaplex["fetchAllDigitalAssetWithTokenByOwner"]) => fetch()
+  (fetch: Metaplex["fetchAllDigitalAssetWithTokenByOwner"]) => fetch(),
 );
 
 export const digitalAssetSlice = createSlice({

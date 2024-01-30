@@ -3,13 +3,21 @@ import { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { MdLockOutline } from "react-icons/md";
 
+import { useWallet } from "@solana/wallet-adapter-react";
+
 import StreamFlow from "@/lib/streamflow";
+import type { LpInfo } from "@/lib/api/models/raydium.model";
 import { Repository } from "@/providers/Repository";
-import { LiquidityPoolInfo } from "@/lib/raydium";
 
 import LockStatus from "./widgets/LockStatus";
-import OverlapIcon from "./widgets/OverlapIcon";
+import OverlapIcon, { getCoinImageProps } from "./widgets/OverlapIcon";
+
 import TokenLockItemMenu from "./TokenLockItemMenu";
+import {
+  getLiquidityPoolInfo,
+  raydiumLpInfoSelector,
+} from "@/store/slices/raydiumLpInfo";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 type TokenLockListItemProps = {
   lockedToken: Awaited<ReturnType<StreamFlow["getLockedTokens"]>>[number];
@@ -18,15 +26,18 @@ type TokenLockListItemProps = {
 export default function TokenLockListItem({
   lockedToken: [address, stream],
 }: TokenLockListItemProps) {
-  const { repository } = useContext(Repository);
-  const [lpInfo, setLpInfo] = useState<LiquidityPoolInfo>(undefined);
+  const { wallet } = useWallet();
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => state.raydiumLpInfo);
+
+  const lpInfo = raydiumLpInfoSelector.selectById(state, stream.mint);
 
   useEffect(() => {
-    repository.raydium
-      .getLiquidityPoolInfo(stream.mint)
-      .then(setLpInfo)
-      .catch(console.log);
-  }, []);
+    getLiquidityPoolInfo(state, dispatch, {
+      wallet: wallet.adapter.publicKey.toBase58(),
+      mint: stream.mint,
+    });
+  }, [state, dispatch, wallet]);
 
   return (
     lpInfo && (
@@ -45,18 +56,12 @@ export default function TokenLockListItem({
         </td>
         <td>
           <div className="flex items-center">
-            {/* <OverlapIcon
+            <OverlapIcon
               images={[
-                {
-                  src: lpInfo.baseMetadata.network.image,
-                  alt: lpInfo.baseMetadata.name,
-                },
-                {
-                  src: lpInfo.quoteMetadata.network.image,
-                  alt: lpInfo.quoteMetadata.name,
-                },
+                getCoinImageProps(lpInfo.baseTokenMetadata),
+                getCoinImageProps(lpInfo.quoteTokenMetadata),
               ]}
-            /> */}
+            />
           </div>
         </td>
         <td>
@@ -65,7 +70,7 @@ export default function TokenLockListItem({
             <p className="flex items-center space-x-1">
               <span>{stream.depositedAmount.toString()}</span>
               <span className="text-highlight">
-                {/* {lpInfo.baseMetadata.symbol} */}
+                {lpInfo.lpTokenMetadata.symbol}
               </span>
             </p>
           </div>
@@ -77,8 +82,8 @@ export default function TokenLockListItem({
               stream.closed
                 ? "closed"
                 : stream.lastWithdrawnAt > 0
-                ? "withdraw"
-                : "pending"
+                  ? "withdraw"
+                  : "pending"
             }
           />
         </td>

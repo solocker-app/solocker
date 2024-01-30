@@ -16,9 +16,12 @@ export default function HomeHeroSection() {
           Solocker helps you keep transparency and secure liquidity lock with
           user friendly interface for your projects.
         </p>
-        <Link 
+        <Link
           href="/token-lock"
-          className="self-start btn btn-primary">Liquidity Pool Lock</Link>
+          className="self-start btn btn-primary"
+        >
+          Liquidity Pool Lock
+        </Link>
       </div>
       <div className="flex items-center justify-center md:flex-1 md:w-sm md:h-sm md:absolute md:right-0 md:top-0">
         <Image

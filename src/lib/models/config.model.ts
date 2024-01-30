@@ -1,5 +1,5 @@
 export type Config = {
   token: string;
-  startDate: string;
-  startTime: string;
+  endDate: string;
+  endTime: string;
 };

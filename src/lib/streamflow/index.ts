@@ -44,7 +44,7 @@ export default class StreamFlow extends InjectBaseRepository {
       cancelableByRecipient: false,
       transferableBySender: true,
       transferableByRecipient: false,
-      start: Date.now() / 1000,
+      start: 0,
       partner: null,
     };
 

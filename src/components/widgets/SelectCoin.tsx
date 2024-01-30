@@ -1,20 +1,20 @@
+import Link from "next/link";
 import Image from "next/image";
 import { MdArrowDropDown } from "react-icons/md";
 
 import { Menu } from "@headlessui/react";
-
 import { ErrorMessage, Field } from "formik";
 
 import { Wallet } from "@solana/wallet-adapter-react";
 
 import { join } from "@/lib/utils";
+import { LpInfo } from "@/lib/api/models/raydium.model";
 
 import { useAppSelector } from "@/store/hooks";
 import { raydiumLpInfoSelector } from "@/store/slices/raydiumLpInfo";
 
 import EmptyIcon from "./EmptyIcon";
 import OverlapIcon from "./OverlapIcon";
-import { LpInfo } from "@/lib/api/models/raydium.model";
 
 type SelectCoinProps = {
   name: string;
@@ -44,20 +44,29 @@ export default function SelectCoin({
         className="flex flex-col"
       >
         <div className="flex items-center bg-container/70 px-2 rounded-md">
-          {value ? (
-            <Image
-              src={value.baseTokenMetadata.network.image}
-              alt={value.baseTokenMetadata.name}
-              className="w-8 h-8 rounded-full"
-              width={24}
-              height={24}
-            />
+          {value ?
+            <OverlapIcon
+              images={[
+                {
+                  src: value.baseTokenMetadata.network?.image,
+                  alt: value.baseTokenMetadata.name,
+                },
+                {
+                  src: value.quoteTokenMetadata.network?.image,
+                  alt: value.quoteTokenMetadata.name,
+                },
+             ]}
+           />
           ) : (
             <EmptyIcon />
           )}
           <Field
             name={name}
-            value={value ? value.baseTokenMetadata.name : "Select a token"}
+            value={
+              value ?
+                value.baseTokenMetadata.name + "/" + value.quoteTokenMetadata.name : 
+                "Select a token"
+            }
             className="flex-1 bg-transparent p-2 outline-none pointer-events-none"
             disabled
           />
@@ -92,11 +101,11 @@ export default function SelectCoin({
                       <OverlapIcon
                         images={[
                           {
-                            src: baseTokenMetadata.network!.image,
+                            src: baseTokenMetadata.network?.image,
                             alt: baseTokenMetadata.name,
                           },
                           {
-                            src: quoteTokenMetadata.network.image,
+                            src: quoteTokenMetadata.network?.image,
                             alt: quoteTokenMetadata.name,
                           },
                         ]}
@@ -108,9 +117,7 @@ export default function SelectCoin({
                             selected ? "text-secondary" : null
                           )}
                         >
-                          {baseTokenMetadata.symbol +
-                            "/" +
-                            quoteTokenMetadata.symbol}
+                          {baseTokenMetadata.symbol + "/" + quoteTokenMetadata.symbol}
                         </h1>
                         <p className="text-highlight">{name}</p>
                       </div>
@@ -129,7 +136,11 @@ export default function SelectCoin({
                     Lock your liquidity token on solocker
                   </p>
                 </div>
-                <button className="btn btn-primary">Add Liquidity</button>
+                <Link
+                  href="https://raydium.io"
+                  className="btn btn-primary">
+                  Add Liquidity
+                </Link>
               </div>
             )
           ) : (

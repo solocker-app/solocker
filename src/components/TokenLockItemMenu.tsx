@@ -3,13 +3,21 @@ import { MdMoreHoriz } from "react-icons/md";
 import { IoIosSend } from "react-icons/io";
 import { FaMoneyBill, FaUnlock } from "react-icons/fa";
 
-import { Types } from "@streamflow/stream";
+import {toast} from "react-toastify";
+
+export enum TokenLockMenuAction {
+  TOP_UP,
+  WITHDRAW,
+  CANCEL,
+}
 
 type TokenLockItemMenuProps = {
-  stream: Types.Stream;
+  onAction: (action: TokenLockMenuAction) => void;
 };
 
-export default function TokenLockItemMenu({ stream }: TokenLockItemMenuProps) {
+export default function TokenLockItemMenu({
+  onAction,
+}: TokenLockItemMenuProps) {
   return (
     <Menu
       as="div"
@@ -21,21 +29,27 @@ export default function TokenLockItemMenu({ stream }: TokenLockItemMenuProps) {
       <Menu.Items className="absolute -bottom-17 w-32 flex flex-col bg-container rounded-sm">
         <Menu.Item
           as="button"
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2 p-2"
+          onClick={() => {
+            // onAction(TokenLockMenuAction.TOP_UP)
+            toast("Topup currently not supported, create new contract instead");
+          }}
         >
           <FaMoneyBill className="text-lg" />
           <span>Topup</span>
         </Menu.Item>
         <Menu.Item
           as="button"
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2 p-2"
+          onClick={() => onAction(TokenLockMenuAction.WITHDRAW)}
         >
           <IoIosSend className="text-lg" />
-          <span>Transfer</span>
+          <span>Withdraw</span>
         </Menu.Item>
         <Menu.Item
           as="button"
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2 p-2"
+          onClick={() => onAction(TokenLockMenuAction.CANCEL)}
         >
           <FaUnlock />
           <span>Cancel</span>

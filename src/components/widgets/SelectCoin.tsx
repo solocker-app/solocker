@@ -4,7 +4,6 @@ import { MdArrowDropDown } from "react-icons/md";
 import { Menu } from "@headlessui/react";
 import { ErrorMessage, Field } from "formik";
 
-import { Wallet } from "@solana/wallet-adapter-react";
 
 import { join } from "@/lib/utils";
 import { LpInfo } from "@/lib/api/models/raydium.model";
@@ -13,22 +12,14 @@ import { useAppSelector } from "@/store/hooks";
 import { raydiumLpInfoSelector } from "@/store/slices/raydiumLpInfo";
 
 import EmptyIcon from "./EmptyIcon";
-import OverlapIcon from "./OverlapIcon";
+import ErrorMessageWidget from "./ErrorMessage";
+import OverlapIcon, { getCoinImageProps } from "./OverlapIcon";
 
 type SelectCoinProps = {
   name: string;
   value?: LpInfo;
   setValue: React.Dispatch<React.SetStateAction<LpInfo | undefined>>;
 };
-
-function getCoinImageProps(metadata) {
-  return {
-    alt: metadata.name,
-    src:
-      metadata.network?.image ??
-      `https://img.raydium.io/icon/${metadata.mint}.png`,
-  };
-}
 
 export default function SelectCoin({ name, value, setValue }: SelectCoinProps) {
   const raydiumLpInfoState = useAppSelector((state) => state.raydiumLpInfo);
@@ -136,7 +127,9 @@ export default function SelectCoin({ name, value, setValue }: SelectCoinProps) {
               </div>
             )
           ) : (
+            loadingState === "pending" ?
             <div className="m-auto w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
+            : <ErrorMessageWidget /> 
           )}
         </div>
       </Menu.Items>

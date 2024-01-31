@@ -7,13 +7,13 @@ type OverlapIconProps = {
   images: { alt?: string; src?: string }[];
 };
 
-
 export function getCoinImageProps(metadata) {
   return {
-    alt: metadata.name,
-    src:
-      metadata.network?.image ??
-      `https://img.raydium.io/icon/${metadata.mint}.png`,
+    alt: metadata ? metadata.name : null,
+    src: metadata
+      ? metadata.network?.image ??
+        `https://img.raydium.io/icon/${metadata.mint}.png`
+      : null,
   };
 }
 
@@ -21,7 +21,7 @@ export default function OverlapIcon({ images }: OverlapIconProps) {
   return (
     <div className="flex items-center">
       {images.map((image, index) =>
-        image.src ? (
+        image && image.src ? (
           <Image
             key={index}
             src={image.src}

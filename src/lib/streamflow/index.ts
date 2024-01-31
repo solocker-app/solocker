@@ -18,21 +18,23 @@ export default class StreamFlow extends InjectBaseRepository {
   }
 
   async lockToken(tokenLock: NonNullable<TokenLock>) {
-    const { lpTokenMetadata, baseTokenDecimal } = tokenLock.configuration.token;
-    const { endDate, endTime} = tokenLock.configuration;
+    const { lpTokenMetadata, lpTokenDecimal } = tokenLock.configuration.token;
+    const { endDate, endTime } = tokenLock.configuration;
 
     const recipients = tokenLock.recipients.map<Types.IRecipient>(
       (recipient) =>
         ({
           name: "Solocker #test",
-          amount: getBN(recipient.amount, baseTokenDecimal),
+          amount: getBN(recipient.amount, lpTokenDecimal),
           recipient: recipient.recipient,
-          cliffAmount: getBN(0, baseTokenDecimal),
-          amountPerPeriod: getBN(recipient.amount, baseTokenDecimal),
+          cliffAmount: getBN(0, lpTokenDecimal),
+          amountPerPeriod: getBN(recipient.amount, lpTokenDecimal),
         }) as Types.IRecipient,
     );
 
-    const period = Math.round(new Date(endDate + " " + endTime).getTime() / 1000);
+    const period = Math.round(
+      new Date(endDate + " " + endTime).getTime() / 1000,
+    );
 
     const params: Types.ICreateMultipleStreamData = {
       recipients,
@@ -83,6 +85,18 @@ export default class StreamFlow extends InjectBaseRepository {
     return this.client.cancel(
       {
         id,
+      },
+      {
+        invoker: this.repository.wallet as any,
+      },
+    );
+  }
+
+  withdraw(id: string, amount: number, decimal: number) {
+    return this.client.withdraw(
+      {
+        id,
+        amount: getBN(amount, decimal),
       },
       {
         invoker: this.repository.wallet as any,

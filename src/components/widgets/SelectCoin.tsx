@@ -100,7 +100,7 @@ export default function SelectCoin({ name, value, setValue }: SelectCoinProps) {
                           {lpTokenMetadata.name.substring(0, 16)}
                         </h1>
                         <p className="text-highlight">
-                          {lpTokenMetadata.symbol}
+                          {lpTokenMetadata.symbol }
                         </p>
                       </div>
                     </div>

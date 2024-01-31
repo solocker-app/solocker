@@ -41,7 +41,7 @@ export default class StreamFlow extends InjectBaseRepository {
       period,
       cliff: 0,
       canTopup: false,
-      tokenId: lpTokenMetadata.mint,
+      tokenId: lpTokenMetadata.mint.toString(),
       cancelableBySender: true,
       cancelableByRecipient: false,
       transferableBySender: true,

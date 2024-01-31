@@ -12,7 +12,7 @@ import { LoadingState } from "../types";
 import { useAppDispatch } from "../hooks";
 
 export const raydiumLpInfoAdapter = createEntityAdapter<LpInfo>({
-  selectId: (info) => info.lpTokenMetadata.mint,
+  selectId: (info) => info.lpTokenMetadata.mint.toString(),
 });
 
 export const getLiquidityPoolInfos = createAsyncThunk(

@@ -36,9 +36,7 @@ export default function TokenLockCreateConfiguration() {
           </div>
         </div>
       </section>
-      <div className="fixed inset-0 bg-black/50">
-
-      </div>
+      <div className="fixed inset-0 bg-black/50"></div>
     </>
   );
 }

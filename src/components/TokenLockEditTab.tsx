@@ -1,6 +1,12 @@
+import { Types } from "@streamflow/stream";
+
 import Search from "./widgets/Search";
 
-export default function TokenLockerEditTab() {
+type TokenLockEditTabProps = {
+  lockedTokens: [string, Types.Stream][];
+};
+
+export default function TokenLockEditTab({ lockedTokens }: TokenLockEditTabProps) {
   return (
     <div className="flex flex-col space-y-8 bg-dark/50 p-4">
       <header className="flex flex-col space-y-4">

@@ -1,10 +1,19 @@
 import { Fragment } from "react";
 import { Tab } from "@headlessui/react";
 
+import { LpInfo } from "@/lib/api/models/raydium.model";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
 
-export default function TokenLockerCreateTab() {
+type TokenLockCreateTabProps = {
+  lpInfos: LpInfo[];
+};
+
+export default function TokenLockCreateTab({
+  lpInfos,
+}: TokenLockCreateTabProps) {
+  const [lpInfo, setLpInfo] = useState<LpInfo>();
+
   return (
     <Tab.Group
       as="div"
@@ -13,7 +22,11 @@ export default function TokenLockerCreateTab() {
     >
       <Tab.Panels>
         <Tab.Panel as={Fragment}>
-          <TokenLockCreateSelectToken />
+          <TokenLockCreateSelectToken
+            lpInfos={lpInfos}
+            value={lpInfo}
+            onSelect={setLpInfo}
+          />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
           <TokenLockCreateConfiguration />
@@ -21,4 +34,8 @@ export default function TokenLockerCreateTab() {
       </Tab.Panels>
     </Tab.Group>
   );
+}
+
+function useState<T>(): [any, any] {
+  throw new Error("Function not implemented.");
 }

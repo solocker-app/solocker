@@ -39,5 +39,7 @@ export function useInitializeTokenLock(){
    return {
      lockedTokens,
      lpInfos,
+     streamflowLoadingState: raydiumLpInfo.loadingState,
+     raydiumLpInfoLoadingState: raydiumLpInfo.loadingState,
    }
 }

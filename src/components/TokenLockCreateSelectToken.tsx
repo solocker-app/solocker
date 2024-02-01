@@ -1,9 +1,21 @@
 import Image from "next/image";
 
-import Search from "./widgets/Search";
-import TokenLockTokenList from "./TokenLockTokenList";
+import { LpInfo } from "@/lib/api/models/raydium.model";
 
-export default function TokenLockCreateSelectToken() {
+import Search from "./widgets/Search";
+import TokenLockCreateSelectTokenItem from "./TokenLockCreateSelectTokenItem";
+
+type TokenLockCreateSelectProps = {
+  lpInfos: LpInfo[];
+  value?: LpInfo;
+  onSelect: React.Dispatch<React.SetStateAction<LpInfo>>;
+};
+
+export default function TokenLockCreateSelectToken({
+  lpInfos,
+  value,
+  onSelect,
+}: TokenLockCreateSelectProps) {
   return (
     <section className="min-h-md flex flex-col space-y-8 md:min-h-sm">
       <header className="flex flex-col space-y-4">
@@ -19,7 +31,19 @@ export default function TokenLockCreateSelectToken() {
         </div>
         <Search />
       </header>
-      <TokenLockTokenList />
+      <div className="flex flex-col space-y-4">
+        {lpInfos.map((lpInfo, index) => (
+          <TokenLockCreateSelectTokenItem
+            key={index}
+            lpInfo={lpInfo}
+            selected={
+              value &&
+              value.lpTokenMetadata.mint === lpInfo.lpTokenMetadata.mint
+            }
+            onSelect={onSelect}
+          />
+        ))}
+      </div>
     </section>
   );
 }

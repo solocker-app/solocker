@@ -6,8 +6,16 @@ import { join } from "@/lib/utils";
 
 import TokenLockEditTab from "@/components/TokenLockEditTab";
 import TokenLockCreateTab from "@/components/TokenLockCreateTab";
+import { useInitializeTokenLock } from "@/composables/useInitializeTokenLock";
 
 export default function TokenLockPage() {
+  const {
+    lpInfos,
+    lockedTokens,
+    raydiumLpInfoLoadingState,
+    streamflowLoadingState,
+  } = useInitializeTokenLock();
+
   return (
     <Tab.Group
       as="div"
@@ -31,10 +39,10 @@ export default function TokenLockPage() {
       </Tab.List>
       <Tab.Panels as={Fragment}>
         <Tab.Panel as={Fragment}>
-          <TokenLockCreateTab />
+          <TokenLockCreateTab lpInfos={lpInfos} />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
-          <TokenLockEditTab />
+          <TokenLockEditTab lockedTokens={loadedTokens} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

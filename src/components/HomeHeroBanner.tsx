@@ -5,7 +5,7 @@ export default function HomeHeroBanner() {
       <div>
         <h1 className="text-xl font-bold">In numbers we trust</h1>
       </div>
-      <div className="flex space-x-16 overflow-x-scroll">
+      <div className="flex flex-col space-y-8 md:flex-row md:space-x-16 md:overflow-x-scroll">
         {homeHeroBannerInfos.map((info, index) => (
           <div
             key={index}

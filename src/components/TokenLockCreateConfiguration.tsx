@@ -7,7 +7,7 @@ import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
 export default function TokenLockCreateConfiguration() {
   return (
-    <>
+    
       <section className="flex flex-col space-y-8">
         <header className="flex flex-col space-y-4">
           <div>
@@ -36,7 +36,5 @@ export default function TokenLockCreateConfiguration() {
           </div>
         </div>
       </section>
-      <div className="fixed inset-0 bg-black/50"></div>
-    </>
   );
 }

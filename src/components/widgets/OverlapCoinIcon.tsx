@@ -41,7 +41,7 @@ export default function OverlapCoinIcon({ icons }: OverlapCoinIconProps) {
           <div
           key={index}
             className={join(
-              "w-8 h-8 flex items-center justify-center bg-white/20 border border-dark rounded-full",
+              "w-6 h-6 flex items-center justify-center bg-white/20 border border-dark rounded-full",
               index > 0 ? "-ml-2" : undefined,
             )}
           >

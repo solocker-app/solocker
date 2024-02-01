@@ -1,9 +1,11 @@
 "use client";
-
+import { Fragment } from "react";
 import { Tab } from "@headlessui/react";
+
+import { join } from "@/lib/utils";
+
 import TokenLockEditTab from "@/components/TokenLockEditTab";
 import TokenLockCreateTab from "@/components/TokenLockCreateTab";
-import { join } from "@/lib/utils";
 
 export default function TokenLockPage() {
   return (
@@ -17,21 +19,21 @@ export default function TokenLockPage() {
             join("btn", selected ? "text-green-500" : undefined)
           }
         >
-          <p>New Lock</p>
+          New Lock
         </Tab>
         <Tab
           className={({ selected }) =>
             join("btn", selected ? "text-green-500" : undefined)
           }
         >
-          <p>Edit/Withdraw</p>
+          Edit/Withdraw
         </Tab>
       </Tab.List>
-      <Tab.Panels className="flex-1 flex flex-col">
-        <Tab.Panel className="flex-1 flex flex-col">
+      <Tab.Panels as={Fragment}>
+        <Tab.Panel as={Fragment}>
           <TokenLockCreateTab />
         </Tab.Panel>
-        <Tab.Panel className="flex-1 flex flex-col">
+        <Tab.Panel as={Fragment}>
           <TokenLockEditTab />
         </Tab.Panel>
       </Tab.Panels>

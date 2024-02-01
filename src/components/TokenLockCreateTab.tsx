@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Tab } from "@headlessui/react";
 
 import { LpInfo } from "@/lib/api/models/raydium.model";
@@ -36,6 +36,3 @@ export default function TokenLockCreateTab({
   );
 }
 
-function useState<T>(): [any, any] {
-  throw new Error("Function not implemented.");
-}

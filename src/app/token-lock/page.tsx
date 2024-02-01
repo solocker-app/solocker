@@ -42,7 +42,7 @@ export default function TokenLockPage() {
           <TokenLockCreateTab lpInfos={lpInfos} />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
-          <TokenLockEditTab lockedTokens={loadedTokens} />
+          <TokenLockEditTab lockedTokens={lockedTokens} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

@@ -9,31 +9,41 @@ type Feature = {
   image: typeof import("*.svg");
   title: string;
   description: string;
+  subtitle: string;
+  href: string;
 };
 
 export const homeFeatures: Feature[] = [
   {
     image: IlSecureLiquidity,
-    title: "Secured Liquidity Locked",
+    title: "Create and Deploy a SOL SPL token",
     description:
-      "Ensuring the safety of your assets through rigorous security measures and protocols.",
+      "Design and launch a token on Solana, Customize your token by adding, burn, mint and reflection functionality.",
+    subtitle: "Learn More",
+    href: "/",
   },
   {
     image: IlUserFriendly,
-    title: "User Friendly Interface",
+    title: "Token Security",
     description:
-      "Streamlined and intuitive design for an effortless user experience.",
+      "Increase your token security and trust. Create a liquidity lock to help immediately increase community and investor trust",
+    subtitle: "Learn More",
+    href: "/",
   },
   {
     image: IlTransparency,
-    title: "Transparent Governance",
+    title: "Create a Vesting Plan That Works",
     description:
-      "A clear and open decision making process that allows users to have a say in the platform's development.",
+      "Reach the gold standard of token management by configuring investor and employee vesting schedules to make sure they receive the correct amount of token at the right time.",
+    subtitle: "Learn More",
+    href: "/",
   },
   {
     image: IlCommunity,
-    title: "Community Driven",
+    title: "Increase Project's Visibility & Engagement",
     description:
-      "A platform built by the community, for the community, with a focus on collaboration and growth.",
+      "The best web3 companies know how to keep people engaged. Create a staking pool to improve community engagement and reduce token sell pressure.",
+    subtitle: "Learn More",
+    href: "/",
   },
 ];

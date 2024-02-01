@@ -1,5 +1,7 @@
+import { LpInfo } from "../api/models/raydium.model";
+
 export type Config = {
-  token: string;
+  token: LpInfo;
   endDate: string;
   endTime: string;
 };

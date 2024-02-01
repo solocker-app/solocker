@@ -15,13 +15,8 @@ export const layoutNavigation: Navigation[] = [
     name: "LP Lock",
     href: "/token-lock",
   },
-  //{
-  //  name: "Network",
-  //  href: "/#network",
-  //  menu: true,
-  // },
   {
     name: "Faq",
-    href: "/faq",
+    href: "/#faq",
   },
 ];

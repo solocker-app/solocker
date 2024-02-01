@@ -7,12 +7,12 @@ export default defineConfig({
   presets: [presetUno()],
   theme: {
     colors: {
-      dark: "#02010D",
+      dark: "#1d2216",
       primary: "#8B4FF6",
       secondary: "#18F198",
       highlight: "#BDBDBD",
       contrast: "#828282",
-      container: "#201F2B",
+      container: "#121212",
     },
   },
   shortcuts: {

@@ -1,6 +1,6 @@
 import { StreamflowSolana, getBN, Types } from "@streamflow/stream";
 
-import type { TokenLock } from "@/components/CreateTokenLockDialog";
+import type { TokenLock } from "../models/tokenLock.model";
 
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";

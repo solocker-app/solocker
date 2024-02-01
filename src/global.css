@@ -4,83 +4,23 @@
   @apply flex space-x-2 items-center justify-center px-8 py-2 font-normal;
 }
 
-.wallet-adapter-button-trigger {
-  @apply !px-4 !py-1 !font-normal;
+.btn-primary {
+  @apply bg-green-500 rounded-md hover:bg-green-700 active:bg-green-600;
 }
 
-.btn-primary,
-.wallet-adapter-button-trigger {
-  @apply !bg-primary !rounded-full;
+.btn-tab {
+  @apply flex items-center space-x-2 px-2 border-1 border-dark divide-x divide-dark rounded-md  hover:text-highlight;
 }
 
-.btn-secondary {
-  @apply bg-secondary text-black;
+.btn-tab p {
+  @apply p-2;
 }
 
-.text-primary {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
-}
-
-.bg-secondary {
-  background: linear-gradient(109deg, #8b4ff6, #18f198);
-}
-
-.bg-dotted {
-  @apply bg-[url(/assets/images/dotted-background.png)] bg-cover bg-fixed;
-}
-
-input {
-  @apply bg-transparent outline-none;
-}
-
-.input,
-.input-container {
-  @apply bg-container/70 p-2 border border-container rounded-md outline-none;
-}
-
-.input:focus-within,
-.input-container:focus-within {
-  @apply border-1 border-primary;
-}
-
-.input-container {
-  @apply flex items-center space-x-2 py-0;
-}
-
-.input-container input {
-  @apply flex-1 py-2;
-}
-
-.input-container:focus-within svg {
-  @apply text-primary;
+.btn-dark {
+  @apply bg-black/70 hover:bg-dark/50 active:bg-dark;
 }
 
 ::-webkit-scrollbar {
   width: 0;
-  height: 0;
-}
-
-.table-container {
-  @apply overflow-x-scroll;
-}
-
-.table-container th {
-  @apply sticky top-0 bg-container text-highlight;
-}
-
-th {
-  @apply p-2 text-center text-normal font-normal text-nowrap border-r-1 border-b-1;
-}
-
-td {
-  @apply p-2 text-center text-nowrap vertical-middle;
-}
-
-th,
-td {
-  @apply px-4 text-center;
-}
-
-table {
-  @apply w-full;
+  height: 0F;
 }

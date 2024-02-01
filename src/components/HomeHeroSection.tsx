@@ -1,34 +1,26 @@
-import Link from "next/link";
 import Image from "next/image";
-import { IlDecentralizeBank } from "@/assets";
+import HomeHeroBanner from "./HomeHeroBanner";
 
 export default function HomeHeroSection() {
   return (
-    <div className="flex flex-col md:flex-row md:relative">
-      <div className="flex flex-col space-y-4 px-4 md:px-8 md:w-2xl">
-        <div className="text-4xl capitalize font-extrabold">
-          <span>empowering the</span>
-          <span className="text-primary"> solana community</span>
-          <span> with secure</span>
-          <span className="text-primary"> liquidity pool locking</span>
+    <section className="flex flex-col space-y-8 md:p-16">
+      <div className="flex flex-col space-x-4 p-8 md:p-0 md:flex-row">
+        <div className="flex-1 flex flex-col space-y-4">
+          <div className="flex flex-col space-y-2 text-center md:text-start">
+            <h1 className="text-4xl font-extrabold">
+              <span>The first LP locker built </span>
+              <span className="text-green-500">on solana</span>
+            </h1>
+            <p className="text-highlight">
+              Locking and managing of liquidity pool made easier. Create a liquity
+              pool lock contract on solana network.
+            </p>
+          </div>
+          <button className="btn btn-primary md:w-1/2">Join the community</button>
         </div>
-        <p className="text-sm text-highlight">
-          Solocker helps you keep transparency and secure liquidity lock with
-          user friendly interface for your projects.
-        </p>
-        <Link
-          href="/token-lock"
-          className="self-start btn btn-primary"
-        >
-          Liquidity Pool Lock
-        </Link>
+        <div className="flex-1" />
       </div>
-      <div className="flex items-center justify-center md:flex-1 md:w-sm md:h-sm md:absolute md:right-0 md:top-0">
-        <Image
-          src={IlDecentralizeBank}
-          alt="Decentralize bank"
-        />
-      </div>
-    </div>
+      <HomeHeroBanner />
+    </section>
   );
 }

@@ -9,7 +9,7 @@ export default function TokenLockPage() {
   return (
     <Tab.Group
       as="div"
-      className="flex-1 flex flex-col space-y-4 p-8 md:w-2xl md:self-center"
+      className="flex-1 flex flex-col space-y-4 p-4 md:p-8 md:w-2xl md:self-center"
     >
       <Tab.List className="flex space-x-2 bg-dark/50 rounded-xl md:rounded-full">
         <Tab

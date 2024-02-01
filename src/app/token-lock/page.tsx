@@ -1,42 +1,56 @@
 import Image from "next/image";
-import { IoChevronDown } from "react-icons/io5";
+import { MdEdit, MdSearch } from "react-icons/md";
+import { IoChevronDown, IoAdd } from "react-icons/io5";
+import OverlapCoinIcon, {
+  getCoinProps,
+} from "@/components/widgets/OverlapCoinIcon";
 
 export default function TokenLockPage() {
   return (
-    <div className="flex-col space-y-4 md:self-center md:w-md flex">
-      <div className="flex flex-col lt-md:bg-container lt-md:border-1 lt-md:border-stone-700 md:self-center">
-        <button className="self-center flex space-x-2 items-center border border-container px-4 py-2 rounded-full hover:bg-container">
-          <Image
-            src="/assets/coins/solana.png"
-            alt="sol"
-            className="border border-container rounded-full"
-            width={24}
-            height={24}
-          />
-          <span className="flex-1 text-lg uppercase font-medium">Solana</span>
-          <IoChevronDown />
+    <div className="flex-1 flex flex-col space-y-4 p-8 md:w-2xl md:self-center">
+      <div className="flex space-x-2 bg-dark/50 rounded-xl md:rounded-full">
+        <button className="btn text-green-500">
+          <p>New Lock</p>
+        </button>
+        <button className="btn">
+          <p>Edit/Withdraw</p>
         </button>
       </div>
-      <section className="flex flex-col space-y-4 px-4">
-        <div className="flex space-x-4 bg-container rounded-xl md:rounded-full">
-          <button className="px-4 py-3 text-secondary hover:bg-secondary/20 rounded-l-full">
-            New Lock
-          </button>
-          <button className="px-4 py-3 hover:bg-white/20">Manage Lock</button>
-        </div>
-        <div className="h-sm bg-container p-4 rounded-xl">
+      <div className="flex flex-col space-y-8 bg-dark/50 p-4 rounded-xl">
+        <div className="flex flex-col space-y-4">
           <div className="flex items-center space-x-2">
             <Image
               src="/assets/coins/solana.png"
-              alt="solana"
-              className="rounded-full"
+              alt="Solana"
+              className="w-12 h-12 rounded-full"
               width={32}
               height={32}
             />
-            <h1 className="text-xl font-extrabold">Solana Lp Locker</h1>
+            <p className="text-xl font-bold">Solana Lp Locker</p>
+          </div>
+          <div className="flex space-x-2 items-center bg-black px-2 rounded-md focus-within:ring-1 focus-within:ring-green-500 focus-within:text-green-500">
+            <input
+              className="flex-1 p-2 bg-transparent outline-none"
+              placeholder="Search by token name and mint address"
+            />
+            <MdSearch className="text-xl" />
           </div>
         </div>
-      </section>
+        <div className="flex flex-col space-y-4">
+          <div className="flex items-center space-x-2">
+            <div className="flex-1 flex space-x-2 items-center">
+              <OverlapCoinIcon
+                icons={[getCoinProps(null), getCoinProps(null)]}
+              />
+              <div className="flex flex-col">
+                <p className="text-base font-medium">Raydium Lp Token</p>
+                <p className="text-highlight">RAY/SOL</p>
+              </div>
+            </div>
+            <div className="text-sm">0.001 RAY/SOL</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

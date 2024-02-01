@@ -1,15 +1,20 @@
 import Link from "next/link";
 
-import { MdClose } from "react-icons/md";
+import { MdClose, MdArrowUpward } from "react-icons/md";
+import { RiArrowRightUpLine } from "react-icons/ri";
 
 import { join } from "@/lib/utils";
 import { layoutNavigation } from "@/data";
 
 type LayoutNavigationProps = {
   className?: string;
+  wrapChild?: (child: React.ReactNode) => React.ReactNode;
 };
 
-export default function LayoutNavigation({ className }: LayoutNavigationProps) {
+export default function LayoutNavigation({
+  className,
+  wrapChild,
+}: LayoutNavigationProps) {
   return (
     <div
       className={join(
@@ -19,19 +24,27 @@ export default function LayoutNavigation({ className }: LayoutNavigationProps) {
     >
       <div className="flex flex-col bg-black p-4 md:flex-row md:space-x-6 md:px-0">
         <div className="flex justify-end md:hidden">
-          <button className="p-2 hover:text-highlight">
-            <MdClose className="text-xl" />
-          </button>
+          {wrapChild &&
+            wrapChild(
+              <button className="p-2 hover:text-highlight">
+                <MdClose className="text-xl" />
+              </button>,
+            )}
         </div>
-        {layoutNavigation.map((navigation, index) => (
-          <Link
-            key={index}
-            href={navigation.href}
-            className="py-4 hover:text-highlight md:p-0"
-          >
-            {navigation.name}
-          </Link>
-        ))}
+        {layoutNavigation.map((navigation, index) => {
+          const child = (
+            <Link
+              key={index}
+              href={navigation.href}
+              className="flex items-center space-x-2 py-4 hover:text-highlight md:p-0"
+            >
+              <p>{navigation.name}</p>
+              {navigation.external && <RiArrowRightUpLine />}
+            </Link>
+          );
+
+          return wrapChild ? wrapChild(child) : child;
+        })}
         <button className="btn btn-primary mt-4 md:!hidden">Launch App</button>
       </div>
     </div>

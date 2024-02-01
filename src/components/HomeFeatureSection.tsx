@@ -7,7 +7,9 @@ import HomeFeatureBanner from "./HomeFeatureBanner";
 
 export default function HomeFeatureSection() {
   return (
-    <section className="flex flex-col items-center justify-center space-y-8 px-8 md:px-16">
+    <section 
+      id="faq"
+      className="flex flex-col items-center justify-center space-y-8 px-8 md:px-16">
       <div className="flex flex-col text-center">
         <h1 className="text-xl font-bold">
           Providing Trust & Confidence on Solana

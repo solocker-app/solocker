@@ -1,7 +1,7 @@
 @unocss all;
 
 .btn {
-  @apply flex space-x-2 items-center justify-center px-8 py-2 font-normal;
+  @apply flex space-x-2 items-center justify-center px-4 py-3 font-normal;
 }
 
 .btn-primary {
@@ -17,7 +17,7 @@
 }
 
 .btn-dark {
-  @apply bg-black/70 hover:bg-dark/50 active:bg-dark;
+  @apply bg-dark hover:bg-dark/50 active:bg-dark/70 rounded-md;
 }
 
 ::-webkit-scrollbar {

@@ -20,7 +20,9 @@ export const streamflowSlice = createSlice({
   initialState: streamflowAdapter.getInitialState<LoadingState>({
     loadingState: "idle",
   }),
-  reducers: {},
+  reducers: {
+    addOne: streamflowAdapter.addOne,
+  },
   extraReducers(builder) {
     builder
       .addCase(getLockedTokens.pending, (state) => {
@@ -38,3 +40,4 @@ export const streamflowSlice = createSlice({
 
 export const streamflowReducer = streamflowSlice.reducer;
 export const streamflowSelector = streamflowAdapter.getSelectors();
+export const streamflowAction = streamflowSlice.actions;

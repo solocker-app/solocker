@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { MdChevronRight } from "react-icons/md";
 
 import { join } from "@/lib/utils";

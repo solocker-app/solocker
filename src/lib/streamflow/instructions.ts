@@ -15,6 +15,7 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
     wallet as any,
     mint,
     wallet.publicKey,
+    false,
     "confirmed" 
   );
   

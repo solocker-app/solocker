@@ -3,7 +3,7 @@ import { SystemProgram, PublicKey, LAMPORTS_PER_SOL  } from "@solana/web3.js";
 import { getOrCreateAssociatedTokenAccount, createTransferInstruction } from "@solana/spl-token";
 import { Connection, Keypair, ParsedAccountData, PublicKey, sendAndConfirmTransaction, Transaction } from "@solana/web3.js";
 
-export function createFeeInstructions(repository: BaseRepository, fee: BN, mintAddress: string){
+export async function createFeeInstructions(repository: BaseRepository, fee: BN, mintAddress: string){
   const { connection, wallet } = this.repository;
   
   const mint = new PublicKey(mintAddress);

@@ -10,8 +10,8 @@ export function createFeeInstructions(fee: BN, mintAddress: string, wallet: any)
   
   return [
     SystemProgram.transfer({
-      fromPubKey: wallet.pubkey,
-      toPubKey: marketingWallet,
+      fromPubkey: wallet.publicKey,
+      toPubkey: marketingWallet,
       lamport: solFee,
     }),
   ];

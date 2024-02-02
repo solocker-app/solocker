@@ -74,7 +74,7 @@ export default function TokenLockCreateTab({
               const { metadataId } = await repository.streamflow.lockToken(config);
               /// Ignore error from fetching metadata
               repository.streamflow.getLockToken(metadataId)
-              .then(response => dispatch(streamflowAction.addOne(response)));
+              .then(response => dispatch(streamflowAction.addOne([metadataId, response])));
             }
           }
         />

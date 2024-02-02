@@ -19,12 +19,14 @@ function InnerComponent({
   wallet,
 }: React.PropsWithChildren & { wallet: Wallet }) {
   const { connection } = useConnection();
+  const { signTransaction } = useWallet();
+  
   const umi = useMemo(
     () => createUmi(process.env.NEXT_PUBLIC_RPC_ENDPOINT),
     [],
   );
   const repository = useMemo(
-    () => new BaseRepository(connection, umi, wallet.adapter),
+    () => new BaseRepository(connection, umi, wallet.adapter, signTransaction),
     [connection, wallet],
   );
 

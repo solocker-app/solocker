@@ -16,17 +16,17 @@ import { useLpLockInfo } from "@/composables";
 
 import LockStatus from "./LockStatus"; 
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon"; 
-import TokenLockItemMenu, { TokenLockMenuAction } from "./TokenLockItemMenu"; 
+import TokenEditLockItemMenu, { TokenLockEditMenuAction } from "./TokenLockEditItemMenu"; 
  
 type TokenLockListItemProps = { 
   onAction: ( 
-    type: TokenLockMenuAction, 
+    type: TokenLockEditMenuAction, 
     lpInfo: LpInfo, 
   ) => void; 
   stream: Types.Stream; 
 };
 
-export default function TokenLockEditItem({onAction, stream} : TokenLockListItemProps}){
+export default function TokenLockEditItem({onAction, stream} : TokenLockListItemProps){
   const { lpInfo } = useLpLockInfo(stream);
     
   return ( 
@@ -47,7 +47,7 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
          <td> 
            <div className="flex items-center space-x-2"> 
              <OverlapCoinIcon 
-               images={[ 
+               icons={[ 
                  getCoinProps(lpInfo.baseTokenMetadata), 
                  getCoinProps(lpInfo.quoteTokenMetadata), 
                ]} 
@@ -83,7 +83,7 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
            /> 
          </td> 
          <td> 
-           <TokenLockItemMenu 
+           <TokenEditLockItemMenu 
              onAction={(type) => { 
                onAction(type, lpInfo); 
              }} 

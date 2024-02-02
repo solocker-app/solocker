@@ -22,7 +22,7 @@ export default function LayoutFooter() {
             {layoutSocials.map((social, index) => (
              <Link 
                 href={social.href}
-                targef="_blank">
+                target="_blank">
                 <Image
                   key={index}
                   src={social.icon}

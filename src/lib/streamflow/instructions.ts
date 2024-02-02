@@ -2,6 +2,8 @@ import BN from "bn.js";
 import { SystemProgram, PublicKey, LAMPORTS_PER_SOL  } from "@solana/web3.js";
 import { getOrCreateAssociatedTokenAccount, createTransferInstruction } from "@solana/spl-token";
 
+import type { BaseRepository } from "..";
+
 export async function createFeeInstructions(repository: BaseRepository, fee: BN, mintAddress: string){
   const { connection, wallet } = this.repository;
   

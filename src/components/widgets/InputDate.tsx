@@ -33,7 +33,7 @@ export default function InputDate({ name, value }: InputDateProps) {
         </Menu.Button>
         <Menu.Items className="absolute">
           <Datetime
-            value={value}
+            value={moment.unix(value)}
             input={false}
             open={true}
             onChange={(value) => {

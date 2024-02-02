@@ -1,14 +1,19 @@
 import Image from "next/image";
+import { MdSearch } from "react-icons/md";
 
 import { LpInfo } from "@/lib/api/models/raydium.model";
 
+import { useAppSelector } from "@/store/hooks";
+
 import Search from "./widgets/Search";
+import Loading from "./widgets/Loading";
+import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockCreateSelectTokenItem from "./TokenLockCreateSelectTokenItem";
 
 type TokenLockCreateSelectProps = {
   lpInfos: LpInfo[];
   value?: LpInfo;
-  onSelect: React.Dispatch<React.SetStateAction<LpInfo>>;
+  onSelect: (value: LpInfo) => void;
 };
 
 export default function TokenLockCreateSelectToken({
@@ -16,9 +21,11 @@ export default function TokenLockCreateSelectToken({
   value,
   onSelect,
 }: TokenLockCreateSelectProps) {
+  const { loadingState } = useAppSelector((state) => state.raydiumLpInfo);
+
   return (
-    <section className="min-h-md flex flex-col space-y-8 md:min-h-sm">
-      <header className="flex flex-col space-y-4">
+    <section className="min-h-lg max-h-xl flex flex-col space-y-2 md:min-h-xl">
+      <header className="flex flex-col space-y-4 p-4">
         <div className="flex items-center space-x-2">
           <Image
             src="/assets/coins/solana.png"
@@ -31,19 +38,45 @@ export default function TokenLockCreateSelectToken({
         </div>
         <Search />
       </header>
-      <div className="flex flex-col space-y-4">
-        {lpInfos.map((lpInfo, index) => (
-          <TokenLockCreateSelectTokenItem
-            key={index}
-            lpInfo={lpInfo}
-            selected={
-              value &&
-              value.lpTokenMetadata.mint === lpInfo.lpTokenMetadata.mint
-            }
-            onSelect={onSelect}
-          />
-        ))}
+      <div className="flex-1 flex flex-col divide-y-1 divide-black overflow-y-scroll">
+        {loadingState === "success" ? (
+          lpInfos.length > 0 ? (
+            lpInfos.map((lpInfo, index) => (
+              <TokenLockCreateSelectTokenItem
+                key={index}
+                lpInfo={lpInfo}
+                selected={
+                  value &&
+                  value.lpTokenMetadata.mint === lpInfo.lpTokenMetadata.mint
+                }
+                onSelect={() => onSelect(lpInfo)}
+              />
+            ))
+          ) : (
+            <EmptyLiquidityToken />
+          )
+        ) : loadingState === "failed" ? (
+          <ErrorWidget />
+        ) : (
+          <Loading />
+        )}
       </div>
     </section>
+  );
+}
+
+function EmptyLiquidityToken() {
+  return (
+    <div className="m-auto flex flex-col space-y-2 text-center px-2">
+      <div className="self-center flex flex-col bg-white text-black w-8 h-8 rounded-full">
+        <MdSearch className="m-auto text-lg" />
+      </div>
+      <div>
+        <h1 className="text-lg font-bold">No LP Token Found</h1>
+        <p className="text-highlight">
+          Add liquidity to your favorite project and check here.
+        </p>
+      </div>
+    </div>
   );
 }

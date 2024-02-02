@@ -3,16 +3,18 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdClose, MdLock } from "react-icons/md";
 
+import { Types } from "@streamflow/stream";
+
 import { join } from "@/lib/utils";
-import { TokenLock } from "@/lib/models/tokenLock.model";
+import { Config } from "@/lib/models/config.model";
 
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
 type TokenLockReviewDialogProps = {
-  tokenLock: TokenLock;
+  tokenLock: Config;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onCreateLockContract: () => Promise<void>;
+  onCreateLockContract: (config: Config) => Promise<Types.ICreateResult>;
 };
 
 export default function TokenLockReviewDialog({
@@ -32,7 +34,7 @@ export default function TokenLockReviewDialog({
     >
       <div
         className={join(
-          "w-xs bg-dark rounded-xl  md:w-sm",
+          "w-7/8 bg-container rounded-xl  md:w-sm",
           visible
             ? "animate-fade-in animate-duration-150"
             : "animate-fade-out animate-duration-150",
@@ -53,7 +55,7 @@ export default function TokenLockReviewDialog({
           <div className="bg-black p-4 rounded-md">
             <p className="text-sm">Number of recipients</p>
             <div className="flex space-x-1 text-xl">
-              <h1>{tokenLock.recipients.length}</h1>
+              <h1>1</h1>
               <span className="text-highlight">Recipient</span>
             </div>
           </div>
@@ -62,18 +64,14 @@ export default function TokenLockReviewDialog({
             <div className="flex items-center space-x-2">
               <OverlapCoinIcon
                 icons={[
-                  getCoinProps(tokenLock.configuration.token.baseTokenMetadata),
-                  getCoinProps(
-                    tokenLock.configuration.token.quoteTokenMetadata,
-                  ),
+                  getCoinProps(tokenLock.token.baseTokenMetadata),
+                  getCoinProps(tokenLock.token.quoteTokenMetadata),
                 ]}
               />
               <div className="flex space-x-1 text-xl">
-                <h1>
-                  {tokenLock.recipients.reduce((a, b) => a + b.amount, 0)}
-                </h1>
+                <h1>{tokenLock.amount}</h1>
                 <span className="text-highlight">
-                  {tokenLock.configuration.token.lpTokenMetadata.symbol}
+                  {tokenLock.token.lpTokenMetadata.symbol}
                 </span>
               </div>
             </div>
@@ -102,13 +100,13 @@ export default function TokenLockReviewDialog({
         </div>
         <div className="flex flex-col p-4">
           <button
-            className="self-end w-1/2 flex items-center justify-center space-x-2 btn btn-primary !rounded-md"
+            className="self-end w-1/2  btn btn-primary"
             disabled={loading}
             onClick={async () => {
               setLoading(true);
 
               return toast.promise(
-                onCreateLockContract().finally(() => setLoading(false)),
+                onCreateLockContract(tokenLock).finally(() => setLoading(false)),
                 {
                   pending: "Creating lock contract",
                   success: "Liquidity token has been locked successfully",
@@ -121,7 +119,6 @@ export default function TokenLockReviewDialog({
               <div className="w-6 h-6 border-4 border-white border-t-transparent animate-spin rounded-full" />
             ) : (
               <>
-                <MdLock className="text-lg" />
                 <span>Lock</span>
               </>
             )}

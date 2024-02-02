@@ -1,6 +1,7 @@
 @unocss all;
 
-.btn {
+.btn,
+.wallet-adapter-button-trigger {
   @apply flex space-x-2 items-center justify-center px-4 py-3 font-normal;
 }
 
@@ -9,18 +10,23 @@
 }
 
 .btn-tab {
-  @apply flex items-center space-x-2 px-2 border-1 border-dark divide-x divide-dark rounded-md  hover:text-highlight;
+  @apply flex items-center space-x-2 px-2 border-1 border-dark divide-x divide-dark rounded-md hover:text-highlight;
 }
 
 .btn-tab p {
   @apply p-2;
 }
 
-.btn-dark {
-  @apply bg-dark hover:bg-dark/50 active:bg-dark/70 rounded-md;
+.btn-dark,
+.wallet-adapter-button-trigger {
+  @apply bg-dark/70 rounded-md hover:bg-dark active:bg-dark/70;
 }
 
 ::-webkit-scrollbar {
   width: 0;
   height: 0F;
+}
+
+.rdtPicker {
+  @apply !bg-black !text-white;
 }

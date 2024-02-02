@@ -1,9 +1,12 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Tab } from "@headlessui/react";
 
 import { Config } from "@/lib/models/config.model";
 import { LpInfo } from "@/lib/api/models/raydium.model";
+import { hasNull } from "@/lib/utils/object";
+import { useRepository } from "@/composables";
 
+import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
 
@@ -14,32 +17,60 @@ type TokenLockCreateTabProps = {
 export default function TokenLockCreateTab({
   lpInfos,
 }: TokenLockCreateTabProps) {
-  const [lpInfo, setLpInfo] = useState<LpInfo>();
-  const [config, setConfig] = useState<Config>();
+  const [formIndex, setFormIndex] = useState(0);
+  const [config, setConfig] = useState<Partial<Config>>({});
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+
+  const { repository } = useRepository();
 
   return (
-    <Tab.Group
-      as="div"
-      selectedIndex={1}
-      className="flex flex-col space-y-8 bg-dark/50 p-4 rounded-xl"
-    >
-      <Tab.Panels>
-        <Tab.Panel as={Fragment}>
-          <TokenLockCreateSelectToken
-            lpInfos={lpInfos}
-            value={lpInfo}
-            onSelect={setLpInfo}
-          />
-        </Tab.Panel>
-        <Tab.Panel as={Fragment}>
-          <TokenLockCreateConfiguration
-             />
-        </Tab.Panel>
-      </Tab.Panels>
-    </Tab.Group>
-  );
-}
+    <>
+      <Tab.Group
+        as="div"
+        key={formIndex}
+        selectedIndex={formIndex}
+        className="flex flex-col space-y-8 bg-dark/50 rounded-xl"
+      >
+        <Tab.Panels>
+          <Tab.Panel as={Fragment}>
+            <TokenLockCreateSelectToken
+              lpInfos={lpInfos}
+              value={config.token}
+              onSelect={(value) => {
+                setConfig((config) => {
+                  config.token = value;
 
-function useState<T>(): [any, any] {
-  throw new Error("Function not implemented.");
+                  return config;
+                });
+
+                setFormIndex(1);
+              }}
+            />
+          </Tab.Panel>
+          <Tab.Panel as={Fragment}>
+            <TokenLockCreateConfiguration
+              value={config}
+              setValue={(value) => {
+                setConfig((config) => {
+                  return Object.assign(config, value);
+                });
+                setConfirmDialogVisible(true);
+              }}
+              onBack={() => setFormIndex(0)}
+            />
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
+      {config.token && config.amount && config.recipient && config.period && (
+        <TokenLockConfirmDialog
+          tokenLock={config as unknown as Config}
+          visible={confirmDialogVisible}
+          setVisible={setConfirmDialogVisible}
+          onCreateLockContract={(config) =>
+            repository.streamflow.lockToken(config)
+          }
+        />
+      )}
+    </>
+  );
 }

@@ -7,6 +7,7 @@ import { Menu } from "@headlessui/react";
 
 import { IlSolockerBrand } from "@/assets";
 
+import WalletConnect from "./widgets/WalletConnect";
 import LayoutNavigation from "./LayoutNavigation";
 
 export default function LayoutHeader() {
@@ -21,9 +22,7 @@ export default function LayoutHeader() {
       <LayoutNavigation className="lt-md:!hidden" />
 
       <div className="flex-1 flex justify-end space-x-4 items-center md:flex-none">
-        <button className="btn bg-dark/70 rounded-md hover:bg-dark active:bg-dark/70">
-          Connect
-        </button>
+        <WalletConnect />
         <Link
           href="/token-lock"
           className="btn btn-primary lt-md:!hidden"

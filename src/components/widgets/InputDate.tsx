@@ -1,22 +1,51 @@
+import moment from "moment";
+import { Menu } from "@headlessui/react";
 import { MdChevronRight } from "react-icons/md";
 import { IoMdCalendar } from "react-icons/io";
+import Datetime from "react-datetime";
 
-export default function InputDate() {
+import { useFormikContext, ErrorMessage } from "formik";
+
+type InputDateProps = {
+  name: string;
+  value: number;
+};
+
+export default function InputDate({ name, value }: InputDateProps) {
+  const { setFieldValue } = useFormikContext();
+
   return (
-    <div className="flex flex-col space-y-2">
-      <label className="text-lg font-bold">Unlock Date</label>
-      <div className="flex space-2 bg-black p-4 rounded-xl">
+    <div className="relative flex flex-col space-y-2">
+      <label className="font-medium">Unlock Date</label>
+      <Menu
+        as="div"
+        className="flex space-2 bg-black p-4 rounded-xl"
+      >
         <div className="flex-1 flex flex-col">
-          <h1 className="text-bold">Thu 1 Aug 2024 19:30</h1>
-          <p className="text-sm text-highlight"> In 6 months</p>
+          <h1 className="text-bold">{moment.unix(value).format("MMMM Do YYYY")}</h1>
+          <p className="text-sm text-highlight">
+            {moment.unix(value).endOf("day").fromNow()}
+          </p>
         </div>
-        <div>
-          <button className="flex space-x-1 text-xl text-green-500">
-            <IoMdCalendar />
-            <MdChevronRight className="rotate-90" />
-          </button>
-        </div>
-      </div>
+        <Menu.Button className="flex space-x-1 text-xl text-green-500">
+          <IoMdCalendar />
+          <MdChevronRight className="rotate-90" />
+        </Menu.Button>
+        <Menu.Items className="absolute">
+          <Datetime
+            input={false}
+            open={true}
+            onChange={(value) => {
+              if (typeof value !== "string")
+                setFieldValue(name, value.unix());
+            }}
+          />
+        </Menu.Items>
+      </Menu>
+      <ErrorMessage
+        name={name}
+        className="text-sm text-red-500"
+      />
     </div>
   );
 }

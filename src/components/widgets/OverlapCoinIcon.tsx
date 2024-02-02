@@ -16,7 +16,7 @@ export const getCoinProps = function (metadata: any) {
     src: metadata
       ? metadata.jsonMetadata
         ? metadata.jsonMetadata.image
-        : `https://icons.raydium.com/${metadata.mint}.png`
+        : `https://img.raydium.io/icon/${metadata.mint}.png`
       : null,
     alt: metadata ? metadata.name : "",
   };
@@ -41,7 +41,7 @@ export default function OverlapCoinIcon({ icons }: OverlapCoinIconProps) {
           <div
           key={index}
             className={join(
-              "w-6 h-6 flex items-center justify-center bg-white/20 border border-dark rounded-full",
+              "w-8 h-8 flex items-center justify-center bg-white/20 border border-dark rounded-full",
               index > 0 ? "-ml-2" : undefined,
             )}
           >

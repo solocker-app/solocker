@@ -89,6 +89,9 @@ dependencies:
   react:
     specifier: ^18.2.0
     version: 18.2.0
+  react-datetime:
+    specifier: ^3.2.0
+    version: 3.2.0(moment@2.30.1)(react@18.2.0)
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
@@ -12563,6 +12566,17 @@ packages:
   /range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /react-datetime@3.2.0(moment@2.30.1)(react@18.2.0):
+    resolution: {integrity: sha512-w5XdeNIGzBht9CadaZIJhKUhEcDTgH0XokKxGPCxeeJRYL7B3HIKA8CM6Q0xej2JFJt0n5d+zi3maMwaY3262A==}
+    peerDependencies:
+      moment: ^2.16.0
+      react: ^16.5.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      moment: 2.30.1
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /react-devtools-core@4.28.5:

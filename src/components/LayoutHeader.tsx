@@ -31,7 +31,7 @@ export default function LayoutHeader() {
         <WalletConnect />
         <Link
           href="/token-lock"
-          className="btn btn-primary lt-md:!hidden"
+          className="btn btn-primary !py-2 !rounded-xl lt-md:!hidden"
         >
           Launch App
         </Link>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import HomeHeroBanner from "./HomeHeroBanner";
+import HomeFeatureBanner from "./HomeFeatureBanner";
 
 export default function HomeHeroSection() {
   return (
@@ -8,15 +8,17 @@ export default function HomeHeroSection() {
         <div className="flex-1 flex flex-col space-y-4">
           <div className="flex flex-col space-y-2 text-center md:text-start">
             <h1 className="text-4xl font-extrabold">
-              <span>The first LP locker built </span>
-              <span className="text-green-500">on solana</span>
+              <span>The Seamless Token Management Suite</span>
+              <span className="text-green-500">On Splana.</span>
             </h1>
             <p className="text-highlight">
-              Locking and managing of liquidity pool made easier. Create a liquity
-              pool lock contract on solana network.
+              Lock and manage your liquidity pools, Vest and delegate tokens in your DAO, and deploy secure token contracts, only possible on Solocker. 
             </p>
           </div>
-          <button className="btn btn-primary md:w-1/2">Join the community</button>
+          <div className="flex md:w-1/2">
+            <button className="flex-1 btn btn-primary">Telegram</button>
+            <button className="flex-1 btn btn-dark">Trade $LOCK</button>
+          </div>
         </div>
         <div className="flex-1">
           <Image
@@ -26,7 +28,7 @@ export default function HomeHeroSection() {
             height={256} />
         </div>
       </div>
-      <HomeHeroBanner />
+      <HomeFeatureBanner />
     </section>
   );
 }

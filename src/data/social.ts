@@ -13,13 +13,8 @@ export const layoutSocials: Social[] = [
     href: "/",
   },
   {
-    name: "Discord",
-    icon: IcDiscord,
-    href: "/",
-  },
-  {
     name: "X",
     icon: IcX,
-    href: "/",
+    href: "https://twitter.com/SOLOCKERSPL",
   },
 ];

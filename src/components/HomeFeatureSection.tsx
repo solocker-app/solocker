@@ -13,9 +13,9 @@ export default function HomeFeatureSection() {
       className="flex flex-col items-center justify-center space-y-8 px-8 md:px-16">
       <div className="flex flex-col text-center">
         <h1 className="text-xl font-bold">
-          Providing Trust & Confidence on Solana
+          Providing Trust and Confidence for long term projects on Solana
         </h1>
-        <p className="text-sm text-highlight">
+        <p className="text-sm text-highlight hidden">
           Transparent and Secure liquidity pool locker for solana spl-token.
         </p>
       </div>

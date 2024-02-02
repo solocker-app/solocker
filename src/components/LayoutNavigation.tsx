@@ -18,7 +18,7 @@ export default function LayoutNavigation({
   return (
     <div
       className={join(
-        "fixed inset-0 flex-1 flex flex-col bg-black/50 shadow md:static md:flex-row md:items-center md:justify-center  md:space-y-0",
+        "fixed inset-0 flex-1 flex flex-col bg-black/50 shadow md:static md:flex-row md:space-y-0",
         className,
       )}
     >
@@ -36,7 +36,14 @@ export default function LayoutNavigation({
             <Link
               key={index}
               href={navigation.href}
-              className="flex items-center space-x-2 py-4 hover:text-highlight md:p-0"
+              target={navigation.external ? "_blank" : undefined }
+              className={
+                join(
+                  "flex items-center space-x-2 py-4 hover:text-highlight md:p-0", 
+                  navigation.external ? "underline undefined-white" : undefined,
+                  navigation.disabled ? "text-highlight" : undefined,
+                )
+              }
             >
               <p>{navigation.name}</p>
               {navigation.external && <RiArrowRightUpLine />}

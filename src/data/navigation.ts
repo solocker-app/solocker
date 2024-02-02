@@ -1,22 +1,32 @@
 type Navigation = {
   name: string;
   href: string;
+  disabled?: boolean;
   external?: boolean;
-  menu?: boolean;
 };
 
 export const layoutNavigation: Navigation[] = [
   {
-    name: "Liquidity",
-    href: "https://raydium.io/liquidity/add/",
-    external: true,
-  },
-  {
-    name: "LP Lock",
+    name: "LP Locker",
     href: "/token-lock",
   },
   {
-    name: "Faq",
-    href: "/#faq",
+    name: "Token Vesting",
+    href: "",
+    disabled: true,
+  },
+  {
+    name: "Contract Deployer",
+    href: "",
+    disabled: true,
+  },
+  {
+    name: "Docs",
+    href: "https://solocker.gitbook.io/solocker-spl/",
+    external: true,
+  },
+  {
+    name: "Tokenomics",
+    href: "",
   },
 ];

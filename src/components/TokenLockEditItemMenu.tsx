@@ -1,6 +1,5 @@
 import { Menu } from "@headlessui/react";
-import { MdMoreHoriz, MdExplore, MdPageview } from "react-icons/md";
-import { IoIosSend } from "react-icons/io";
+import { MdMoreHoriz, MdPageview } from "react-icons/md";
 import { FaMoneyBill, FaUnlock } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -45,7 +44,7 @@ export default function TokenLockIEditItemMenu({
             onAction(TokenLockEditMenuAction.VIEW)
           }}
         >
-          <MdPageView className="text-lg" />
+          <MdPageview className="text-lg" />
           <span>View</span>
         </Menu.Item>
         {/*<Menu.Item

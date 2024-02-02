@@ -1,5 +1,6 @@
 import { Connection } from "@solana/web3.js";
-import { Wallet, type SignerWalletAdapterProps } from "@solana/wallet-adapter-react";
+import { Wallet } from "@solana/wallet-adapter-react";
+import type { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 
 import { Umi } from "@metaplex-foundation/umi";
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";

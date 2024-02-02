@@ -6,7 +6,7 @@ import {
   createAssociatedTokenAccountInstruction,
 } from '@solana/spl-token';
 import { Connection, Transaction, PublicKey } from '@solana/web3.js';
-import { Wallet, type SignerWalletAdapterProps } from "@solana/wallet-adapter-react";
+import type { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 
 export async function getOrCreateAssociatedTokenAccount(
   connection: Connection,

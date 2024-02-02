@@ -1,7 +1,9 @@
+import BN from "bn.js";
 import { StreamflowSolana, getBN, Types } from "@streamflow/stream";
 
 import type { Config } from "../models/config.model";
 
+export { percentFee } from "./instructions";
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";
 
@@ -23,7 +25,7 @@ export default class StreamFlow extends InjectBaseRepository {
     const { period, recipient } = config;
     
     const baseAmount = getBN(config.amount, lpTokenDecimal);
-    const feeAmount = baseAmount.mul(new BN(1).div(100));
+    const feeAmount = baseAmount.mul(percentFee);
     const depositAmount = baseAmount.sub(feeAmount);
     
     const params: Types.ICreateStreamData = {

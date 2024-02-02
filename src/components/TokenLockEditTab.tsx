@@ -1,18 +1,17 @@
 import { useState } from "react";
-import Image from "next/image";
 import { Types } from "@streamflow/stream";
 
 import Search from "./widgets/Search";
-import TokenLockEditItemMenu, {
+import {
   TokenLockEditMenuAction,
 } from "./TokenLockEditItemMenu";
 import Loading from "./widgets/Loading";
 import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockEditItem from "./TokenLockEditItem";
 import TokenLockCancel from "./TokenLockCancel";
-import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
-import { LpInfo } from "@/lib/api/models/raydium.model";
 import { useAppSelector } from "@/store/hooks";
+import { LpInfo } from "@/lib/api/models/raydium.model";
+
 
 type TokenLockEditTabProps = {
   lockedTokens: [string, Types.Stream][];

@@ -109,7 +109,7 @@ export default function TokenLockReviewDialog({
                 onCreateLockContract(tokenLock)
                 .catch((error) => {
                   alert(error.message);
-                  return Promise.error(error);
+                  return Promise.reject(error);
                 })
                 .finally(() => setLoading(false)),
                 {

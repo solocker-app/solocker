@@ -25,8 +25,8 @@ export default class StreamFlow extends InjectBaseRepository {
     const { period, recipient } = config;
     
     const baseAmount = getBN(config.amount, lpTokenDecimal);
-    const feeAmount = baseAmount.mul(new BN(1).div(new BN(100)));
-    const depositAmount = baseAmount.sub(feeAmount);
+    //const feeAmount = baseAmount.mul(new BN(1).div(new BN(100)));
+    //const depositAmount = baseAmount.sub(feeAmount);
     
     const params = {
       period,
@@ -36,7 +36,7 @@ export default class StreamFlow extends InjectBaseRepository {
       amount: depositAmount,
       recipient: recipient,
       cliffAmount: getBN(0, lpTokenDecimal),
-      amountPerPeriod: depositAmount,
+      amountPerPeriod: baseAmount,
       tokenId: lpTokenMetadata.mint.toString(),
       cancelableBySender: true,
       cancelableByRecipient: false,
@@ -44,7 +44,7 @@ export default class StreamFlow extends InjectBaseRepository {
       transferableByRecipient: false,
       start: 0,
       partner: null,
-      customInstructions: await createFeeInstructions(this.repository,feeAmount, lpTokenMetadata.mint.toString())
+      //customInstructions: await createFeeInstructions(this.repository,feeAmount, lpTokenMetadata.mint.toString())
     };
     
     return this.client.create(params, {

@@ -16,7 +16,7 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
     mint,
     wallet.publicKey,
     false,
-    "confirmed",
+    "finalized",
   );
   
   console.log(sourceAccount)
@@ -27,7 +27,7 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
     mint,
     marketingWallet,
     false,
-    "confirmed",
+    "finalized",
   );
   
   console.log(destinationAccount);

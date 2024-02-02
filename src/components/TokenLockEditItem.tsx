@@ -67,7 +67,7 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
              </p> 
            </div> 
          </td> 
-         <td>{moment.unix(Number(stream.period) * 1000).fromNow()}</td> 
+         <td>{moment.unix(Number(stream.period)).fromNow()}</td> 
          <td> 
            <LockStatus 
              status={ 

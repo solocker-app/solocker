@@ -14,7 +14,7 @@ export class BaseRepository {
   constructor(
     readonly connection: Connection,
     readonly umi: Umi,
-    readonly wallet?: Wallet["adapter"],
+    readonly wallet: Wallet["adapter"],
     readonly signTransaction: SignerWalletAdapterProps["signTransaction"],
   ) {
     this.umi.use(mplTokenMetadata());

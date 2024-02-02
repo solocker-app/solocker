@@ -1,7 +1,9 @@
 import { Fragment } from "react";
 import { Tab } from "@headlessui/react";
 
+import { Config } from "@/lib/models/config.model";
 import { LpInfo } from "@/lib/api/models/raydium.model";
+
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
 
@@ -13,6 +15,7 @@ export default function TokenLockCreateTab({
   lpInfos,
 }: TokenLockCreateTabProps) {
   const [lpInfo, setLpInfo] = useState<LpInfo>();
+  const [config, setConfig] = useState<Config>();
 
   return (
     <Tab.Group
@@ -29,7 +32,8 @@ export default function TokenLockCreateTab({
           />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
-          <TokenLockCreateConfiguration />
+          <TokenLockCreateConfiguration
+             />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

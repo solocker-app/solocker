@@ -1,11 +1,21 @@
 import { MdArrowBack } from "react-icons/md";
 
+import { Config } from "@/lib/models/config.model";
+
 import InputDate from "./widgets/InputDate";
 import InputAmount from "./widgets/InputAmount";
 import InputRecipient from "./widgets/InputRecipient";
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
-export default function TokenLockCreateConfiguration() {
+type TokenLockCreateConfigurationProps = {
+  onBack: () => void;
+  onConfirm: (config: Config) => void;
+};
+
+export default function TokenLockCreateConfiguration({
+  onBack,
+  onConfirm,
+}: TokenLockCreateConfigurationProps) {
   return (
     <>
       <section className="flex flex-col space-y-8">

@@ -1,9 +1,18 @@
 import { Fragment } from "react";
 import { Tab } from "@headlessui/react";
 
+import { useFormik, Field, ErrorMessage } from "formik";
+
 import { join } from "@/lib/utils";
 
-export default function InputAddress() {
+type InputAddressProps = {
+  name: string,
+}
+
+export default function InputAddress({ name, value }: InputAddressProps) {
+  const { publicKey } = useWallet();
+  const { setFieldValue } = useFormik();
+  
   return (
     <Tab.Group
       as="div"
@@ -18,6 +27,7 @@ export default function InputAddress() {
                 "btn !py-2",
                 selected ? "btn-primary" : "over:bg-black/50 hover:rounded-md",
               )}
+              onClick={() => publicKey && setFieldValue(name, publicKey.toBase58())}
             >
               Me
             </button>
@@ -30,6 +40,7 @@ export default function InputAddress() {
                 "btn !py-2",
                 selected ? "btn-primary" : "over:bg-black/50 hover:rounded-md",
               )}
+              onClick={() => setFieldValue(name, "")}
             >
               Someone else
             </button>
@@ -37,10 +48,14 @@ export default function InputAddress() {
         </Tab>
       </Tab.List>
       <div className="flex flex-col">
-        <input
+        <Field
+          name={name}
           placeholder="Unlocker address"
           className="bg-black p-4 outline-none rounded-xl"
         />
+      </div>
+      <div className="text-sm text-red-500">
+        <ErrorMessage name={name} />
       </div>
     </Tab.Group>
   );

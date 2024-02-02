@@ -1,6 +1,6 @@
 import { StreamflowSolana, getBN, Types } from "@streamflow/stream";
 
-import type { TokenLock } from "../models/tokenLock.model";
+import type { Config } from "../models/config.model";
 
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";
@@ -17,30 +17,19 @@ export default class StreamFlow extends InjectBaseRepository {
     );
   }
 
-  async lockToken(tokenLock: NonNullable<TokenLock>) {
-    const { lpTokenMetadata, lpTokenDecimal } = tokenLock.configuration.token;
-    const { endDate, endTime } = tokenLock.configuration;
+  async lockToken(config: Config) {
+    const { lpTokenMetadata, lpTokenDecimal } = config.token;
+    const { period, recipient } = config;
 
-    const recipients = tokenLock.recipients.map<Types.IRecipient>(
-      (recipient) =>
-        ({
-          name: "Solocker #test",
-          amount: getBN(recipient.amount, lpTokenDecimal),
-          recipient: recipient.recipient,
-          cliffAmount: getBN(0, lpTokenDecimal),
-          amountPerPeriod: getBN(recipient.amount, lpTokenDecimal),
-        }) as Types.IRecipient,
-    );
-
-    const period = Math.round(
-      new Date(endDate + " " + endTime).getTime() / 1000,
-    );
-
-    const params: Types.ICreateMultipleStreamData = {
-      recipients,
+    const params: Types.ICreateStreamData = {
       period,
       cliff: 0,
-      canTopup: false,
+      canTopup: true,
+      name: "Solocker #test",
+      amount: getBN(recipient.amount, lpTokenDecimal),
+      recipient: recipient,
+      cliffAmount: getBN(0, lpTokenDecimal),
+      amountPerPeriod: getBN(recipient.amount, lpTokenDecimal),
       tokenId: lpTokenMetadata.mint.toString(),
       cancelableBySender: true,
       cancelableByRecipient: false,
@@ -52,7 +41,7 @@ export default class StreamFlow extends InjectBaseRepository {
 
     console.log(params);
 
-    return this.client.createMultiple(params, {
+    return this.client.create(params, {
       sender: this.repository.wallet as any,
     });
   }

@@ -8,7 +8,7 @@ import TokenLockCreateSelectTokenItem from "./TokenLockCreateSelectTokenItem";
 type TokenLockCreateSelectProps = {
   lpInfos: LpInfo[];
   value?: LpInfo;
-  onSelect: React.Dispatch<React.SetStateAction<LpInfo>>;
+  onSelect: (value: LpInfo) => void,
 };
 
 export default function TokenLockCreateSelectToken({

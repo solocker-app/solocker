@@ -1,17 +1,26 @@
 import { MdArrowBack } from "react-icons/md";
 
+import { Config } from "@/lib/models/config.model";
+
 import InputDate from "./widgets/InputDate";
 import InputAmount from "./widgets/InputAmount";
 import InputRecipient from "./widgets/InputRecipient";
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
-export default function TokenLockCreateConfiguration() {
+type TokenLockCreateConfigurationProps = {
+  value: Omit<Config, "token">,
+  setValue: React.Dispatch<React.SetStateAction<Omit<Config, "token">>>,
+  onBack: () => void,
+}
+
+export default function TokenLockCreateConfiguration({ value, setValue, onBack }: TokenLockCreateConfiguration) {
   return (
-    
       <section className="flex flex-col space-y-8">
         <header className="flex flex-col space-y-4">
           <div>
-            <button className="flex items-center space-x-2">
+            <button 
+              className="flex items-center space-x-2"
+              onClick={onBack}>
               <MdArrowBack className="text-lg" />
               <p>Back</p>
             </button>
@@ -26,15 +35,36 @@ export default function TokenLockCreateConfiguration() {
             </div>
           </div>
         </header>
-        <div className="flex flex-col space-y-6">
-          <InputAmount />
-          <InputDate />
-          <InputRecipient />
-          <div className="flex space-x-4">
-            <button className="flex-1 btn btn-dark">Back</button>
-            <button className="flex-1 btn btn-primary">Confirm</button>
-          </div>
-        </div>
+        <Formik
+          initialValue={
+            {
+              amount: value.amount,
+              period: value.period,
+              recipient: value.recipient,
+            }
+          }
+          onSubmit={setValue}>
+          {
+            ({ values }) => (
+              <form className="flex flex-col space-y-6">
+                <InputAmount 
+                  name="amount"
+                  value={values.amount}/>
+                <InputDate
+                  name="period"
+                  value={values.period} />
+                <InputRecipient name="recipient" />
+                <div className="flex space-x-4">
+                  <button 
+                    type="button"
+                    className="flex-1 btn btn-dark"
+                    onClick={onBack}>Back</button>
+                  <button className="flex-1 btn btn-primary">Confirm</button>
+                </div>
+              </form>
+            )
+          }
+        </Formik>
       </section>
   );
 }

@@ -14,7 +14,7 @@ type TokenLockReviewDialogProps = {
   tokenLock: Config;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onCreateLockContract: (config: Config) => Promise<Types.ICreateResult>;
+  onCreateLockContract: (config: Config) => Promise<void>;
 };
 
 export default function TokenLockReviewDialog({

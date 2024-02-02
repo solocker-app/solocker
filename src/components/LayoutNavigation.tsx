@@ -45,7 +45,11 @@ export default function LayoutNavigation({
 
           return wrapChild ? wrapChild(child) : child;
         })}
-        <button className="btn btn-primary mt-4 md:!hidden">Launch App</button>
+        <Link
+          href="/token-lock"
+          className="btn btn-primary mt-4 md:!hidden">
+          Launch App
+        </Link>
       </div>
     </div>
   );

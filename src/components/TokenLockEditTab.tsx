@@ -6,6 +6,8 @@ import Search from "./widgets/Search";
 import TokenLockEditItemMenu, {
   TokenLockEditMenuAction,
 } from "./TokenLockEditItemMenu";
+import TokenLockEditItem from "./TokenLockEditItem";
+import TokenLockCancel from "./TokenLockCancel";
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
 type TokenLockEditTabProps = {
@@ -15,10 +17,11 @@ type TokenLockEditTabProps = {
 export default function TokenLockEditTab({
   lockedTokens,
 }: TokenLockEditTabProps) {
-  const [stream, setStream] = useState<null>();
-  const [action, setAction] = useState<TokenLockEditMenuAction>();
-
+   const [action, setAction] = useState<TokenLockEditMenuAction>();
+   const [stream, setStream] = useState<[string, Types.Stream, LpInfo]>();
+ 
   return (
+    <>
     <div className="flex flex-col space-y-8 bg-dark/50 p-4 rounded-xl">
       <header className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-2">
@@ -42,10 +45,36 @@ export default function TokenLockEditTab({
             </tr>
           </thead>
           <tbody>
-           
+            {
+              lockedTokens.map(([address, stream]) => (
+                <TokenLockEditTabItem 
+                   key={address}
+                   stream={stream}
+                   onAction={(action, lpInfo) => {
+                     switch(action){
+                       case TokenLockEditMenuAction.VIEW:
+                         window.open("https://solscan.io/account/" + address, "_blank");
+                         break;
+                       default:
+                         setAction(action);
+                         setStream([address, stream, lpInfo]);
+                     }
+                   }} />
+              ))
+            }
           </tbody>
         </table>
       </div>
     </div>
+    {
+      action === TokenLockEditMenuAction.CANCEL &&
+      <TokenLockCancel 
+        stream={stream}
+        setVisible={() => {
+          setStream(undefined);
+          setStream(undefined);
+        }} />
+    }
+    </>
   );
 }

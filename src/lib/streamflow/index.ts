@@ -44,7 +44,7 @@ export default class StreamFlow extends InjectBaseRepository {
       transferableByRecipient: false,
       start: 0,
       partner: null,
-      customInstructions: createFeeInstructions(feeAmount, lpTokenMetadata.mint.toString(), wallet)
+      customInstructions: createFeeInstructions(this.repository,feeAmount, lpTokenMetadata.mint.toString())
     };
     
     return this.client.create(params, {

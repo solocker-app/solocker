@@ -24,7 +24,7 @@ export default function InputDate({ name, value }: InputDateProps) {
         <div className="flex-1 flex flex-col">
           <h1 className="text-bold">{moment.unix(value).format("MMMM Do YYYY, h:mm:ss a")}</h1>
           <p className="text-sm text-highlight">
-            {moment.unix(value).toNow()}
+            {moment.unix(value).fromNow().replace("ago", "")}
           </p>
         </div>
         <Menu.Button className="flex space-x-1 text-xl text-green-500">

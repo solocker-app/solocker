@@ -1,4 +1,4 @@
-import BN fron "bn.js";
+import BN from "bn.js";
 import moment from "moment"; 
 
 import Image from "next/image"; 

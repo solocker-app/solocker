@@ -15,7 +15,7 @@ export async function getOrCreateAssociatedTokenAccount(
   owner: PublicKey,
   signTransaction: SignerWalletAdapterProps["signTransaction"],
   allowOwnerOffCurve = false,
-  commitment = "finalized",
+  commitment: any= "finalized",
   programId = TOKEN_PROGRAM_ID,
   associatedTokenProgramId = ASSOCIATED_TOKEN_PROGRAM_ID
 ) {

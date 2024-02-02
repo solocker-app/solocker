@@ -1,8 +1,7 @@
 import { Menu } from "@headlessui/react";
-import { MdMoreHoriz, MdExplore } from "react-icons/md";
+import { MdMoreHoriz, MdExplore, MdPageview } from "react-icons/md";
 import { IoIosSend } from "react-icons/io";
 import { FaMoneyBill, FaUnlock } from "react-icons/fa";
-
 import { toast } from "react-toastify";
 
 export enum TokenLockEditMenuAction {
@@ -46,10 +45,10 @@ export default function TokenLockIEditItemMenu({
             onAction(TokenLockEditMenuAction.VIEW)
           }}
         >
-          <FaMoneyBill className="text-lg" />
+          <MdPageview className="text-lg" />
           <span>View in explorer</span>
         </Menu.Item>
-        <Menu.Item
+        {/*<Menu.Item
           as="button"
           className="flex items-center space-x-2 p-2"
           onClick={() => onAction(TokenLockEditMenuAction.WITHDRAW)}
@@ -57,6 +56,7 @@ export default function TokenLockIEditItemMenu({
           <IoIosSend className="text-lg" />
           <span>Withdraw</span>
         </Menu.Item>
+        */}
         <Menu.Item
           as="button"
           className="flex items-center space-x-2 p-2"

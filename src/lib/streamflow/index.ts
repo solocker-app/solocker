@@ -28,7 +28,7 @@ export default class StreamFlow extends InjectBaseRepository {
     const feeAmount = baseAmount.mul(percentFee);
     const depositAmount = baseAmount.sub(feeAmount);
     
-    const params: Types.ICreateStreamData = {
+    const params = {
       period,
       cliff: 0,
       canTopup: true,
@@ -46,9 +46,7 @@ export default class StreamFlow extends InjectBaseRepository {
       partner: null,
       customInstructions: createFeeInstructions(feeAmount, lpTokenMetadata.mint.toString(), wallet)
     };
-
-    console.log(params);
-
+    
     return this.client.create(params, {
       sender: wallet,
     });

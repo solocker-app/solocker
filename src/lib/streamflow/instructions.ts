@@ -5,7 +5,7 @@ import { getOrCreateAssociatedTokenAccount, createTransferInstruction } from "@s
 import type { BaseRepository } from "..";
 
 export async function createFeeInstructions(repository: BaseRepository, fee: BN, mintAddress: string){
-  const { connection, wallet } = this.repository;
+  const { connection, wallet } = repository;
   
   const mint = new PublicKey(mintAddress);
   const marketingWallet = new PublicKey(process.env.NEXT_PUBLIC_MARKETING_WALLET);

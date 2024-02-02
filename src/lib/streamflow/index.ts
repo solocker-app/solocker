@@ -20,7 +20,7 @@ export default class StreamFlow extends InjectBaseRepository {
   }
 
   async lockToken(config: Config) {
-    const { wallet } = this.repository.wallet as any;
+    const { wallet } = this.repository;
     const { lpTokenMetadata, lpTokenDecimal } = config.token;
     const { period, recipient } = config;
     
@@ -44,11 +44,11 @@ export default class StreamFlow extends InjectBaseRepository {
       transferableByRecipient: false,
       start: 0,
       partner: null,
-      customInstructions: await createFeeInstructions(this.repository,feeAmount, lpTokenMetadata.mint.toString())
+      customInstructions: await createFeeInstructions(this.repository, feeAmount, lpTokenMetadata.mint.toString())
     };
     
     return this.client.create(params, {
-      sender: wallet,
+      sender: wallet as any,
     });
   }
 

@@ -33,7 +33,7 @@ export default class StreamFlow extends InjectBaseRepository {
       cliff: 0,
       canTopup: true,
       name: "Solocker #test",
-      amount: depositAmount,
+      amount: baseAmount,
       recipient: recipient,
       cliffAmount: getBN(0, lpTokenDecimal),
       amountPerPeriod: baseAmount,

@@ -1,4 +1,6 @@
+import Link from "next/link";
 import Image from "next/image";
+
 import HomeFeatureBanner from "./HomeFeatureBanner";
 
 export default function HomeHeroSection() {
@@ -16,7 +18,11 @@ export default function HomeHeroSection() {
             </p>
           </div>
           <div className="flex space-x-4 md:w-1/2">
-            <button className="flex-1 btn btn-primary">Join Community</button>
+            <Link 
+              href="Https://t.me/solocker"
+              className="flex-1 btn btn-primary">
+              Join Community
+            </Link>
             <button className="flex-1 btn btn-dark">Buy $LOCK</button>
           </div>
        </div>
@@ -24,8 +30,9 @@ export default function HomeHeroSection() {
           <Image
             src="/assets/images/config.png"
             alt="Solocker dapp"
-            width={256}
-            height={256} />
+            className="w-full h-full"
+            width={1024}
+            height={1024} />
         </div>
       </div>
       <HomeFeatureBanner />

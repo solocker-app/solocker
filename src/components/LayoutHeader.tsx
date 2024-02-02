@@ -27,11 +27,11 @@ export default function LayoutHeader() {
       </Link>
       <LayoutNavigation className="lt-md:!hidden" />
 
-      <div className="flex-1 flex justify-end space-x-4 items-center md:flex-none">
+      <div className="flex-1 flex justify-end items-center space-x-4 md:flex-none">
         <WalletConnect />
         <Link
           href="/token-lock"
-          className="btn btn-primary lt-md:!hidden"
+          className="btn btn-primary !px-8 lt-md:!hidden"
         >
           Launch App
         </Link>

@@ -20,7 +20,7 @@ export default function TokenLockCreateConfiguration({
   setValue,
   onBack,
 }: TokenLockCreateConfigurationProps) {
-  const { baseTokenMetadata, quoteTokenMetadata } =
+  const { lpTokenMetadata, baseTokenMetadata, quoteTokenMetadata } =
     value.token;
 
   return (
@@ -44,7 +44,7 @@ export default function TokenLockCreateConfiguration({
                 getCoinProps(quoteTokenMetadata),
               ]}
             />
-            <p className="text-base text-highlight">RAY/SOL</p>
+            <p className="text-base text-highlight">{lpTokenMetadata.name}</p>
           </div>
         </div>
       </header>

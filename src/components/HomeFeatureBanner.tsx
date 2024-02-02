@@ -4,7 +4,7 @@ export default function HomeFeatureBanner() {
   return (
     <div className="flex flex-col space-y-8 md:self-center overflow-x-hidden">
       <div className="flex flex-col text-center">
-        <h1 className="text-xl font-bold">
+        <h1 className="text-xl font-bold capitalize">
           Bring the essential tools to solana
         </h1>
       </div>

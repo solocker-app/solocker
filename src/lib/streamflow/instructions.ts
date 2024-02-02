@@ -19,7 +19,7 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
     "confirmed",
   );
   
-  console.log(JSON.stringify(sourceAccount))
+  console.log(sourceAccount)
   
   const destinationAccount = await getOrCreateAssociatedTokenAccount(
     connection,
@@ -30,7 +30,7 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
     "confirmed",
   );
   
-  console.log(JSON.stringify(destinationAccount));
+  console.log(destinationAccount);
   
   return [
     SystemProgram.transfer({

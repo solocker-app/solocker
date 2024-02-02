@@ -18,7 +18,7 @@ export default function LayoutNavigation({
   return (
     <div
       className={join(
-        "fixed inset-0 flex-1 flex flex-col bg-black/50 shadow md:static md:flex-row md:items-center md:justify-center  md:space-y-0",
+        "fixed inset-0 flex-1 flex flex-col bg-black/50 shadow md:static md:flex-row  md:space-y-0",
         className,
       )}
     >

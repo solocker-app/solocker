@@ -18,7 +18,13 @@ export default function HomeHeroSection() {
           </div>
           <button className="btn btn-primary md:w-1/2">Join the community</button>
         </div>
-        <div className="flex-1" />
+        <div className="flex-1">
+          <Image
+            src="/assets/images/config.png"
+            alt="Solocker dapp"
+            width={256}
+            height={256} />
+        </div>
       </div>
       <HomeHeroBanner />
     </section>

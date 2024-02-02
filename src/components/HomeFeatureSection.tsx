@@ -25,7 +25,13 @@ export default function HomeFeatureSection() {
             className="flex flex-col space-y-16 md:flex-row md:space-y-0"
           >
             <div className={index % 2 === 0 ? "md:order-last md:ml-24" : "md:mr-24"}>
-              <div className="w-full h-48 bg-dark/50 rounded-md md:w-sm" />
+              <Image  
+                src={feature.image}
+                alt={feature.title}
+                height={256}
+                width={256}
+                className="w-full h-48 bg-dark/50 rounded-md md:w-sm" 
+              />
             </div>
             <div
               className={join(

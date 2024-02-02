@@ -1,32 +1,29 @@
-import BN fron "bn.js";
+import BN from "bn.js";
 import moment from "moment"; 
 
 import Image from "next/image"; 
 
-import { useEffect } from "react"; 
 import { MdLockOutline } from "react-icons/md"; 
   
-import { useWallet } from "@solana/wallet-adapter-react"; 
 import { Types } from "@streamflow/stream"; 
 
-import StreamFlow from "@/lib/streamflow"; 
 import { LpInfo } from "@/lib/api/models/raydium.model"; 
 
 import { useLpLockInfo } from "@/composables";
 
 import LockStatus from "./LockStatus"; 
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon"; 
-import TokenLockItemMenu, { TokenLockMenuAction } from "./TokenLockItemMenu"; 
+import TokenEditLockItemMenu, { TokenLockEditMenuAction } from "./TokenLockEditItemMenu"; 
  
 type TokenLockListItemProps = { 
   onAction: ( 
-    type: TokenLockMenuAction, 
+    type: TokenLockEditMenuAction, 
     lpInfo: LpInfo, 
   ) => void; 
   stream: Types.Stream; 
 };
 
-export default function TokenLockEditItem({onAction, stream} : TokenLockListItemProps}){
+export default function TokenLockEditItem({onAction, stream} : TokenLockListItemProps){
   const { lpInfo } = useLpLockInfo(stream);
     
   return ( 
@@ -47,7 +44,7 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
          <td> 
            <div className="flex items-center space-x-2"> 
              <OverlapCoinIcon 
-               images={[ 
+               icons={[ 
                  getCoinProps(lpInfo.baseTokenMetadata), 
                  getCoinProps(lpInfo.quoteTokenMetadata), 
                ]} 
@@ -70,7 +67,7 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
              </p> 
            </div> 
          </td> 
-         <td>{moment.unix(Number(stream.period) * 1000).fromNow()}</td> 
+         <td>{moment.unix(Number(stream.period)).fromNow()}</td> 
          <td> 
            <LockStatus 
              status={ 
@@ -83,7 +80,7 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
            /> 
          </td> 
          <td> 
-           <TokenLockItemMenu 
+           <TokenEditLockItemMenu 
              onAction={(type) => { 
                onAction(type, lpInfo); 
              }} 

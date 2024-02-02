@@ -46,8 +46,10 @@ export default function InputAmount({ lpInfo, value, name }: InputAmountProps) {
                 key={index}
                 type="button"
                 className="px-4 py-1.5 border border-dark rounded-full"
-                onClick={() =>
-                  setFieldValue(name, Number(addedLpAmount) * (split / 100))
+                onClick={() => {
+                    const amount = Number(addedLpAmount) * (split / 100);
+                    setFieldValue(name, amount);
+                  }
                 }
               >
                 {split}%

@@ -24,7 +24,7 @@ export default class StreamFlow extends InjectBaseRepository {
     const { lpTokenMetadata, lpTokenDecimal } = config.token;
     const { period, recipient } = config;
     
-    const baseAmount = getBN(config.amount, lpTokenDecimal);
+    const baseAmount = getBN(config.amount - (config.amount * 0.05), lpTokenDecimal);
     const feeAmount = baseAmount.mul(new BN(1).div(new BN(100)));
     const depositAmount = baseAmount.sub(feeAmount);
     

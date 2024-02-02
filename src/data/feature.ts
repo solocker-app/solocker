@@ -10,8 +10,7 @@ export const homeFeatures: Feature[] = [
   {
     image: "/assets/images/lp_list.png",
     title: "Lock your LP Tokens on Solana.",
-    description:
-      "Create a liquidity lock to help increase investor trust on SOLocker. Get discounts in the cost of locking by staking your $LOCK tokens.",
+    description:"Create a liquidity lock to help increase investor trust on SOLocker. Get discounts in the cost of locking by staking your $LOCK tokens.",
     subtitle: "Learn More",
     href: "/",
   },
@@ -27,7 +26,7 @@ export const homeFeatures: Feature[] = [
     image: "/assets/images/date.png",
     title: "Presale tokens distributions with a press of a button.",
     description:
-      "SOLocker manages your presale distributions to seamlessly airdrop your KOLs in a single bundled transaction."
+      "SOLocker manages your presale distributions to seamlessly airdrop your KOLs in a single bundled transaction.",
       subtitle: "Learn More",
     href: "/",
   },

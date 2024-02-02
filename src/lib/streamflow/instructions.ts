@@ -12,7 +12,7 @@ export function createFeeInstructions(fee: BN, mintAddress: string, wallet: any)
     SystemProgram.transfer({
       fromPubkey: wallet.publicKey,
       toPubkey: marketingWallet,
-      lamport: solFee,
+      lamports: solFee,
     }),
   ];
 }

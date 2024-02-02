@@ -16,7 +16,7 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
     mint,
     wallet.publicKey,
     false,
-    "commited",
+    "confirmed",
   );
   
   console.log(JSON.stringify(sourceAccount))
@@ -27,7 +27,7 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
     mint,
     marketingWallet,
     false,
-    "commited",
+    "confirmed",
   );
   
   console.log(JSON.stringify(destinationAccount));

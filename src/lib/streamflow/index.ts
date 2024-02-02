@@ -3,7 +3,7 @@ import { StreamflowSolana, getBN, Types } from "@streamflow/stream";
 
 import type { Config } from "../models/config.model";
 
-import { percentFee,  createFeeInstruction } from "./instructions";
+import { percentFee,  createFeeInstructions } from "./instructions";
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";
 

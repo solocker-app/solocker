@@ -6,6 +6,8 @@ import Search from "./widgets/Search";
 import TokenLockEditItemMenu, {
   TokenLockEditMenuAction,
 } from "./TokenLockEditItemMenu";
+import Loading from "./widgets/Loading";
+import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockEditItem from "./TokenLockEditItem";
 import TokenLockCancel from "./TokenLockCancel";
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
@@ -17,9 +19,11 @@ type TokenLockEditTabProps = {
 export default function TokenLockEditTab({
   lockedTokens,
 }: TokenLockEditTabProps) {
-   const [action, setAction] = useState<TokenLockEditMenuAction>();
-   const [stream, setStream] = useState<[string, Types.Stream, LpInfo]>();
- 
+  const [action, setAction] = useState<TokenLockEditMenuAction>();
+  const [stream, setStream] = useState<[string, Types.Stream, LpInfo]>();
+   
+  const { loadingState } = useAppSelector(state => streamFlow);
+  
   return (
     <>
     <div className="flex flex-col space-y-8 bg-dark/50 p-4 rounded-xl">
@@ -32,7 +36,7 @@ export default function TokenLockEditTab({
         </div>
         <Search />
       </header>
-      <div className="overflow-y-scroll max-h-sm min-h-lg">
+      <div className="overflow-y-scroll max-h-lg min-h-sm overflow-y-scroll">
         <table>
           <thead className="sticky top-0">
             <tr>
@@ -46,7 +50,8 @@ export default function TokenLockEditTab({
           </thead>
           <tbody>
             {
-              lockedTokens.map(([address, stream]) => (
+              loadingState === "success" ?
+                lockedTokens.map(([address, stream]) => (
                 <TokenLockEditTabItem 
                    key={address}
                    stream={stream}
@@ -60,7 +65,9 @@ export default function TokenLockEditTab({
                          setStream([address, stream, lpInfo]);
                      }
                    }} />
-              ))
+              )) :
+              (loadingState === "failed" ?
+              <ErrorWidget /> : <Loading />)
             }
           </tbody>
         </table>

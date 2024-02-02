@@ -14,7 +14,7 @@ import { LpInfo } from "@/lib/api/models/raydium.model";
 
 import { useLpLockInfo } from "@/composables";
 
-import LockStatus from "./widgets/LockStatus"; 
+import LockStatus from "./LockStatus"; 
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon"; 
 import TokenLockItemMenu, { TokenLockMenuAction } from "./TokenLockItemMenu"; 
  

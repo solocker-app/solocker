@@ -44,7 +44,7 @@ export default function HomeFeatureSection() {
                 <h1 className="text-lg font-medium">{feature.title}</h1>
                 <p className="text-highlight">{feature.description}</p>
               </div>
-              <button className="self-start flex items-center p-2 text-green-500 hover:bg-green-500/10">
+              <button className="self-start flex items-center p-2 text-green-500 hover:bg-green-500/10 !hidden">
                 <span>{feature.subtitle}</span>
                 <MdChevronRight className="text-xl" />
               </button>

@@ -18,18 +18,23 @@ export default class StreamFlow extends InjectBaseRepository {
   }
 
   async lockToken(config: Config) {
+    const { wallet } = this.repository.wallet as any;
     const { lpTokenMetadata, lpTokenDecimal } = config.token;
     const { period, recipient } = config;
-
+    
+    const baseAmount = getBN(config.amount, lpTokenDecimal);
+    const feeAmount = baseAmount.mul(new BN(1).div(100));
+    const depositAmount = baseAmount.sub(feeAmount);
+    
     const params: Types.ICreateStreamData = {
       period,
       cliff: 0,
       canTopup: true,
       name: "Solocker #test",
-      amount: getBN(config.amount, lpTokenDecimal),
+      amount: depositAmount,
       recipient: recipient,
       cliffAmount: getBN(0, lpTokenDecimal),
-      amountPerPeriod: getBN(config.amount, lpTokenDecimal),
+      amountPerPeriod: depositAmount,
       tokenId: lpTokenMetadata.mint.toString(),
       cancelableBySender: true,
       cancelableByRecipient: false,
@@ -37,12 +42,13 @@ export default class StreamFlow extends InjectBaseRepository {
       transferableByRecipient: false,
       start: 0,
       partner: null,
+      customInstructions: createFeeInstructions(feeAmount, lpTokenMetadata.mint.toString(), wallet)
     };
 
     console.log(params);
 
     return this.client.create(params, {
-      sender: this.repository.wallet as any,
+      sender: wallet,
     });
   }
 

@@ -6,8 +6,8 @@ import { LpInfo } from "@/lib/api/models/raydium.model";
 import { hasNull } from "@/lib/utils/object";
 import { useRepository } from "@/composables";
 
-import { useAppDispatch } from "@/state/hooks";
-import { streamflowAction } from "@/state/slices/streamflow";
+import { useAppDispatch } from "@/store/hooks";
+import { streamflowAction } from "@/store/slices/streamflow";
 
 import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";

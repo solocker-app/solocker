@@ -11,6 +11,8 @@ import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockEditItem from "./TokenLockEditItem";
 import TokenLockCancel from "./TokenLockCancel";
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
+import { LpInfo } from "@/lib/api/models/raydium.model";
+import { useAppSelector } from "@/store/hooks";
 
 type TokenLockEditTabProps = {
   lockedTokens: [string, Types.Stream][];
@@ -22,7 +24,7 @@ export default function TokenLockEditTab({
   const [action, setAction] = useState<TokenLockEditMenuAction>();
   const [stream, setStream] = useState<[string, Types.Stream, LpInfo]>();
    
-  const { loadingState } = useAppSelector(state => streamFlow);
+  const { loadingState } = useAppSelector(state => state.streamFlow);
   
   return (
     <>
@@ -52,7 +54,7 @@ export default function TokenLockEditTab({
             {
               loadingState === "success" ?
                 lockedTokens.map(([address, stream]) => (
-                <TokenLockEditTabItem 
+                <TokenLockEditItem 
                    key={address}
                    stream={stream}
                    onAction={(action, lpInfo) => {

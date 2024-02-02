@@ -3,13 +3,10 @@ import moment from "moment";
 
 import Image from "next/image"; 
 
-import { useEffect } from "react"; 
 import { MdLockOutline } from "react-icons/md"; 
   
-import { useWallet } from "@solana/wallet-adapter-react"; 
 import { Types } from "@streamflow/stream"; 
 
-import StreamFlow from "@/lib/streamflow"; 
 import { LpInfo } from "@/lib/api/models/raydium.model"; 
 
 import { useLpLockInfo } from "@/composables";

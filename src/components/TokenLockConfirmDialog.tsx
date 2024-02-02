@@ -108,7 +108,7 @@ export default function TokenLockReviewDialog({
               return toast.promise(
                 onCreateLockContract(tokenLock)
                 .catch((error) => {
-                  alert(error.message);
+                  alert(error);
                   return Promise.reject(error);
                 })
                 .finally(() => setLoading(false)),

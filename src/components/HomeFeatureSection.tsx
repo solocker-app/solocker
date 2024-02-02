@@ -52,7 +52,7 @@ export default function HomeFeatureSection() {
           </div>
         ))}
       </div>
-      <HomeFeatureBanner />
+      {/*<HomeFeatureBanner />*/}
     </section>
   );
 }

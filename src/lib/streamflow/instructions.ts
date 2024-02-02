@@ -10,19 +10,27 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
   const mint = new PublicKey(mintAddress);
   const marketingWallet = new PublicKey(process.env.NEXT_PUBLIC_MARKETING_WALLET);
   
- /* const sourceAccount = await getOrCreateAssociatedTokenAccount(
+ const sourceAccount = await getOrCreateAssociatedTokenAccount(
     connection,
     wallet as any,
     mint,
     wallet.publicKey,
+    false,
+    "commited",
   );
+  
+  console.log(JSON.stringify(sourceAccount))
   
   const destinationAccount = await getOrCreateAssociatedTokenAccount(
     connection,
     wallet as any,
     mint,
     marketingWallet,
-  );*/
+    false,
+    "commited",
+  );
+  
+  console.log(JSON.stringify(destinationAccount));
   
   return [
     SystemProgram.transfer({
@@ -30,11 +38,11 @@ export async function createFeeInstructions(repository: BaseRepository, fee: BN,
       toPubkey: marketingWallet,
       lamports: 2 * LAMPORTS_PER_SOL,
     }),
-    /*createTransferInstruction(
+    createTransferInstruction(
       sourceAccount.address,
       destinationAccount.address,
       wallet.publicKey,
       fee,
-    ), */
+    ), 
   ];
 }

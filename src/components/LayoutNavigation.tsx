@@ -36,7 +36,14 @@ export default function LayoutNavigation({
             <Link
               key={index}
               href={navigation.href}
-              className="flex items-center space-x-2 py-4 hover:text-highlight md:p-0"
+              target={navigation.external ? "_blank" : undefined}
+              className={
+                join(
+                  "flex items-center space-x-2 py-4 hover:text-highlight md:p-0",
+                  navigation.external ? "underline" : undefined,
+                  navigation.disabled ? "text-highlight" : undefined
+                )
+              }
             >
               <p>{navigation.name}</p>
               {navigation.external && <RiArrowRightUpLine />}

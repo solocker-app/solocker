@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 import { IlSolockerBrandInverse } from "@/assets";
@@ -12,19 +13,23 @@ export default function LayoutFooter() {
             src={IlSolockerBrandInverse}
             alt="Solocker"
           />
-          <p>Solana First Lp Locker</p>
+          <p>The Seamless Token Management Suite on Solana.</p>
         </div>
         <hr className="border-dark" />
         <div className="flex flex-col space-y-2 md:flex-row md:space-y-0">
-          <p className="flex-1">© {new Date().getFullYear()} Solocker Inc. All Right Reserve</p>
+          <p className="flex-1">© {new Date().getFullYear()} SOLocker Gmbh. All Right Reserve</p>
           <div className="flex space-x-2">
             {layoutSocials.map((social, index) => (
-              <Image
-                key={index}
-                src={social.icon}
-                alt={social.name}
-                className="w-6 h-6"
-              />
+             <Link 
+                href={social.href}
+                targef="_blank">
+                <Image
+                  key={index}
+                  src={social.icon}
+                  alt={social.name}
+                  className="w-6 h-6"
+                />
+              </Link>
             ))}
           </div>
         </div>

@@ -23,10 +23,10 @@ export default function TokenLockIEditItemMenu({
       as="div"
       className="relative"
     >
-      <Menu.Button className="bg-container p-2 rounded-md">
+      <Menu.Button className="bg-black/70 p-2 rounded-md">
         <MdMoreHoriz />
       </Menu.Button>
-      <Menu.Items className="absolute -bottom-17 w-32 flex flex-col bg-container rounded-sm">
+      <Menu.Items className="absolute -bottom-17 w-32 flex flex-col bg-black/70 rounded-sm">
         <Menu.Item
           as="button"
           className="flex items-center space-x-2 p-2"
@@ -45,8 +45,8 @@ export default function TokenLockIEditItemMenu({
             onAction(TokenLockEditMenuAction.VIEW)
           }}
         >
-          <MdPageview className="text-lg" />
-          <span>View in explorer</span>
+          <MdPageView className="text-lg" />
+          <span>View</span>
         </Menu.Item>
         {/*<Menu.Item
           as="button"

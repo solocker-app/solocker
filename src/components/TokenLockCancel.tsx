@@ -22,11 +22,13 @@ export default function TokenUnlockDialog({
   const onConfirm = function () {
     setLoading(true);
 
-    return toast.promise(repository.streamflow.cancel(id), {
-      pending: "Canceling liquidity token",
-      error: "An unexpected error occur, try again!",
-      success: "Liquidity token locked cancelled successfully",
-    });
+    return toast
+      .promise(repository.streamflow.cancel(id), {
+        pending: "Canceling liquidity token",
+        error: "An unexpected error occur, try again!",
+        success: "Liquidity token locked cancelled successfully",
+      })
+      .finally(() => setLoading(false));
   };
 
   return (

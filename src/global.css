@@ -30,3 +30,24 @@
 .rdtPicker {
   @apply !bg-black !text-white;
 }
+
+th {
+  @apply sticky top-0 text-highlight;
+}
+
+th {
+  @apply p-2 text-center text-normal font-normal text-nowrap;
+}
+
+td {
+  @apply p-2 text-center text-nowrap vertical-middle;
+}
+
+th,
+td {
+  @apply px-4 text-center;
+}
+
+table {
+  @apply w-full;
+}

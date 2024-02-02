@@ -5,7 +5,7 @@ import { MdMenu } from "react-icons/md";
 
 import { Menu } from "@headlessui/react";
 
-import { IlSolockerBrand } from "@/assets";
+import { IlSolockerBrand, IlSolockerLogo } from "@/assets";
 
 import WalletConnect from "./widgets/WalletConnect";
 import LayoutNavigation from "./LayoutNavigation";
@@ -17,6 +17,12 @@ export default function LayoutHeader() {
         <Image
           src={IlSolockerBrand}
           alt="Solocker"
+          className="lt-md:hidden"
+        />
+        <Image
+          src={IlSolockerLogo}
+          alt="Solocker"
+          className="w-14 h-14 md:hidden"
         />
       </Link>
       <LayoutNavigation className="lt-md:!hidden" />

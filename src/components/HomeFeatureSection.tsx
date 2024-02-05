@@ -1,3 +1,5 @@
+import ScrollAnimation from "react-animate-on-scroll";
+
 import { join } from "@/lib/utils";
 import { homeFeatures } from "@/data";
 
@@ -9,23 +11,28 @@ export default function HomeFeatureSection() {
           Providing Trust And Confidence For Long Term Projects On Solana
         </h1>
       </div>
-      <div className="grid grid-rows-1 gap-8 md:grid-cols-2 md:grid-rows-2">
+      <div className="grid grid-rows-1 gap-8 md:grid md:grid-rows-2 md:grid-cols-2">
         {homeFeatures.map((feature, index) => (
-          <div
+          <ScrollAnimation
             key={index}
-            className={join(
-              "flex flex-col space-y-4 border-1 border-secondary/15 p-6 rounded-xl md:h-52",
-              index % 2 === 0
-                ? "bg-gradient-to-bl from-secondary/20 to-transparent"
-                : "bg-white/3",
-              index === 2 ? "md:order-last" : null,
-            )}
+            animateIn="fadeInDown"
+            scrollableParentSelector="#container"
           >
-            <h1 className="max-w-xs text-lg font-bold">{feature.title}</h1>
-            <div className="flex-1 flex flex-col justify-end">
-              <p>{feature.description}</p>
+            <div
+              className={join(
+                "flex flex-col space-y-4 border-1 border-secondary/15 p-6 rounded-xl md:h-full",
+                index % 2 === 0
+                  ? "bg-gradient-to-bl from-secondary/20 to-transparent"
+                  : "bg-white/3",
+                index === 2 ? "md:order-last" : null,
+              )}
+            >
+              <h1 className="max-w-xs text-lg font-bold">{feature.title}</h1>
+              <div className="flex-1 flex flex-col justify-end">
+                <p>{feature.description}</p>
+              </div>
             </div>
-          </div>
+          </ScrollAnimation>
         ))}
       </div>
     </section>

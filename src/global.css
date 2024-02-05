@@ -1,9 +1,9 @@
 @unocss all;
 
 .border-gradient {
-  border-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 10%, #01B834 80%, rgba(0, 0, 0, 0.5) 10%) 0 0 100% 0;
-  border-width: 1px;
+  border-width: 0 0 1px 0;
   border-style: solid;
+  border-image: linear-gradient(to left, rgba(0,0,0,0.5) 10%, #01B834 80%, rgba(0,0,0,0.5) 10%) 60;
 }
 
 .btn,
@@ -74,6 +74,17 @@ table {
 
 @screen md {
   .marquee {
-    animation: none;
+    animation: marquee 5s linear infinite alternate;
   }
+
+  @keyframes marquee {
+    from {
+      margin-left: 0;
+    }
+
+    to {
+      margin-left: calc(-64px);
+    }
+  }
+
 }

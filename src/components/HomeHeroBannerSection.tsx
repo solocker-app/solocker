@@ -7,8 +7,8 @@ import { IlLogoUnion, IlArrowRight } from "@/assets";
 export default function HomeHeroBannerSection() {
   return (
     <div className="overflow-hidden">
-      <section className="relative flex flex-col md:flex-row md:space-x-24 md:items-center md:px-8 lt-md:space-y-4 overflow-hidden">
-        <div className="relative w-xs h-80 px-4 lt-md:hidden">
+      <section className="relative flex flex-col md:flex-row md:space-x-32 md:items-center md:px-8 lt-md:space-y-4 overflow-hidden">
+        <div className="relative left-0 w-xs h-80 px-4 lt-md:hidden">
           <Image
             src={IlLogoUnion}
             alt="Solocker Logo Union"

@@ -24,7 +24,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
         )}
       >
         <ProviderMixin>
-          <div className="flex-1 flex flex-col overflow-y-scroll">
+          <div className="flex-1 flex flex-col overflow-y-scroll overflow-x-hidden">
             <LayoutHeader />
             {children}
             <ToastContainer />

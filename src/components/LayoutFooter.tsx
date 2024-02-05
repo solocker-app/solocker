@@ -41,12 +41,12 @@ export default function LayoutFooter() {
       <div className="relative flex flex-col items-center justify-center lt-md:order-first lt-md:pb-8">
         <Image
           src={IlLogoUnion}
-          className="lt-md:w-72 lt-md:h-72 md:hidden"
+          className="w-96 lt-md:h-96 md:hidden"
           alt="Solocker Branding"
         />
         <Image
           src={IlLogoUnionDark}
-          className="lt-md:absolute lt-md:w-56 lt-md:h-56"
+          className="lt-md:absolute lt-md:w-56"
           alt="Solocker Branding"
         />
       </div>

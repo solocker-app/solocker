@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRef } from "react";
 
 import { homeHeroBannerInfos } from "@/data";
 import { IlLogoUnion, IlArrowRight } from "@/assets";
@@ -7,7 +8,7 @@ export default function HomeHeroBannerSection() {
   return (
     <div className="overflow-hidden">
       <section className="relative flex flex-col md:flex-row md:space-x-24 md:items-center md:px-8 lt-md:space-y-4 overflow-hidden">
-        <div className="relative h-80 px-4 lt-md:hidden">
+        <div className="relative w-xs h-80 px-4 lt-md:hidden">
           <Image
             src={IlLogoUnion}
             alt="Solocker Logo Union"
@@ -18,7 +19,7 @@ export default function HomeHeroBannerSection() {
             alt="Arrow Right"
             className="absolute left-14 bottom-14 w-32"
           />
-          <h1 className="text-xl capitalize font-bold p-4">
+          <h1 className="text-xl capitalize font-bold p-6">
             bring the essential tools to solana
           </h1>
         </div>
@@ -27,11 +28,11 @@ export default function HomeHeroBannerSection() {
             bring the essential tools to solana
           </h1>
         </div>
-        <div className="flex space-x-4 overflow-x-scroll snap-mandatory snap-x lt-md:px-4 z-10 marquee">
+        <div className="flex space-x-4 md:overflow-x-scroll snap-mandatory snap-x lt-md:px-4 z-10 marquee">
           {homeHeroBannerInfos.map((feature, index) => (
             <div
               key={index}
-              className="shrink-0 w-72 h-80 flex flex-col space-y-8 bg-white/3 backdrop-blur-xl p-8 rounded-xl snap-center"
+              className="shrink-0 w-72 h-80 flex flex-col space-y-8 bg-white/3 backdrop-blur-3xl p-8 rounded-xl snap-center"
             >
               <div className="flex items-center space-x-2">
                 <div>

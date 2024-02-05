@@ -1,7 +1,7 @@
 @unocss all;
 
 .border-gradient {
-  border-image: linear-gradient(to right, rgba(0,0,0,0.5) 10%, #01B834 80%, rgba(0,0,0,0.5) 10%) 0 0 100% 0;
+  border-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 10%, #01B834 80%, rgba(0, 0, 0, 0.5) 10%) 0 0 100% 0;
   border-width: 1px;
   border-style: solid;
 }
@@ -58,16 +58,22 @@ table {
   @apply w-full;
 }
 
-/* .marquee {
- animation: marquee 20s ease-out infinite; 
+.marquee {
+  animation: marquee 20s linear infinite alternate;
 }
 
 @keyframes marquee {
   from {
-    transform: translateX(0);
+    margin-left: 0;
   }
 
   to {
-    transform: translateX(0);
+    margin-left: calc(-100vw - 200px);
   }
-} */
+}
+
+@screen md {
+  .marquee {
+    animation: none;
+  }
+}

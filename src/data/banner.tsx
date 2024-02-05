@@ -17,7 +17,7 @@ export const homeHeroBannerInfos: BannerInfo[] = [
     image: IlEcosystem,
     title: "For Solana Ecosystem",
     subtitle:
-      "Administer payments and grants to employees or contributors. See hpw your token supply is distributed in real time.",
+      "Administer payments and grants to employees or contributors. See how your token supply is distributed in real time.",
   },
   {
     image: IlBarChart,

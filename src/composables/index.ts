@@ -3,3 +3,4 @@ export * from "./useRepository";
 export * from "./useWallet";
 export * from "./useLpLockInfo";
 export * from "./useLoading";
+export * from "./useAutoScroll";

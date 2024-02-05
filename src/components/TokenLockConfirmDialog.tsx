@@ -1,9 +1,8 @@
 "use client";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { MdClose, MdLock } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 
-import { Types } from "@streamflow/stream";
 
 import { join } from "@/lib/utils";
 import { Config } from "@/lib/models/config.model";

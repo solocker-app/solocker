@@ -4,3 +4,5 @@ node_modules
 out
 .env
 null.js
+# Sentry Config File
+.sentryclirc

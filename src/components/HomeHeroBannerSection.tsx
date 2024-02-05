@@ -11,7 +11,7 @@ export default function HomeHeroBannerSection() {
         alt="Solocker Logo Union"
         className="absolute right-0 bottom-0 md:hidden"
       />
-      <div className="relative w-xs h-xs  px-4 md:px-16 lt-md:hidden">
+      <div className="relative h-72 px-4 md:px-16 lt-md:hidden">
         <Image
           src={IlLogoUnion}
           alt="Solocker Logo Union"

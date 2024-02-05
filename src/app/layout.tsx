@@ -1,7 +1,9 @@
 import "@unocss/reset/tailwind.css";
 import "@solana/wallet-adapter-react-ui/styles.css";
+import "animate.css/animate.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datetime/css/react-datetime.css";
+
 
 import { ToastContainer } from "react-toastify";
 

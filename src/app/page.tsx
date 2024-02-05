@@ -1,5 +1,7 @@
 "use client";
 
+import ScrollAnimation from 'react-animate-on-scroll';
+
 import LayoutFooter from "@/components/LayoutFooter";
 import HomeHeroSection from "@/components/HomeHeroSection";
 import HomeFeatureSection from "@/components/HomeFeatureSection";

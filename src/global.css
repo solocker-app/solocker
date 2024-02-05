@@ -3,7 +3,7 @@
 .border-gradient {
   border-width: 0 0 1px 0;
   border-style: solid;
-  border-image: linear-gradient(to left, rgba(0,0,0,0.5) 10%, #01B834 80%, rgba(0,0,0,0.5) 10%) 60;
+  border-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, #01b835 70%, #01b835 10%, rgba(0, 0, 0, 0.5) 100%) 1;
 }
 
 .btn,
@@ -74,17 +74,7 @@ table {
 
 @screen md {
   .marquee {
-    animation: marquee 5s linear infinite alternate;
-  }
-
-  @keyframes marquee {
-    from {
-      margin-left: 0;
-    }
-
-    to {
-      margin-left: calc(-64px);
-    }
+    animation: none;
   }
 
 }

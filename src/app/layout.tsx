@@ -4,6 +4,7 @@ import "animate.css/animate.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datetime/css/react-datetime.css";
 
+import type { Metadata } from "next";
 
 import { ToastContainer } from "react-toastify";
 
@@ -13,6 +14,18 @@ import { defaultFont } from "@/fonts";
 
 import LayoutHeader from "@/components/LayoutHeader";
 import ProviderMixin from "@/components/ProviderMixin";
+
+export const metadata: Metadata = {
+  title: "The Seamless Token Management Suite On Solana| SOLocker",
+  description:
+    "Lock and manage your liquidity pools, Vest and delegate tokens in your DAO, and deploy secure token contracts, only possible on Solocker.",
+  openGraph: {
+    type: "website",
+    siteName: "SOLocker",
+    url: "https://solocker.app",
+    images: ["https://solocker.app/assets/images/preview.png"],
+  },
+};
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
@@ -24,7 +37,10 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
         )}
       >
         <ProviderMixin>
-          <div className="flex-1 flex flex-col overflow-y-scroll overflow-x-hidden">
+          <div
+            id="container"
+            className="flex-1 flex flex-col overflow-y-scroll overflow-x-hidden"
+          >
             <LayoutHeader />
             {children}
             <ToastContainer />

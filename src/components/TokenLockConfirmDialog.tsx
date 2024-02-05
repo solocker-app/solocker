@@ -106,12 +106,9 @@ export default function TokenLockReviewDialog({
               setLoading(true);
 
               return toast.promise(
-                onCreateLockContract(tokenLock)
-                .catch((error) => {
-                  alert(error);
-                  return Promise.reject(error);
-                })
-                .finally(() => setLoading(false)),
+                onCreateLockContract(tokenLock).finally(() =>
+                  setLoading(false),
+                ),
                 {
                   pending: "Creating lock contract",
                   success: "Liquidity token has been locked successfully",

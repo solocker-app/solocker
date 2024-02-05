@@ -17,6 +17,7 @@ import ProviderMixin from "@/components/ProviderMixin";
 
 export const metadata: Metadata = {
   title: "The Seamless Token Management Suite On Solana| SOLocker",
+  metadataBase: new URL("https://solocker.app"),
   description:
     "Lock and manage your liquidity pools, Vest and delegate tokens in your DAO, and deploy secure token contracts, only possible on Solocker.",
   openGraph: {

@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { MdClose } from "react-icons/md";
 import { RiArrowRightUpLine } from "react-icons/ri";
 
 import { join } from "@/lib/utils";
 import { layoutNavigation } from "@/data";
+import { useLoading } from "@/composables";
 
 type LayoutNavigationProps = {
   className?: string;
@@ -15,20 +17,23 @@ export default function LayoutNavigation({
   className,
   wrapChild,
 }: LayoutNavigationProps) {
+  const router = useRouter();
+  const { setLoading } = useLoading();
+
   return (
     <div
       className={join(
-        "fixed inset-0 flex-1 flex flex-col bg-black/50 shadow md:flex-1 md:static md:flex-row  md:space-y-0 md:justify-center md:items-center md:self-center z-10",
+        "fixed inset-0 flex-1 flex flex-col shadow md:flex-1 md:static md:flex-row  md:space-y-0 md:justify-center md:items-center md:self-center lt-md:bg-black/50 z-20",
         className,
       )}
     >
-      <div className="flex flex-col bg-black p-4 md:flex-row md:space-x-6 md:bg-none md:px-0">
+      <div className="flex flex-col p-4 md:flex-row md:space-x-6 md:px-0 lt-md:bg-black">
         <div className="flex justify-end md:hidden">
           {wrapChild &&
             wrapChild(
               <button className="p-2 hover:text-highlight">
                 <MdClose className="text-xl" />
-              </button>
+              </button>,
             )}
         </div>
         {layoutNavigation.map((navigation, index) => {
@@ -37,13 +42,11 @@ export default function LayoutNavigation({
               key={index}
               href={navigation.href}
               target={navigation.external ? "_blank" : undefined}
-              className={
-                join(
-                  "flex items-center space-x-2 py-4 hover:text-highlight md:p-0",
-                  navigation.external ? "underline" : undefined,
-                  navigation.disabled ? "text-highlight" : undefined
-                )
-              }
+              className={join(
+                "flex items-center space-x-2 py-4 hover:text-highlight md:p-0",
+                navigation.external ? "underline" : undefined,
+                navigation.disabled ? "text-highlight" : undefined,
+              )}
             >
               <p>{navigation.name}</p>
               {navigation.external && <RiArrowRightUpLine />}
@@ -52,11 +55,23 @@ export default function LayoutNavigation({
 
           return wrapChild ? wrapChild(child) : child;
         })}
-        <Link
-          href="/token-lock"
-          className="btn btn-primary mt-4 md:!hidden">
-          Launch App
-        </Link>
+        {wrapChild &&
+          wrapChild(
+            <button
+              className="btn btn-primary mt-4 md:!hidden"
+              onClick={() => {
+                setLoading(true);
+                window.setTimeout(() => {
+                  router.push("/token-lock");
+                  window.setTimeout(() => {
+                    setLoading(false);
+                  }, 1000);
+                }, 3000);
+              }}
+            >
+              Launch App
+            </button>,
+          )}
       </div>
     </div>
   );

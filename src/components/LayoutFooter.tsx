@@ -6,7 +6,7 @@ import { IlLogoUnionDark, IlLogoUnion, IlSolockerBrand } from "@/assets";
 
 export default function LayoutFooter() {
   return (
-    <footer className="flex flex-col space-y-8 text-highlight p-4 md:flex-row  md:items-center md:space-x-16 md:space-y-0 md:max-w-4xl md:self-center lt-md:text-center lt-md:justify-center lt-md:items-center">
+    <footer className="flex flex-col space-y-8 text-highlight p-4 md:flex-row  md:items-center md:space-x-16 md:space-y-0 md:max-w-4xl md:self-center lt-md:text-center md:pb-24 lt-md:justify-center lt-md:items-center">
       <div className="flex-1 flex flex-col space-y-4 md:flex-1">
         <div className="flex flex-col space-y-4 lt-md:items-center lt-md:justify-center">
           <Image

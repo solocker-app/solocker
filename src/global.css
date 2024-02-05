@@ -1,5 +1,11 @@
 @unocss all;
 
+.border-gradient {
+  border-image: linear-gradient(to right, rgba(0,0,0,0.5) 10%, #01B834 80%, rgba(0,0,0,0.5) 10%) 0 0 100% 0;
+  border-width: 1px;
+  border-style: solid;
+}
+
 .btn,
 .wallet-adapter-button-trigger {
   @apply flex space-x-2 items-center justify-center px-4 py-3 font-normal;
@@ -19,7 +25,7 @@
 
 .btn-dark,
 .wallet-adapter-button-trigger {
-  @apply bg-primary/20 rounded-md hover:bg-primary/30 active:bg-primary/40;
+  @apply bg-white/5 rounded-md hover:bg-white/10 active:bg-white/20;
 }
 
 ::-webkit-scrollbar {
@@ -51,3 +57,17 @@ td {
 table {
   @apply w-full;
 }
+
+/* .marquee {
+ animation: marquee 20s ease-out infinite; 
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+} */

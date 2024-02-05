@@ -1,4 +1,3 @@
-
 import { join } from "@/lib/utils";
 import { homeFeatures } from "@/data";
 
@@ -15,13 +14,17 @@ export default function HomeFeatureSection() {
           <div
             key={index}
             className={join(
-              "flex flex-col space-y-4 border border-secondary/25 p-4 rounded-xl md:h-52",
-              index % 2 === 0 ? "bg-gradient-to-r from-white/3 to-secondary/20" : "bg-dark/50",
-              index === 2 ? "md:order-last" :  null
+              "flex flex-col space-y-4 border-1 border-secondary/15 p-4 rounded-xl md:h-52",
+              index % 2 === 0
+                ? "bg-gradient-to-bl from-secondary/20 to-transparent"
+                : "bg-white/3",
+              index === 2 ? "md:order-last" : null,
             )}
           >
             <h1 className="text-lg font-medium">{feature.title}</h1>
-            <p>{feature.description}</p>
+            <div className="flex-1 flex flex-col justify-end">
+              <p>{feature.description}</p>
+            </div>
           </div>
         ))}
       </div>

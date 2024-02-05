@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { MdClose, MdArrowUpward } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { RiArrowRightUpLine } from "react-icons/ri";
 
 import { join } from "@/lib/utils";
@@ -18,17 +18,17 @@ export default function LayoutNavigation({
   return (
     <div
       className={join(
-        "fixed inset-0 flex-1 flex flex-col bg-black/50 shadow md:static md:flex-row  md:space-y-0",
+        "fixed inset-0 flex-1 flex flex-col bg-black/50 shadow md:flex-1 md:static md:flex-row  md:space-y-0 md:justify-center md:items-center md:self-center z-10",
         className,
       )}
     >
-      <div className="flex flex-col bg-black p-4 md:flex-row md:space-x-6 md:px-0">
+      <div className="flex flex-col bg-black p-4 md:flex-row md:space-x-6 md:bg-none md:px-0">
         <div className="flex justify-end md:hidden">
           {wrapChild &&
             wrapChild(
               <button className="p-2 hover:text-highlight">
                 <MdClose className="text-xl" />
-              </button>,
+              </button>
             )}
         </div>
         {layoutNavigation.map((navigation, index) => {

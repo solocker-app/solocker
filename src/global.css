@@ -6,7 +6,7 @@
 }
 
 .btn-primary {
-  @apply bg-green-500 rounded-md hover:bg-green-700 active:bg-green-600;
+  @apply bg-primary/100 rounded-md hover:bg-primary/70 active:bg-primary/90;
 }
 
 .btn-tab {
@@ -19,7 +19,7 @@
 
 .btn-dark,
 .wallet-adapter-button-trigger {
-  @apply bg-dark/70 rounded-md hover:bg-dark active:bg-dark/70;
+  @apply bg-primary/20 rounded-md hover:bg-primary/30 active:bg-primary/40;
 }
 
 ::-webkit-scrollbar {

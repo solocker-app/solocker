@@ -1,4 +1,4 @@
-import { IcTelegram, IcDiscord, IcX } from "@/assets";
+import { IcTelegram, IcX } from "@/assets";
 
 type Social = {
   name: string;

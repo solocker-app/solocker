@@ -17,7 +17,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="en">
       <body
         className={join(
-          "fixed inset-0 flex flex-col bg-black text-white text-[15px]",
+          "fixed inset-0 flex flex-col bg-gradient-to-r bg-black via-dark from-primary to-dark  text-white text-[15px]",
           defaultFont.className,
         )}
       >

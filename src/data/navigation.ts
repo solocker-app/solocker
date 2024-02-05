@@ -15,18 +15,9 @@ type Navigation = {
      href: "", 
      disabled: true, 
    }, 
- /*  { 
-     name: "Contract Deployer", 
-     href: "", 
-     disabled: true, 
-   }, */
    { 
      name: "Docs", 
      href: "https://solocker.gitbook.io/solocker-spl/", 
      external: true, 
    }, 
- /*  { 
-     name: "Tokenomics", 
-     href: "", 
-   }, */
  ];

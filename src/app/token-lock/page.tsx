@@ -31,7 +31,7 @@ function AuthorizedUserOnlyPage() {
             join("btn", selected ? "text-green-500" : undefined)
           }
         >
-          Edit/Withdraw
+        Withdraw
         </Tab>
       </Tab.List>
       <Tab.Panels as={Fragment}>

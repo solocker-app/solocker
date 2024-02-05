@@ -8,11 +8,16 @@ export default defineConfig({
   theme: {
     colors: {
       dark: "#1d2216",
-      primary: "#8B4FF6",
-      secondary: "#18F198",
+      primary: "#01B834",
+      secondary: "#0BF705",
       highlight: "#BDBDBD",
       contrast: "#828282",
-      container: "#121212",
+      card: {
+        dark: "#01B834",
+      },
+      container: {
+        dark: "#000401",
+      },
     },
   },
   shortcuts: {

@@ -1,11 +1,14 @@
-import { Orbitron, Tajawal, Montserrat, Noto_Sans } from "next/font/google";
+import {
+  Orbitron,
+  Roboto,
+} from "next/font/google";
 
 export const orbitronFont = Orbitron({
   subsets: ["latin"],
 });
 
-export const defaultFont = Tajawal({
+export const defaultFont = Roboto({
   subsets: ["latin"],
   variable: "--default-font",
-  weight: ["200", "300", "400", "500", "700", "800", "900"],
+  weight: ["100", "300", "400", "500", "700", "900"],
 });

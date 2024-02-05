@@ -74,7 +74,7 @@ export default function TokenLockCreateConfiguration({
             <div className="flex space-x-4">
               <button
                 type="button"
-                className="flex-1 btn bg-white text-black rounded-md"
+                className="flex-1 btn btn-dark"
                 onClick={onBack}
               >
                 Back

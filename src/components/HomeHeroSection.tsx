@@ -1,41 +1,50 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
-import HomeFeatureBanner from "./HomeFeatureBanner";
+import { IlHero } from "@/assets";
+import HomeHeroBannerSection from "./HomeHeroBannerSection";
 
 export default function HomeHeroSection() {
   return (
-    <section className="flex flex-col space-y-8 md:p-16">
-      <div className="flex flex-col space-x-4 p-8 md:p-0 md:flex-row">
-        <div className="flex-1 flex flex-col space-y-4">
-          <div className="flex flex-col space-y-2 text-center md:text-start">
-            <h1 className="text-4xl font-extrabold">
-              <span>The Seamless Token Management Suite </span>
-              <span className="text-green-500">On solana</span>
+    <section className="flex flex-col space-y-24">
+      <div className="flex flex-col space-y-16 px-8 md:px-16">
+        <div className="flex flex-col space-y-8 md:max-w-2xl md:self-center">
+          <div className="flex flex-col text-center">
+            <h1 className="text-2xl font-extrabold">
+              The Seamless Token Management Suite On Solana
             </h1>
-            <p className="text-highlight">
-              Lock and manage your liquidity pools, Vest and delegate tokens in your DAO, and deploy secure token contracts, only possible on Solocker.
+            <p>
+              Lock and manage your liquidity pools, Vest and delegate tokens in
+              your DAO, and deploy secure token contracts, only possible on
+              Solocker.
             </p>
           </div>
-          <div className="flex space-x-4 md:w-1/2">
-            <Link 
-              href="Https://t.me/solocker"
-              className="flex-1 btn btn-primary">
+          <div className="flex items-center justify-center space-x-6">
+            <Link
+              href=""
+              target="_blank"
+              className="btn btn-primary"
+            >
               Join Community
             </Link>
-            <button className="flex-1 btn btn-dark">Buy $LOCK</button>
+            <Link
+              href="/"
+              target="_blank"
+              className="btn btn-dark"
+            >
+              Buy $LOCK
+            </Link>
           </div>
-       </div>
-        <div className="flex-1 lt-md:pt-8">
-          <Image
-            src="/assets/images/config.png"
-            alt="Solocker dapp"
-            className="w-full h-full"
-            width={1024}
-            height={1024} />
         </div>
+        <Image
+          src={IlHero}
+          alt="Solocker Dashboard Preview"
+          className="border-1 border-primary/28 rounded-xl lt-md:object-fill"
+        />
       </div>
-      <HomeFeatureBanner />
+      <HomeHeroBannerSection />
     </section>
   );
 }

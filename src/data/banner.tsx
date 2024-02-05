@@ -1,49 +1,27 @@
-import { FaBoxes, FaPiggyBank } from "react-icons/fa";
-import { GrUserExpert } from "react-icons/gr";
-import { MdOutlineSupportAgent } from "react-icons/md";
-import { BsBank2 } from "react-icons/bs";
-import { FaCoins } from "react-icons/fa";
+import { IlUserCheck, IlBarChart, IlEcosystem } from "@/assets";
 
 type BannerInfo = {
-  image: React.ReactNode;
-  title: string | number;
+  image: typeof import("*.svg");
+  title: string;
   subtitle: string;
 };
 
 export const homeHeroBannerInfos: BannerInfo[] = [
   {
-    image: <MdOutlineSupportAgent className="text-4xl text-green-500" />,
-    title: "10+",
-    subtitle: "Voice communicators",
-  },
-  {
-    image: <GrUserExpert className="text-4xl text-green-500" />,
-    title: "30+",
-    subtitle: "Key opinion leader",
-  },
-  {
-    image: <FaBoxes className="text-4xl text-green-500" />,
-    title: "3+",
-    subtitle: "Blockchain supported",
-  },
-];
-
-export const homeFeatureBannerInfos: BannerInfo[] = [
-  {
-    image: <FaPiggyBank className="text-4xl text-green-500" />,
-    title: "For founders",
+    image: IlUserCheck,
+    title: "for founders",
     subtitle:
       "Have peace of mind that you're following the gold-standard for token management. Easy respond to questions from investors and your community about your token.",
   },
   {
-    image: <BsBank2 className="text-4xl text-green-500" />,
+    image: IlEcosystem,
     title: "For Solana Ecosystem",
     subtitle:
       "Administer payments and grants to employees or contributors. See hpw your token supply is distributed in real time.",
   },
   {
-    image: <FaCoins className="text-4xl text-green-500" />,
-    title: "For investors and Traders",
+    image: IlBarChart,
+    title: "for investors and traders",
     subtitle:
       "Assist your founders by helping them use a solution that reduces their stress and time spent on admin.",
   },

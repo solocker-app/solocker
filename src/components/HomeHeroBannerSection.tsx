@@ -7,8 +7,8 @@ import { IlLogoUnion, IlArrowRight } from "@/assets";
 export default function HomeHeroBannerSection() {
   return (
     <div className="overflow-hidden">
-      <section className="relative flex flex-col md:flex-row md:items-center md:justify-center md:px-8 lt-md:space-y-4 overflow-hidden">
-        <div className="relative left-0 w-xs h-80 px-4 lt-md:hidden">
+      <section className="relative flex flex-col md:min-w-1/4 md:flex-row md:items-center md:justify-center md:px-8 lt-md:space-y-4 overflow-hidden">
+        <div className="relative w-xs h-80 px-4 lt-md:hidden">
           <Image
             src={IlLogoUnion}
             alt="Solocker Logo Union"
@@ -19,7 +19,7 @@ export default function HomeHeroBannerSection() {
             alt="Arrow Right"
             className="absolute left-14 bottom-14 w-32"
           />
-          <h1 className="text-xl capitalize font-bold p-6">
+          <h1 className="text-xl capitalize font-bold p-4">
             bring the essential tools to solana
           </h1>
         </div>

@@ -7,7 +7,7 @@ import { IlLogoUnion, IlArrowRight } from "@/assets";
 export default function HomeHeroBannerSection() {
   return (
     <div className="overflow-hidden">
-      <section className="flex flex-col md:min-w-1/4 md:flex-row md:items-center md:justify-center md:px-0 lt-md:space-y-4 overflow-x-hidden">
+      <section className="flex flex-col md:min-w-1/4 md:flex-row md:items-center md:justify-center md:px-0 lt-md:relative lt-md:space-y-4 overflow-x-hidden">
         <div className="relative w-sm h-80 px-8 lt-md:hidden">
           <Image
             src={IlLogoUnion}
@@ -59,7 +59,7 @@ export default function HomeHeroBannerSection() {
           alt="Arrow Right"
           className="md:hidden w-16 self-center"
         />
-        <div className="absolute -right-16 -bottom-24 w-xs h-xs bg-secondary/10 rounded-full blur-3xl -z-10 lt-md:hidden" />
+        <div className="absolute -right-16 md:-bottom-24 w-xs h-xs bg-secondary/10 rounded-full blur-3xl -z-10 lt-md:hidden" />
       </section>
       <Image
         src={IlLogoUnion}

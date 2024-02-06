@@ -59,7 +59,7 @@ export default function HomeHeroBannerSection() {
           alt="Arrow Right"
           className="md:hidden w-16 self-center"
         />
-        <div className="absolute -right-16 w-xs h-xs bg-secondary/10 rounded-full blur-3xl -z-10 lt-md:hidden" />
+        <div className="absolute -right-16 -bottom-24 w-xs h-xs bg-secondary/10 rounded-full blur-3xl -z-10 lt-md:hidden" />
       </section>
       <Image
         src={IlLogoUnion}

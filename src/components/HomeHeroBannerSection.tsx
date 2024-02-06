@@ -32,7 +32,7 @@ export default function HomeHeroBannerSection() {
           {homeHeroBannerInfos.map((feature, index) => (
             <div
               key={index}
-              className="shrink-0 min-w-64 h-80 flex flex-col space-y-8 bg-white/3 backdrop-blur-3xl p-8 rounded-xl snap-center"
+              className="shrink-0 w-64 h-80 flex flex-col space-y-8 bg-white/3 backdrop-blur-3xl p-8 rounded-xl snap-center"
             >
               <div className="flex items-center space-x-2">
                 <div>

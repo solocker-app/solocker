@@ -27,7 +27,7 @@ export const homeFeatures: Feature[] = [
     image: "/assets/images/lp_list.png",
     title: "Deploy safe token contracts, with all the bells and whistles.",
     description:
-      "We support the regular SPL token standard and the Token2022 standard to allow limitless flexibility on how you want to operate on Solana. $LOCK stakers will be able to configure their token contract functions and reduce the cost of deployment.",
+      "We support the regular SPL token standard and the Token2022 standard to allow limitless flexibility on how you want to operate on Solana.",
     subtitle: "Learn More",
     href: "/",
   },

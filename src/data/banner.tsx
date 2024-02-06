@@ -9,20 +9,20 @@ type BannerInfo = {
 export const homeHeroBannerInfos: BannerInfo[] = [
   {
     image: IlUserCheck,
-    title: "for founders",
+    title: "for teams",
     subtitle:
-      "Have peace of mind that you're following the gold-standard for token management. Easy respond to questions from investors and your community about your token.",
+      "Have peace of mind that you're following the gold-standard for token management.",
   },
   {
     image: IlEcosystem,
-    title: "For Solana Ecosystem",
+    title: "For foundations",
     subtitle:
       "Administer payments and grants to employees or contributors. See how your token supply is distributed in real time.",
   },
   {
     image: IlBarChart,
-    title: "for investors and traders",
+    title: "for investors",
     subtitle:
-      "Assist your founders by helping them use a solution that reduces their stress and time spent on admin.",
+      "Invest in projects with real vesting and sound tokenomics",
   },
 ];

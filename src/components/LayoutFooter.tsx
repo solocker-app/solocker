@@ -34,7 +34,7 @@ export default function LayoutFooter() {
         </div>
         <hr className="border-1 border-white/21" />
         <p>
-          <span>2024. All Right Reserve, </span>
+          <span>2024. All Right Reserved, </span>
           <span className="text-secondary font-bold">SOLocker.app</span>
         </p>
       </div>

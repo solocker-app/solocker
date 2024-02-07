@@ -64,8 +64,7 @@ export default function TokenLockEditTab({
                         switch (action) {
                           case TokenLockEditMenuAction.VIEW:
                             router.push(
-                              window.location.href +
-                                "lp-lock/?address=" +
+                                "/lp-lock/?address=" +
                                 address,
                             );
                             break;
@@ -74,8 +73,8 @@ export default function TokenLockEditTab({
                               title: "View Lp Token Locked on Solocker",
                               text: "",
                               url:
-                                window.location.href +
-                                "lp-lock/?address=" +
+                                window.location.origin +
+                                "/lp-lock/?address=" +
                                 address,
                             };
                             await window.navigator.share(data);

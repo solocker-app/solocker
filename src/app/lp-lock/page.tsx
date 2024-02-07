@@ -33,6 +33,7 @@ type LpLockComponentProps = {
 };
 
 function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
+  const router = useRouter();
   const {
     lpTokenMetadata,
     lpTokenDecimal,
@@ -52,7 +53,10 @@ function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
   return (
     <div className="flex-1  flex flex-col space-y-4 p-4 md:p-8 md:self-center">
       <header className="flex items-center space-x-4">
-        <button className="p-2">
+        <button
+          className="p-2"
+          onClick={() => router.back()}
+        >
           <MdArrowBack className="text-xl" />
         </button>
         <div className="flex-1 flex flex-col">
@@ -149,18 +153,21 @@ function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
       <div className="self-center flex">
         <Link
           href={"https://solscan.io/account/" + address}
+          target="_blank"
           className="btn btn-text"
         >
           SolScan
         </Link>
         <Link
           href={"https://solana.fm/address/" + address}
+          target="_blank"
           className="btn btn-text"
         >
           SolanaFM
         </Link>
         <Link
           href={"https://raydium.io/"}
+          target="_blank"
           className="btn btn-text"
         >
           Raydium
@@ -170,10 +177,11 @@ function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
   );
 }
 
-function LpLockInner() {
+export default function LpLockPage() {
   const router = useRouter();
   const search = useSearchParams();
   const { repository } = useRepository();
+  console.log(repository);
 
   const [stream, setStream] = useState<Types.Stream>();
   const { lpInfo } = useLpLockInfo(stream, false);
@@ -181,9 +189,13 @@ function LpLockInner() {
 
   useEffect(() => {
     if (!address) router.push("/");
-
-    if (repository) repository.streamflow.getLockToken(address).then(setStream);
-  }, [search]);
+    console.log(repository);
+    if (repository)
+      repository.streamflow
+        .getLockToken(address)
+        .then(setStream)
+        .catch(console.log);
+  }, [search, repository]);
 
   return lpInfo && stream ? (
     <LpLockComponent
@@ -193,13 +205,5 @@ function LpLockInner() {
     />
   ) : (
     <div className="m-auto w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
-  );
-}
-
-export default function LpLockPage() {
-  return (
-    <Suspense>
-      <LpLockInner />
-    </Suspense>
   );
 }

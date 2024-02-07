@@ -5,12 +5,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 };
 
 const removeImports = require("next-remove-imports")();
 
 module.exports = removeImports(nextConfig);
-
 
 // Injected content via Sentry wizard below
 
@@ -51,5 +53,5 @@ module.exports = withSentryConfig(
     // https://docs.sentry.io/product/crons/
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
-  }
+  },
 );

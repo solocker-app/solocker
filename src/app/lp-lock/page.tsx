@@ -3,7 +3,7 @@ import BN from "bn.js";
 import moment from "moment";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
@@ -28,10 +28,11 @@ import { truncate } from "@/lib/utils";
 
 type LpLockComponentProps = {
   lpInfo: LpInfo;
+  address: string;
   stream: Types.Stream;
 };
 
-function LpLockComponent({ lpInfo, stream }: LpLockComponentProps) {
+function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
   const {
     lpTokenMetadata,
     lpTokenDecimal,
@@ -40,10 +41,13 @@ function LpLockComponent({ lpInfo, stream }: LpLockComponentProps) {
     totalLpAmount,
   } = lpInfo;
 
-  const lockedPercentage = totalLpAmount > 0 ? stream.depositedAmount
-    .div(new BN(10).pow(new BN(lpTokenDecimal)))
-    .div(new BN(totalLpAmount))
-    .mul(new BN(100)) : 0;
+  const lockedPercentage =
+    totalLpAmount > 0
+      ? stream.depositedAmount
+          .div(new BN(10).pow(new BN(lpTokenDecimal)))
+          .div(new BN(totalLpAmount))
+          .mul(new BN(100))
+      : 0;
 
   return (
     <div className="flex-1  flex flex-col space-y-4 p-4 md:p-8 md:self-center">
@@ -115,7 +119,9 @@ function LpLockComponent({ lpInfo, stream }: LpLockComponentProps) {
             <div className="flex space-x-2 items-center">
               <p className="text-sm">{moment.unix(stream.createdAt).toNow()}</p>
               <p className="text-xs text-highlight">
-                {moment.unix(stream.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                {moment
+                  .unix(stream.createdAt)
+                  .format("MMMM Do YYYY, h:mm:ss a")}
               </p>
             </div>
           </div>
@@ -142,19 +148,19 @@ function LpLockComponent({ lpInfo, stream }: LpLockComponentProps) {
       </div>
       <div className="self-center flex">
         <Link
-          href={"https://solscan.io/account/"}
+          href={"https://solscan.io/account/" + address}
           className="btn btn-text"
         >
           SolScan
         </Link>
         <Link
-          href={"https://solana.fm/address/"}
+          href={"https://solana.fm/address/" + address}
           className="btn btn-text"
         >
           SolanaFM
         </Link>
         <Link
-          href={"https://raydium.io"}
+          href={"https://raydium.io/"}
           className="btn btn-text"
         >
           Raydium
@@ -166,6 +172,7 @@ function LpLockComponent({ lpInfo, stream }: LpLockComponentProps) {
 
 export default function LpLockPage() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const search = useSearchParams();
   const { repository } = useRepository();
 
@@ -175,17 +182,20 @@ export default function LpLockPage() {
   const { lpInfo } = useLpLockInfo(stream);
 
   useEffect(() => {
+    const address = search.get("address") as string | undefined;
+    if (!address) router.push("/");
+
     if (repository)
       repository.streamflow
-        .getLockToken(search.get("address") as string)
-        .then(setStream)
-        .catch(console.log);
+        .getLockToken(search.get("address"))
+        .then(setStream);
   }, [search]);
 
   return lpInfo && stream ? (
     <LpLockComponent
       lpInfo={lpInfo}
       stream={stream}
+      address={search.get("address")}
     />
   ) : (
     <div className="m-auto w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />

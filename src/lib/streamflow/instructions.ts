@@ -7,8 +7,7 @@ import type { BaseRepository } from "..";
 export const marketingWallet = new PublicKey(process.env.NEXT_PUBLIC_MARKETING_WALLET);
 
 export async function createFeeInstructions(repository: BaseRepository){
-  const mint = new PublicKey(mintAddress);
-  const { connection, wallet, signTransaction } = repository;
+  const { wallet } = repository;
   
   return [
     SystemProgram.transfer({

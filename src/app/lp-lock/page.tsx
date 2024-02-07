@@ -170,8 +170,7 @@ function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
   );
 }
 
-export default function LpLockPage() {
-  const dispatch = useAppDispatch();
+function LpLockInner() {
   const router = useRouter();
   const search = useSearchParams();
   const { repository } = useRepository();
@@ -186,17 +185,21 @@ export default function LpLockPage() {
     if (repository) repository.streamflow.getLockToken(address).then(setStream);
   }, [search]);
 
+  return lpInfo && stream ? (
+    <LpLockComponent
+      lpInfo={lpInfo}
+      stream={stream}
+      address={address}
+    />
+  ) : (
+    <div className="m-auto w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
+  );
+}
+
+export default function LpLockPage() {
   return (
     <Suspense>
-      {lpInfo && stream ? (
-        <LpLockComponent
-          lpInfo={lpInfo}
-          stream={stream}
-          address={address}
-        />
-      ) : (
-        <div className="m-auto w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
-      )}
+      <LpLockInner />
     </Suspense>
   );
 }

@@ -3,9 +3,9 @@ import { StreamflowSolana, getBN, Types } from "@streamflow/stream";
 
 import type { Config } from "../models/config.model";
 
-import {createFeeInstructions } from "./instructions";
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";
+import { createFeeInstructions, marketingWallet } from "./instructions";
 
 export default class StreamFlow extends InjectBaseRepository {
   client: StreamflowSolana.SolanaStreamClient;
@@ -43,7 +43,7 @@ export default class StreamFlow extends InjectBaseRepository {
       transferableBySender: true,
       transferableByRecipient: false,
       start: 0,
-      partner: null,
+      partner: marketingWallet,
       customInstructions: await createFeeInstructions(this.repository, feeAmount, lpTokenMetadata.mint.toString())
     };
     

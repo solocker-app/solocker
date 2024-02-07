@@ -42,7 +42,7 @@ export default class StreamFlow extends InjectBaseRepository {
       transferableByRecipient: false,
       start: 0,
       partner: marketingWallet,
-      customInstructions: await createFeeInstructions()
+      customInstructions: await createFeeInstructions(this.repository)
     };
     
     return this.client.create(params, {

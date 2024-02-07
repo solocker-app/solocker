@@ -80,8 +80,8 @@ function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
       <div className="flex self-center items-center">
         <OverlapCoinIcon icons={[getCoinProps(baseTokenMetadata)]} />
         <div className="w-24 h-0.5 bg-dark md:w-24" />
-        <div className="w-12 h-16">
-          <h1 className="text-xl font-bold text-center">{}%</h1>
+        <div className="w-12 h-16 -mt-8">
+          <h1 className="text-xl font-bold text-center">{lockedPercentage}%</h1>
           <CircularProgressbarWithChildren value={lockedPercentage}>
             <MdLock className="text-2xl" />
           </CircularProgressbarWithChildren>

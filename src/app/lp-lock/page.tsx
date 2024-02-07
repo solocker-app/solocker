@@ -176,7 +176,7 @@ function LpLockInner() {
   const { repository } = useRepository();
 
   const [stream, setStream] = useState<Types.Stream>();
-  const { lpInfo } = useLpLockInfo(stream);
+  const { lpInfo } = useLpLockInfo(stream, false);
   const address = search.get("address") as string | undefined;
 
   useEffect(() => {

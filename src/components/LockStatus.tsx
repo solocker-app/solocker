@@ -6,7 +6,7 @@ import { join } from "@/lib/utils";
   
  export default function LockStatus({ status }: LockStatusProps) { 
    const colorScheme = { 
-     cancel: "bg-red-100 text-red-500", 
+     cancelled: "bg-red-100 text-red-500", 
      pending: "bg-amber-100 text-amber-500", 
      scheduled: "bg-container text-highlight", 
      completed: "bg-green-100 text-green-500", 

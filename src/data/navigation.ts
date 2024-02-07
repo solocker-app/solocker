@@ -11,7 +11,7 @@ type Navigation = {
      href: "/token-lock", 
    }, 
    { 
-     name: "Token Vesting", 
+     name: "Staking", 
      href: "", 
      disabled: true, 
    }, 

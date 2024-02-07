@@ -2,12 +2,14 @@ import { Menu } from "@headlessui/react";
 import { MdMoreHoriz, MdPageview } from "react-icons/md";
 import { FaMoneyBill, FaUnlock } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { IoIosSend } from "react-icons/io";
 
 export enum TokenLockEditMenuAction {
   TOP_UP,
   WITHDRAW,
   CANCEL,
   VIEW,
+  SHARE,
 }
 
 type TokenLockItemMenuProps = {
@@ -41,21 +43,21 @@ export default function TokenLockIEditItemMenu({
           as="button"
           className="flex items-center space-x-2 p-2"
           onClick={() => {
-            onAction(TokenLockEditMenuAction.VIEW)
+            onAction(TokenLockEditMenuAction.VIEW);
           }}
         >
           <MdPageview className="text-lg" />
           <span>View</span>
         </Menu.Item>
-        {/*<Menu.Item
+        <Menu.Item
           as="button"
           className="flex items-center space-x-2 p-2"
-          onClick={() => onAction(TokenLockEditMenuAction.WITHDRAW)}
+          onClick={() => onAction(TokenLockEditMenuAction.SHARE)}
         >
           <IoIosSend className="text-lg" />
-          <span>Withdraw</span>
+          <span>Share</span>
         </Menu.Item>
-        */}
+
         <Menu.Item
           as="button"
           className="flex items-center space-x-2 p-2"

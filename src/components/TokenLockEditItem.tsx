@@ -73,7 +73,7 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
              status={ 
                stream.closed 
                ? "closed" 
-               : stream.unlocked 
+               : stream.end > 0
                ? "unlocked" 
                : "locked" 
              } 

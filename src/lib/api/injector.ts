@@ -5,6 +5,6 @@ export abstract class InjectAxios {
   constructor(readonly axios: AxiosInstance) {}
 
   buildPath(...paths: string[]) {
-    return this.path + paths.join("/");
+    return this.path + paths.join("/") + "/";
   }
 }

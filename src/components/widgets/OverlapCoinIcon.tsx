@@ -9,6 +9,7 @@ type OverlapCoinIconProps = {
     src?: string;
     alt: string;
   }[];
+  className?: string;
 };
 
 export const getCoinProps = function (metadata: any) {
@@ -22,15 +23,19 @@ export const getCoinProps = function (metadata: any) {
   };
 };
 
-export default function OverlapCoinIcon({ icons }: OverlapCoinIconProps) {
+export default function OverlapCoinIcon({
+  icons,
+  className,
+}: OverlapCoinIconProps) {
   return (
     <div className="flex">
       {icons.map((icon, index) =>
         icon.src ? (
           <Image
             className={join(
-              "w-8 h-8 border border-dark rounded-full",
+              "border border-dark rounded-full",
               index > 0 ? "-ml-2" : undefined,
+              className ? className : "w-8 h-8",
             )}
             src={icon.src}
             alt={icon.alt}
@@ -39,10 +44,11 @@ export default function OverlapCoinIcon({ icons }: OverlapCoinIconProps) {
           />
         ) : (
           <div
-          key={index}
+            key={index}
             className={join(
-              "w-8 h-8 flex items-center justify-center bg-white/20 border border-dark rounded-full",
+              "flex items-center justify-center bg-white/20 border border-dark rounded-full",
               index > 0 ? "-ml-2" : undefined,
+              className ? className : "w-8 h-8",
             )}
           >
             <MdQuestionMark className="text-lg text-white" />

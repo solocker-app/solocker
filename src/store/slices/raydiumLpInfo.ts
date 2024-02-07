@@ -22,25 +22,26 @@ export const getLiquidityPoolInfos = createAsyncThunk(
 
 export const getLiquidityPoolInfo = async (
   state,
-  dispatch: ReturnType<typeof useAppDispatch>,
-  payload: { mint: string; wallet },
+  payload: { mint: string; wallet?: string },
 ) => {
-  if (state.entities[payload.mint]) return;
+  if (state.entities[payload.mint]) return state.entities[payload.mint];
 
   const { data } = await Api.instance.raydium.fetchLpInfo(
-    payload.wallet,
     payload.mint,
+    payload.wallet,
   );
 
-  dispatch(raydiumLpInfoAdapter.setOne(state, data));
+  return data;
 };
 
 export const raydiumLpAssetSlice = createSlice({
-  name: "raydriumLpInfo",
+  name: "raydiumLpInfo",
   initialState: raydiumLpInfoAdapter.getInitialState<LoadingState>({
     loadingState: "idle",
   }),
-  reducers: {},
+  reducers: {
+    setOne: raydiumLpInfoAdapter.setOne
+  },
   extraReducers(builder) {
     builder
       .addCase(getLiquidityPoolInfos.pending, (state) => {
@@ -56,5 +57,6 @@ export const raydiumLpAssetSlice = createSlice({
   },
 });
 
+export const raydiumLpInfoAction = raydiumLpAssetSlice.actions;
 export const raydiumLpInfoReducer = raydiumLpAssetSlice.reducer;
 export const raydiumLpInfoSelector = raydiumLpInfoAdapter.getSelectors();

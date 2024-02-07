@@ -12,7 +12,7 @@ export default class RaydiumApi extends InjectAxios {
     });
   }
 
-  fetchLpInfo(wallet: string, mint: string) {
+  fetchLpInfo(mint: string, wallet: string = null) {
     return this.axios.post<LpInfo>(this.buildPath(mint), {
       wallet,
     });

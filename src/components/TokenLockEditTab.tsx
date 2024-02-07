@@ -1,14 +1,18 @@
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
+import { toast } from "react-toastify";
+
 import { Types } from "@streamflow/stream";
 
+import { useAppSelector } from "@/store/hooks";
+import { LpInfo } from "@/lib/api/models/raydium.model";
+
 import Search from "./widgets/Search";
-import { TokenLockEditMenuAction } from "./TokenLockEditItemMenu";
-import Loading from "./widgets/Loading";
 import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockEditItem from "./TokenLockEditItem";
 import TokenLockCancel from "./TokenLockCancel";
-import { useAppSelector } from "@/store/hooks";
-import { LpInfo } from "@/lib/api/models/raydium.model";
+import { TokenLockEditMenuAction } from "./TokenLockEditItemMenu";
 
 type TokenLockEditTabProps = {
   lockedTokens: [string, Types.Stream][];
@@ -17,6 +21,7 @@ type TokenLockEditTabProps = {
 export default function TokenLockEditTab({
   lockedTokens,
 }: TokenLockEditTabProps) {
+  const router = useRouter();
   const [action, setAction] = useState<TokenLockEditMenuAction>();
   const [stream, setStream] = useState<[string, Types.Stream, LpInfo]>();
 
@@ -55,13 +60,26 @@ export default function TokenLockEditTab({
                     <TokenLockEditItem
                       key={address}
                       stream={stream}
-                      onAction={(action, lpInfo) => {
+                      onAction={async (action, lpInfo) => {
                         switch (action) {
                           case TokenLockEditMenuAction.VIEW:
-                            window.open(
-                              "https://solscan.io/account/" + address,
-                              "_blank",
+                            router.push(
+                              window.location.href +
+                                "lp-lock/?address=" +
+                                address,
                             );
+                            break;
+                          case TokenLockEditMenuAction.SHARE:
+                            const data = {
+                              title: "View Lp Token Locked on Solocker",
+                              text: "",
+                              url:
+                                window.location.href +
+                                "lp-lock/?address=" +
+                                address,
+                            };
+                            await window.navigator.share(data);
+                            toast.success("Token LP lock Link shared");
                             break;
                           default:
                             setAction(action);

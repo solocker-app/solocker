@@ -28,6 +28,10 @@
   @apply bg-white/5 border-1 border-primary/25 rounded-md hover:bg-white/10 active:bg-white/20;
 }
 
+.btn-text {
+  @apply hover:bg-white/5 active:bg-white/10 hover:rounded-full;
+}
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0F;
@@ -77,4 +81,8 @@ table {
     animation: none;
   }
 
+}
+
+.card {
+  @apply flex items-center space-x-2 bg-dark/50 p-4 rounded-md;
 }

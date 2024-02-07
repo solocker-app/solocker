@@ -71,11 +71,11 @@ export default function TokenLockEditItem({onAction, stream} : TokenLockListItem
          <td> 
            <LockStatus 
              status={ 
-               stream.closed 
-               ? "closed" 
-               : stream.end > 0
-               ? "unlocked" 
-               : "locked" 
+               stream.canceledAt > 0
+                ? "cancelled"
+                : stream.closed || stream.end > 0
+                ? "withdraw"
+                : "pending" 
              } 
            /> 
          </td> 

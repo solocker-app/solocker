@@ -178,13 +178,12 @@ export default function LpLockPage() {
 
   const [stream, setStream] = useState<Types.Stream>();
   const { lpInfo } = useLpLockInfo(stream);
+  const address = search.get("address") as string | undefined;
 
   useEffect(() => {
-    const address = search.get("address") as string | undefined;
     if (!address) router.push("/");
 
-    if (repository)
-      repository.streamflow.getLockToken(search.get("address")).then(setStream);
+    if (repository) repository.streamflow.getLockToken(address).then(setStream);
   }, [search]);
 
   return (
@@ -193,7 +192,7 @@ export default function LpLockPage() {
         <LpLockComponent
           lpInfo={lpInfo}
           stream={stream}
-          address={search.get("address")}
+          address={address}
         />
       ) : (
         <div className="m-auto w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />

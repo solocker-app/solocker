@@ -104,8 +104,8 @@ export default class StreamFlow extends InjectBaseRepository {
   getLockedTokens() {
     return this.client.get({
       address: this.repository.wallet.publicKey.toBase58(),
-      type: Types.StreamType.All,
-      direction: Types.StreamDirection.All,
+      type: Types.StreamType.Lock,
+      direction: Types.StreamDirection.Outgoing,
     });
   }
 }

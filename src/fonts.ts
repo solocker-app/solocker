@@ -18,7 +18,12 @@ export const defaultFont = LocalFont({
       style: "normal",
     },
     {
-      path: "./assets/fonts/helvetica/Helvetica-BoldOblique.ttf",
+      path: "./assets/fonts/helvetica/Helvetica-Bold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "./assets/fonts/helvetica/Helvetica-Bold.ttf",
       weight: "900",
       style: "normal",
     },

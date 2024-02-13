@@ -33,7 +33,7 @@ export default function TokenLockReviewDialog({
     >
       <div
         className={join(
-          "w-7/8 bg-dark rounded-xl  md:w-sm",
+          "w-7/8 bg-stone-900 rounded-xl  md:w-sm",
           visible
             ? "animate-fade-in animate-duration-150"
             : "animate-fade-out animate-duration-150",

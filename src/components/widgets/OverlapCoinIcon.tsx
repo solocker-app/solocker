@@ -32,6 +32,7 @@ export default function OverlapCoinIcon({
       {icons.map((icon, index) =>
         icon.src ? (
           <Image
+            key={index}
             className={join(
               "border border-dark rounded-full",
               index > 0 ? "-ml-2" : undefined,

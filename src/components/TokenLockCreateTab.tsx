@@ -3,7 +3,6 @@ import { Tab } from "@headlessui/react";
 
 import { Config } from "@/lib/models/config.model";
 import { LpInfo } from "@/lib/api/models/raydium.model";
-import { hasNull } from "@/lib/utils/object";
 import { useRepository } from "@/composables";
 
 import { useAppDispatch } from "@/store/hooks";
@@ -21,7 +20,9 @@ export default function TokenLockCreateTab({
   lpInfos,
 }: TokenLockCreateTabProps) {
   const [formIndex, setFormIndex] = useState(0);
-  const [config, setConfig] = useState<Partial<Config>>({});
+  const [config, setConfig] = useState<Partial<Config>>({
+    period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+  });
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -71,13 +72,16 @@ export default function TokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
-              const { metadataId } = await repository.streamflow.lockToken(config);
-              /// Ignore error from fetching metadata
-              repository.streamflow.getLockToken(metadataId)
-              .then(response => dispatch(streamflowAction.addOne([metadataId, response])))
+            const { metadataId } =
+              await repository.streamflow.lockToken(config);
+            /// Ignore error from fetching metadata
+            repository.streamflow
+              .getLockToken(metadataId)
+              .then((response) =>
+                dispatch(streamflowAction.addOne([metadataId, response])),
+              )
               .finally(() => setConfig(undefined));
-            }
-          }
+          }}
         />
       )}
     </>

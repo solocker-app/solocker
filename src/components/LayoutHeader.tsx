@@ -18,7 +18,7 @@ export default function LayoutHeader() {
 
   return (
     <>
-      <header className="flex items-center space-x-4 px-4 py-2 md:px-16 md:py-0 border-gradient">
+      <header className="flex items-center space-x-4 px-4 py-2 md:px-16 md:py-0 border-gradient 2xl:w-7xl 2xl:self-center">
         <Link href="/">
           <Image
             src={IlSolockerBrand}

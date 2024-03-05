@@ -6,6 +6,9 @@ import type { Config } from "../models/config.model";
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";
 import { createFeeInstructions, marketingWallet } from "./instructions";
+import { useLpLockInfo } from "@/composables";
+import Api from "../api";
+import { isAxiosError } from "axios";
 
 export default class StreamFlow extends InjectBaseRepository {
   client: StreamflowSolana.SolanaStreamClient;
@@ -23,9 +26,12 @@ export default class StreamFlow extends InjectBaseRepository {
     const { wallet } = this.repository;
     const { lpTokenMetadata, lpTokenDecimal } = config.token;
     const { period, recipient } = config;
-    
-    const depositAmount = getBN(config.amount - (config.amount * 0.05), lpTokenDecimal);
-    
+
+    const depositAmount = getBN(
+      config.amount - config.amount * 0.05,
+      lpTokenDecimal,
+    );
+
     const params = {
       period,
       cliff: 0,
@@ -42,9 +48,9 @@ export default class StreamFlow extends InjectBaseRepository {
       transferableByRecipient: false,
       start: 0,
       partner: marketingWallet.toBase58(),
-      customInstructions: await createFeeInstructions(this.repository)
+      customInstructions: await createFeeInstructions(this.repository),
     };
-    
+
     return this.client.create(params, {
       sender: wallet as any,
     });
@@ -101,11 +107,30 @@ export default class StreamFlow extends InjectBaseRepository {
     return this.client.getOne({ id });
   }
 
-  getLockedTokens() {
-    return this.client.get({
+  async getLockedTokens(wallet: string) {
+    const streams = await this.client.get({
       address: this.repository.wallet.publicKey.toBase58(),
-      type: Types.StreamType.Lock,
+      type: Types.StreamType.All,
       direction: Types.StreamDirection.Outgoing,
     });
+
+    return Promise.all(
+      streams
+        .map(async ([address, stream]) => {
+          try {
+            const { data } = await Api.instance.raydium.fetchLpInfo(
+              stream.mint,
+              wallet,
+            );
+
+            return { address, stream, lpInfo: data };
+          } catch (error) {
+            if (isAxiosError(error)) return null;
+
+            throw error;
+          }
+        })
+        .filter((stream) => stream !== null),
+    );
   }
 }

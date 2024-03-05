@@ -17,11 +17,14 @@ export const raydiumLpInfoAdapter = createEntityAdapter<LpInfo>({
 
 export const getLiquidityPoolInfos = createAsyncThunk(
   "raydium/getLiquidityPoolInfos",
-  (wallet: string) => Api.instance.raydium.fetchLpInfos(wallet),
+  async (wallet: string) => {
+    const { data } = await Api.instance.raydium.fetchLpInfos(wallet);
+    return data;
+  },
 );
 
 export const getLiquidityPoolInfo = async (
-  state,
+  state: ReturnType<(typeof raydiumLpAssetSlice)["getInitialState"]>,
   payload: { mint: string; wallet?: string },
 ) => {
   if (state.entities[payload.mint]) return state.entities[payload.mint];
@@ -40,7 +43,7 @@ export const raydiumLpAssetSlice = createSlice({
     loadingState: "idle",
   }),
   reducers: {
-    setOne: raydiumLpInfoAdapter.setOne
+    setOne: raydiumLpInfoAdapter.setOne,
   },
   extraReducers(builder) {
     builder
@@ -49,7 +52,7 @@ export const raydiumLpAssetSlice = createSlice({
       })
       .addCase(getLiquidityPoolInfos.fulfilled, (state, { payload }) => {
         state.loadingState = "success";
-        raydiumLpInfoAdapter.setAll(state, payload.data);
+        raydiumLpInfoAdapter.setAll(state, payload);
       })
       .addCase(getLiquidityPoolInfos.rejected, (state) => {
         state.loadingState = "failed";

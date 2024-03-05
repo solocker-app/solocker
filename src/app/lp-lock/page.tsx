@@ -5,7 +5,7 @@ import moment from "moment";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import {
   MdLock,
@@ -16,7 +16,6 @@ import {
 
 import { Types } from "@streamflow/stream";
 
-import { useAppDispatch } from "@/store/hooks";
 
 import { useLpLockInfo, useRepository } from "@/composables";
 import LockStatus from "@/components/LockStatus";
@@ -182,7 +181,6 @@ export default function LpLockPage() {
   const router = useRouter();
   const search = useSearchParams();
   const { repository } = useRepository();
-  console.log(repository);
 
   const [stream, setStream] = useState<Types.Stream>();
   const { lpInfo } = useLpLockInfo(stream, false);
@@ -190,7 +188,6 @@ export default function LpLockPage() {
 
   useEffect(() => {
     if (!address) router.push("/");
-    console.log(repository);
     if (repository)
       repository.streamflow
         .getLockToken(address)

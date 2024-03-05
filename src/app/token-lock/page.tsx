@@ -11,7 +11,8 @@ import TokenLockConnectWallet from "@/components/TokenLockConnectWallet";
 import { useInitializeTokenLock } from "@/composables/useInitializeTokenLock";
 
 function AuthorizedUserOnlyPage() {
-  const { lpInfos, lockedTokens } = useInitializeTokenLock();
+  const { lpInfos, lockedTokens, streamflowLoadingState } =
+    useInitializeTokenLock();
 
   return (
     <Tab.Group
@@ -31,7 +32,7 @@ function AuthorizedUserOnlyPage() {
             join("btn", selected ? "text-green-500" : undefined)
           }
         >
-        Withdraw
+          Withdraw
         </Tab>
       </Tab.List>
       <Tab.Panels as={Fragment}>
@@ -39,7 +40,10 @@ function AuthorizedUserOnlyPage() {
           <TokenLockCreateTab lpInfos={lpInfos} />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
-          <TokenLockEditTab lockedTokens={lockedTokens} />
+          <TokenLockEditTab
+            loadingState={streamflowLoadingState}
+            lockedTokens={lockedTokens}
+          />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

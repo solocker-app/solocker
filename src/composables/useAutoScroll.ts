@@ -7,7 +7,6 @@ export const useAutoScroll = function <T extends HTMLElement = HTMLElement>(
   useEffect(() => {
     const autoScroll = () => {
       element.current.scrollLeft -= offset;
-      console.log(element.current.scrollLeft);
     };
     const timer = window.setInterval(autoScroll, 200);
 

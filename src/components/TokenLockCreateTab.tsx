@@ -77,9 +77,17 @@ export default function TokenLockCreateTab({
             /// Ignore error from fetching metadata
             repository.streamflow
               .getLockToken(metadataId)
-              .then((response) =>
-                dispatch(streamflowAction.addOne([metadataId, response])),
-              )
+              .then((response) => {
+                const lpInfo = lpInfos.find(lpInfo => lpInfo.lpTokenMetadata.mint === response.mint)!;
+
+                dispatch(
+                  streamflowAction.addOne({
+                    address: metadataId,
+                    stream: response,
+                    lpInfo,
+                  }),
+                );
+              })
               .finally(() => setConfig(undefined));
           }}
         />

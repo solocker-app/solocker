@@ -1,14 +1,13 @@
-import BN from "bn.js";
+import { isAxiosError } from "axios";
+
 import { StreamflowSolana, getBN, Types } from "@streamflow/stream";
 
 import type { Config } from "../models/config.model";
 
+import Api from "../api";
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";
 import { createFeeInstructions, marketingWallet } from "./instructions";
-import { useLpLockInfo } from "@/composables";
-import Api from "../api";
-import { isAxiosError } from "axios";
 
 export default class StreamFlow extends InjectBaseRepository {
   client: StreamflowSolana.SolanaStreamClient;
@@ -111,11 +110,14 @@ export default class StreamFlow extends InjectBaseRepository {
     const streams = await this.client.get({
       address: this.repository.wallet.publicKey.toBase58(),
       type: Types.StreamType.All,
-      direction: Types.StreamDirection.Outgoing,
+      direction: Types.StreamDirection.All,
     });
 
     return Promise.all(
       streams
+        .filter(([,stream]) =>
+          stream.name.toLowerCase().startsWith("solocker")
+        )
         .map(async ([address, stream]) => {
           try {
             const { data } = await Api.instance.raydium.fetchLpInfo(
@@ -130,7 +132,7 @@ export default class StreamFlow extends InjectBaseRepository {
             throw error;
           }
         })
-        .filter((stream) => stream !== null),
+        .filter(async (lock) => (await lock) !== null)
     );
   }
 }

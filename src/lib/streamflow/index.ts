@@ -113,9 +113,6 @@ export default class StreamFlow extends InjectBaseRepository {
       direction: Types.StreamDirection.All,
     });
 
-    console.log(streams)
-    console.log("Fuckkked by who?")
-
     return Promise.all(
       streams
         .filter(([,stream]) =>

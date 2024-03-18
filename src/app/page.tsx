@@ -1,19 +1,57 @@
 "use client";
+import { Fragment } from "react";
+import { Tab } from "@headlessui/react";
+import { useWallet } from "@solana/wallet-adapter-react";
 
-import LayoutFooter from "@/components/LayoutFooter";
-import HomeHeroSection from "@/components/HomeHeroSection";
-import HomeFeatureSection from "@/components/HomeFeatureSection";
+import { join } from "@/lib/utils";
 
-export default function HomePage() {
+import TokenLockEditTab from "@/components/TokenLockEditTab";
+import TokenLockCreateTab from "@/components/TokenLockCreateTab";
+import TokenLockConnectWallet from "@/components/TokenLockConnectWallet";
+import { useInitializeTokenLock } from "@/composables/useInitializeTokenLock";
+
+function AuthorizedUserOnlyPage() {
+  const { lpInfos, lockedTokens, streamflowLoadingState } =
+    useInitializeTokenLock();
+
   return (
-    <>
-      <div
-        className="flex flex-col space-y-16 pt-16 md:pt-8"
-      >
-        <HomeHeroSection />
-        <HomeFeatureSection />
-        <LayoutFooter />
-      </div>
-    </>
+    <Tab.Group
+      as="div"
+      className="flex-1 flex flex-col space-y-4 px-2 py-4 md:p-8 md:w-2xl md:self-center"
+    >
+      <Tab.List className="flex space-x-2 bg-dark/50 rounded-xl md:rounded-full">
+        <Tab
+          className={({ selected }) =>
+            join("btn", selected ? "text-secondary" : undefined)
+          }
+        >
+          New Lock
+        </Tab>
+        <Tab
+          className={({ selected }) =>
+            join("btn", selected ? "text-secondary" : undefined)
+          }
+        >
+          Withdraw
+        </Tab>
+      </Tab.List>
+      <Tab.Panels as={Fragment}>
+        <Tab.Panel as={Fragment}>
+          <TokenLockCreateTab lpInfos={lpInfos} />
+        </Tab.Panel>
+        <Tab.Panel as={Fragment}>
+          <TokenLockEditTab
+            loadingState={streamflowLoadingState}
+            lockedTokens={lockedTokens}
+          />
+        </Tab.Panel>
+      </Tab.Panels>
+    </Tab.Group>
   );
+}
+
+export default function TokenLockPage() {
+  const { connected } = useWallet();
+
+  return connected ? <AuthorizedUserOnlyPage /> : <TokenLockConnectWallet />;
 }

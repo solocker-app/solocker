@@ -1,31 +1,3 @@
-import LocalFont from "next/font/local";
+import { Sora } from "next/font/google";
 
-export const defaultFont = LocalFont({
-  src: [
-    {
-      path: "./assets/fonts/helvetica/Helvetica-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./assets/fonts/helvetica/Helvetica.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./assets/fonts/helvetica/Helvetica-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./assets/fonts/helvetica/Helvetica-Bold.ttf",
-      weight: "800",
-      style: "normal",
-    },
-    {
-      path: "./assets/fonts/helvetica/Helvetica-Bold.ttf",
-      weight: "900",
-      style: "normal",
-    },
-  ],
-});
+export const defaultFont = Sora({ subsets: ["latin"] });

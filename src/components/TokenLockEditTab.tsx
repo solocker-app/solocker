@@ -91,8 +91,8 @@ export default function TokenLockEditTab({
               </table>
             ) : (
               <div className="self-center flex-1 flex flex-col space-y-4 items-center justify-center">
-                <button className="bg-emerald-200 p-2 rounded-md">
-                  <MdLock className="text-2xl text-black" />
+                <button className="bg-secondary p-2 rounded-md">
+                  <MdLock className="text-2xl text-white" />
                 </button>
                 <div className="flex flex-col space-y-2">
                   <p>No Lp Token Lock Found</p>

@@ -55,23 +55,6 @@ export default function LayoutNavigation({
 
           return wrapChild ? wrapChild(child) : child;
         })}
-        {wrapChild &&
-          wrapChild(
-            <button
-              className="btn btn-primary mt-4 md:!hidden"
-              onClick={() => {
-                setLoading(true);
-                window.setTimeout(() => {
-                  router.push("/token-lock");
-                  window.setTimeout(() => {
-                    setLoading(false);
-                  }, 1000);
-                }, 3000);
-              }}
-            >
-              Launch App
-            </button>,
-          )}
       </div>
     </div>
   );

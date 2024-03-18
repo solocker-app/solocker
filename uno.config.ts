@@ -8,8 +8,8 @@ export default defineConfig({
   theme: {
     colors: {
       dark: "#1d2216",
-      primary: "#01B834",
-      secondary: "#0BF705",
+      primary: "#704799",
+      secondary: "#c084fc",
       highlight: "#BDBDBD",
       contrast: "#828282",
       card: {

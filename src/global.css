@@ -3,7 +3,7 @@
 .border-gradient {
   border-width: 0 0 1px 0;
   border-style: solid;
-  border-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, #01b835 70%, #01b835 10%, rgba(0, 0, 0, 0.5) 100%) 1;
+  border-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, #704799 70%, #704799 10%, rgba(0, 0, 0, 0.5) 100%) 1;
 }
 
 .btn,

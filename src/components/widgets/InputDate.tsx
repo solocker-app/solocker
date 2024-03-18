@@ -27,7 +27,7 @@ export default function InputDate({ name, value }: InputDateProps) {
             {moment.unix(value).fromNow().replace("ago", "")}
           </p>
         </div>
-        <Menu.Button className="flex space-x-1 text-xl text-green-500">
+        <Menu.Button className="flex space-x-1 text-xl">
           <IoMdCalendar />
           <MdChevronRight className="rotate-90" />
         </Menu.Button>

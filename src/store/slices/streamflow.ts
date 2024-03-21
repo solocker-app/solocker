@@ -8,7 +8,9 @@ import type StreamFlow from "@/lib/streamflow";
 import { LoadingState } from "../types";
 
 type LockedToken = Awaited<ReturnType<StreamFlow["getLockedTokens"]>>[number];
-export const streamflowAdapter = createEntityAdapter<LockedToken>();
+export const streamflowAdapter = createEntityAdapter<LockedToken>({
+  selectId: (model) => model.address,
+});
 
 export const getLockedTokens = createAsyncThunk(
   "streamflow/getLockedTokens",

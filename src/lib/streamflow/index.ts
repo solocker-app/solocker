@@ -50,6 +50,8 @@ export default class StreamFlow extends InjectBaseRepository {
       customInstructions: await createFeeInstructions(this.repository),
     };
 
+    console.log(params);
+
     return this.client.create(params, {
       sender: wallet as any,
     });
@@ -113,10 +115,12 @@ export default class StreamFlow extends InjectBaseRepository {
       direction: Types.StreamDirection.All,
     });
 
-    return Promise.all(
+    console.log(streams);
+
+    const response = await Promise.all(
       streams
-        .filter(([,stream]) =>
-          stream.name.toLowerCase().startsWith("solocker")
+        .filter(([, stream]) =>
+          stream.name.toLowerCase().startsWith("solocker"),
         )
         .map(async ([address, stream]) => {
           try {
@@ -132,7 +136,10 @@ export default class StreamFlow extends InjectBaseRepository {
             throw error;
           }
         })
-        .filter(async (lock) => (await lock) !== null)
+        .filter(async (lock) => (await lock) !== null),
     );
+
+    console.log(response);
+    return response.filter(r => r !== null);
   }
 }

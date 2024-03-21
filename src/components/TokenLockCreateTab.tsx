@@ -72,13 +72,17 @@ export default function TokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
+            console.log("Locking....");
             const { metadataId } =
               await repository.streamflow.lockToken(config);
+            console.log("Locked....");
             /// Ignore error from fetching metadata
             repository.streamflow
               .getLockToken(metadataId)
               .then((response) => {
-                const lpInfo = lpInfos.find(lpInfo => lpInfo.lpTokenMetadata.mint === response.mint)!;
+                const lpInfo = lpInfos.find(
+                  (lpInfo) => lpInfo.lpTokenMetadata.mint === response.mint,
+                )!;
 
                 dispatch(
                   streamflowAction.addOne({
@@ -88,7 +92,11 @@ export default function TokenLockCreateTab({
                   }),
                 );
               })
-              .finally(() => setConfig(undefined));
+              .finally(() =>
+                setConfig({
+                  period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+                }),
+              );
           }}
         />
       )}

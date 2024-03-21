@@ -34,7 +34,7 @@ export default function TokenLockEditTab({
 
   return (
     <>
-      <div className="flex flex-col space-y-8 bg-dark/50 p-4 rounded-xl">
+      <div className="self-center flex flex-col space-y-8 bg-dark/50 p-4 rounded-xl lt-md:max-w-full md:w-full">
         <header className="flex flex-col space-y-4">
           <div className="flex flex-col space-y-2">
             <h1 className="text-xl font-bold">Withdraw</h1>
@@ -44,16 +44,17 @@ export default function TokenLockEditTab({
           </div>
           <Search />
         </header>
-        <div className="overflow-y-scroll max-h-lg min-h-sm flex flex-col overflow-y-scroll">
+        <div className="max-h-lg min-h-sm flex flex-col overflow-y-scroll">
           {loadingState === "success" ? (
             lockedTokens.length > 0 ? (
               <table>
                 <thead className="sticky top-0">
                   <tr>
-                    <th></th>
-                    <th>Liquidity Pool</th>
+                    <th className="truncate"></th>
+                    <th className="truncate">Liquidity Pool</th>
                     <th>Locked amount</th>
-                    <th>Unlock date</th>
+                    <th className="truncate">Locked date</th>
+                    <th className="truncate">Unlock date</th>
                     <th>Status</th>
                     <th></th>
                   </tr>

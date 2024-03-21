@@ -17,19 +17,19 @@ function AuthorizedUserOnlyPage() {
   return (
     <Tab.Group
       as="div"
-      className="flex-1 flex flex-col space-y-4 px-2 py-4 md:p-8 md:w-2xl md:self-center"
+      className="flex-1 flex flex-col space-y-4 px-2 py-4 md:p-8 md:w-2xl md:self-center xl:w-4xl"
     >
-      <Tab.List className="flex space-x-2 bg-dark/50 rounded-xl md:rounded-full">
+      <Tab.List className="flex space-x-2 bg-dark/50 rounded-md py-2">
         <Tab
           className={({ selected }) =>
-            join("btn", selected ? "text-secondary" : undefined)
+            join("btn", selected ? "text-secondary p-2 !outline-none" : undefined)
           }
         >
           New Lock
         </Tab>
         <Tab
           className={({ selected }) =>
-            join("btn", selected ? "text-secondary" : undefined)
+            join("btn", selected ? "text-secondary p-2 !outline-none" : undefined)
           }
         >
           Withdraw

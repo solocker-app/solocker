@@ -37,7 +37,7 @@ export default function TokenLockEditItem({
             width={24}
             height={24}
           />
-          <p className="invisible">xx</p>
+          <p className="invisible">xxxxx</p>
         </div>
       </td>
       <td>
@@ -48,7 +48,7 @@ export default function TokenLockEditItem({
               getCoinProps(lpInfo.quoteTokenMetadata),
             ]}
           />
-          <p>{lpInfo.lpTokenMetadata.symbol}</p>
+          <p className="text-xs">{lpInfo.lpTokenMetadata.symbol}</p>
         </div>
       </td>
       <td>
@@ -66,7 +66,8 @@ export default function TokenLockEditItem({
           </p>
         </div>
       </td>
-      <td>{moment.unix(Number(stream.period)).fromNow()}</td>
+      <td className="truncate">{moment.unix(Number(stream.createdAt)).fromNow()}</td>
+      <td className="truncate">{moment.unix(Number(stream.period)).fromNow()}</td>
       <td>
         <LockStatus
           status={

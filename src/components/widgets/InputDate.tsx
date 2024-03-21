@@ -22,7 +22,9 @@ export default function InputDate({ name, value }: InputDateProps) {
         className="flex space-2 bg-black p-4 rounded-xl"
       >
         <div className="flex-1 flex flex-col">
-          <h1 className="text-bold">{moment.unix(value).format("MMMM Do YYYY, h:mm:ss a")}</h1>
+          <h1 className="text-bold">
+            {moment.unix(value).format("MMMM Do YYYY, h:mm:ss a")}
+          </h1>
           <p className="text-sm text-highlight">
             {moment.unix(value).fromNow().replace("ago", "")}
           </p>
@@ -36,9 +38,11 @@ export default function InputDate({ name, value }: InputDateProps) {
             value={moment.unix(value)}
             input={false}
             open={true}
+            isValidDate={(currentDate: ReturnType<typeof moment>) =>
+              currentDate.isAfter(moment.now())
+            }
             onChange={(value) => {
-              if (typeof value !== "string")
-                setFieldValue(name, value.unix());
+              if (typeof value !== "string") setFieldValue(name, value.unix());
             }}
           />
         </Menu.Items>

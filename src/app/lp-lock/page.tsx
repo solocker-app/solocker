@@ -16,7 +16,6 @@ import {
 
 import { Types } from "@streamflow/stream";
 
-
 import { useLpLockInfo, useRepository } from "@/composables";
 import LockStatus from "@/components/LockStatus";
 import OverlapCoinIcon, {
@@ -42,12 +41,10 @@ function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
   } = lpInfo;
 
   const lockedPercentage =
-    totalLpAmount > 0
-      ? stream.depositedAmount
-          .div(new BN(10).pow(new BN(lpTokenDecimal)))
-          .div(new BN(totalLpAmount))
-          .mul(new BN(100))
-      : 0;
+    stream.depositedAmount
+      .div(new BN(totalLpAmount))
+      .mul(new BN(100))
+      .toNumber() / new BN(10).pow(new BN(lpTokenDecimal)).toNumber();
 
   return (
     <div className="flex-1  flex flex-col space-y-4 p-4 md:p-8 md:self-center">
@@ -80,7 +77,9 @@ function LpLockComponent({ lpInfo, stream, address }: LpLockComponentProps) {
         <OverlapCoinIcon icons={[getCoinProps(baseTokenMetadata)]} />
         <div className="w-24 h-0.5 bg-dark md:w-24" />
         <div className="w-12 h-16 -mt-8">
-          <h1 className="text-xl font-bold text-center">{lockedPercentage}%</h1>
+          <h1 className="text-xl font-bold text-center">
+            {lockedPercentage.toFixed(2)}%
+          </h1>
           <CircularProgressbarWithChildren value={lockedPercentage}>
             <MdLock className="text-2xl" />
           </CircularProgressbarWithChildren>
@@ -194,6 +193,8 @@ export default function LpLockPage() {
         .then(setStream)
         .catch(console.log);
   }, [search, repository]);
+
+  console.log(lpInfo);
 
   return lpInfo && stream ? (
     <LpLockComponent

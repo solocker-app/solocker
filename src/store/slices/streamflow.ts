@@ -24,6 +24,7 @@ export const streamflowSlice = createSlice({
   }),
   reducers: {
     addOne: streamflowAdapter.addOne,
+    updateOne: streamflowAdapter.upsertOne
   },
   extraReducers(builder) {
     builder

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
-
 import { join } from "@/lib/utils";
 import { Config } from "@/lib/models/config.model";
 
@@ -33,7 +32,7 @@ export default function TokenLockReviewDialog({
     >
       <div
         className={join(
-          "w-7/8 bg-stone-900 rounded-xl  md:w-sm",
+          "w-7/8 bg-white text-black rounded-xl  md:w-sm",
           visible
             ? "animate-fade-in animate-duration-150"
             : "animate-fade-out animate-duration-150",
@@ -51,14 +50,13 @@ export default function TokenLockReviewDialog({
           </button>
         </header>
         <div className="flex flex-col space-y-4 p-4 overflow-y-scroll">
-          <div className="bg-black p-4 rounded-md">
+          <div className="bg-black/20 p-4 rounded-md">
             <p className="text-sm">Number of recipients</p>
             <div className="flex space-x-1 text-xl">
-              <h1>1</h1>
-              <span className="text-highlight">Recipient</span>
+              <h1>1 Recipient</h1>
             </div>
           </div>
-          <div className="bg-black p-4 rounded-md">
+          <div className="bg-black/20 p-4 rounded-md">
             <p className="text-sm">Total Locked Amount</p>
             <div className="flex items-center space-x-2">
               <OverlapCoinIcon
@@ -69,13 +67,13 @@ export default function TokenLockReviewDialog({
               />
               <div className="flex space-x-1 text-xl">
                 <h1>{tokenLock.amount}</h1>
-                <span className="text-highlight">
+                <span className="text-black/50">
                   {tokenLock.token.lpTokenMetadata.symbol}
                 </span>
               </div>
             </div>
           </div>
-          <div className="bg-black p-4 rounded-md">
+          <div className="bg-black/20 p-4 rounded-md">
             <p className="text-sm">Solocker Fees</p>
             <div className="flex items-center space-x-2">
               <img
@@ -87,11 +85,11 @@ export default function TokenLockReviewDialog({
               <div className="flex">
                 <div className="flex items-center text-xl">
                   <h1>2</h1>
-                  <span className="text-highlight">SOL</span>
+                  <span className="text-black/50">SOL</span>
                 </div>
                 <div className="flex items-center space-x-1 text-xl">
                   <h1>+</h1>
-                  <span className="text-highlight">1%</span>
+                  <span className="text-black/50">1%</span>
                 </div>
               </div>
             </div>

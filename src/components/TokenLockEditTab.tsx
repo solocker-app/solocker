@@ -2,13 +2,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
+import { MdLock } from "react-icons/md";
 import { toast } from "react-toastify";
-
-import { Types } from "@streamflow/stream";
 
 import { LoadingState } from "@/store/types";
 import StreamFlow from "@/lib/streamflow";
-import { LpInfo } from "@/lib/api/models/raydium.model";
 
 import Search from "./widgets/Search";
 import Loading from "./widgets/Loading";
@@ -17,7 +15,6 @@ import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockEditItem from "./TokenLockEditItem";
 import TokenLockCancel from "./TokenLockCancel";
 import { TokenLockEditMenuAction } from "./TokenLockEditItemMenu";
-import { MdLock } from "react-icons/md";
 
 type TokenLockEditTabProps = {
   loadingState: LoadingState["loadingState"];
@@ -30,7 +27,7 @@ export default function TokenLockEditTab({
 }: TokenLockEditTabProps) {
   const router = useRouter();
   const [action, setAction] = useState<TokenLockEditMenuAction>();
-  const [stream, setStream] = useState<[string, Types.Stream, LpInfo]>();
+  const [stream, setStream] = useState<Awaited<ReturnType<StreamFlow["getLockedTokens"]>>[number]>();
 
   return (
     <>
@@ -83,7 +80,7 @@ export default function TokenLockEditTab({
                             break;
                           default:
                             setAction(action);
-                            setStream([address, stream, lpInfo]);
+                            setStream({address, stream, lpInfo});
                         }
                       }}
                     />
@@ -117,8 +114,7 @@ export default function TokenLockEditTab({
         <TokenLockCancel
           stream={stream}
           setVisible={() => {
-            setStream(undefined);
-            setStream(undefined);
+            setAction(undefined);
           }}
         />
       )}

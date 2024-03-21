@@ -8,10 +8,10 @@ export async function createFeeInstructions(repository: BaseRepository){
   const { wallet } = repository;
 
   return [
-    // SystemProgram.transfer({
-    //   fromPubkey: wallet.publicKey,
-    //   toPubkey: marketingWallet,
-    //   lamports: 2 * LAMPORTS_PER_SOL,
-    // }),
+    SystemProgram.transfer({
+      fromPubkey: wallet.publicKey,
+      toPubkey: marketingWallet,
+      lamports: 2 * LAMPORTS_PER_SOL,
+    }),
   ];
 }

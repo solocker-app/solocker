@@ -8,7 +8,7 @@ type Navigation = {
  export const layoutNavigation: Navigation[] = [ 
    { 
      name: "LP Locker", 
-     href: "/token-lock", 
+     href: "/", 
    }, 
    { 
      name: "Staking", 

@@ -2,42 +2,49 @@ import { useContext, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
 
-import { Types } from "@streamflow/stream";
 
+import StreamFlow from "@/lib/streamflow";
 import { Repository } from "@/providers/Repository";
-import { LpInfo } from "@/lib/api/models/raydium.model";
 
-type TokenUnlockDialogProps = {
+import { useAppDispatch } from "@/store/hooks";
+import { streamflowAction } from "@/store/slices/streamflow";
+
+type TokenCancelDialogProps = {
   setVisible: () => void;
-  stream: [string, Types.Stream, LpInfo];
+  stream: Awaited<ReturnType<StreamFlow["getLockedTokens"]>>[number];
 };
 
-export default function TokenUnlockDialog({
-  stream: [id],
+export default function TokenLockCancelDialog({
+  stream: { address, lpInfo, stream },
   setVisible,
-}: TokenUnlockDialogProps) {
+}: TokenCancelDialogProps) {
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
   const { repository } = useContext(Repository);
 
-  const onConfirm = function () {
+  const onConfirm = async function () {
     setLoading(true);
 
-    return toast
-      .promise(repository.streamflow.cancel(id), {
+    await toast
+      .promise(repository.streamflow.cancel(address), {
         pending: "Canceling liquidity token",
         error: "An unexpected error occur, try again!",
         success: "Liquidity token locked cancelled successfully",
       })
       .finally(() => setLoading(false));
+
+    stream.canceledAt = Date.now();
+    dispatch(streamflowAction.updateOne({ address, lpInfo, stream }));
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/50">
-      <div className="w-xs bg-container rounded-md md:w-sm">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-dark/50">
+      <div className="w-xs bg-white text-black rounded-md md:w-sm">
         <header className="flex p-4">
           <div className="flex-1 flex flex-col">
             <h1 className="text-xl font-bold">Cancel Liquidity Lock</h1>
-            <p className="text-highlight">
+            <p className="text-black/50">
               Do you want to cancel lock contract on your liquidity tokens?
             </p>
           </div>
@@ -55,7 +62,7 @@ export default function TokenUnlockDialog({
             Close
           </button>
           <button
-            className="flex-1 btn btn-primary"
+            className="flex-1 btn btn-primary text-white !rounded-full"
             disabled={loading}
             onClick={onConfirm}
           >

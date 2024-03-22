@@ -1,3 +1,4 @@
+import * as Sentry fro
 import {
   collection,
   Firestore,
@@ -23,6 +24,7 @@ export type LockedToken = {
   type: Type;
   unlocked: boolean;
   createdAt: number;
+  failed: boolean;
 };
 
 export enum Type {
@@ -67,17 +69,16 @@ export default class LockToken {
     const transactions = await this.getTransactions(address);
 
     const response = transactions.map(async (transaction) => {
-      const response = await Api.instance.raydium.fetchLpInfo(
+      const { data } = await Api.instance.raydium.fetchLpInfo(
         transaction.mintAddress,
         address,
       );
-      if (response.status === 200)
-        return {
+      
+      return {
           id: transaction.id,
-          lpInfo: response.data,
+          lpInfo: data,
           contractInfo: transaction,
         };
-      return null;
     });
 
     return (await Promise.all(response)).filter(

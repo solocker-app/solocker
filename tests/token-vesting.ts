@@ -22,16 +22,25 @@ async function main() {
   // repository.tokenVesting.getLockedToken("1511312979136742628337534380651869247563347998703551268508924183")
   // .then(console.log);
 
-  repository.tokenVesting.lockToken({
-    mint: new PublicKey("D2ypd2q2P78owA6pxYt4FVouz9wumeWRvuAJHgmfw8M"),
+  const [seed] = await repository.tokenVesting.lockToken({
+    mint: new PublicKey("8TEPiymMCHvMayJfCKCB89WEwB51vCVrcwoPVo1Lkd4M"),
     receiver: wallet.publicKey,
     schedules: [
       {
-        period: Date.now(),
+        period: Date.now() / 1000,
         amount: 0.5 * Math.pow(10, 9),
       },
     ],
-  }).then(console.log);
+  });
+
+  console.log(seed);
+
+  repository.tokenVesting
+    .unlockToken(
+      seed,
+      new PublicKey("8TEPiymMCHvMayJfCKCB89WEwB51vCVrcwoPVo1Lkd4M"),
+    )
+    .then(console.log);
 }
 
 main().catch(console.log);

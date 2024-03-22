@@ -11,9 +11,11 @@ import {
 import { InjectBaseRepository } from "../injector";
 import { PublicKey } from "@solana/web3.js";
 import {
-  getAssociatedTokenAddressSync,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
+  getAssociatedTokenAddressSync,
   getOrCreateAssociatedTokenAccount,
+  TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
 type LockToken = {
@@ -37,8 +39,27 @@ export default class TokenVesting extends InjectBaseRepository {
     const seed = generateRandomSeed();
     const { wallet, connection } = this.repository;
 
-    const senderATA = await getAssociatedTokenAddress(mint, wallet.publicKey);
-    const receiverATA = await getAssociatedTokenAddress(mint, receiver);
+    const senderATA = await getAssociatedTokenAddress(
+      mint,
+      wallet.publicKey,
+      true,
+      TOKEN_PROGRAM_ID,
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+    );
+
+    console.log(senderATA);
+
+    const receiverATA = await getOrCreateAssociatedTokenAccount(
+      connection,
+      wallet as any,
+      mint,
+      receiver,
+      true,
+      undefined,
+      undefined,
+      TOKEN_PROGRAM_ID,
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+    );
 
     const createInstruction = await create(
       connection,
@@ -47,7 +68,7 @@ export default class TokenVesting extends InjectBaseRepository {
       wallet.publicKey,
       wallet.publicKey,
       senderATA,
-      receiverATA,
+      receiverATA.address,
       new PublicKey(mint),
       schedules.map(
         (schedule) =>
@@ -70,12 +91,12 @@ export default class TokenVesting extends InjectBaseRepository {
     return [seed, tx];
   }
 
-  async unlockToken(seed: PublicKey, mint: PublicKey) {
+  async unlockToken(seed: string, mint: PublicKey) {
     const { connection, wallet } = this.repository;
     const unlockInstruction = await unlock(
       connection,
       this.programId,
-      seed.toBuffer(),
+      Buffer.from(seed).slice(0, 31),
       mint,
     );
 

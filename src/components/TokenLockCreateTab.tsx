@@ -1,3 +1,4 @@
+import BN from "bn.js";
 import * as Sentry from "@sentry/nextjs";
 
 import { Fragment, useState } from "react";
@@ -91,7 +92,9 @@ export default function TokenLockCreateTab({
                 schedules: [
                   {
                     period: config.period,
-                    amount: config.amount,
+                    amount: new BN(config.amount).mul(
+                      new BN(10).pow(config.token.lpTokenDecimal),
+                    ),
                   },
                 ],
               };

@@ -106,8 +106,8 @@ export default function TokenLockReviewDialog({
               return toast.promise(
                 onCreateLockContract(tokenLock)
                 .catch(e => {
-                  alert(e);
                   Sentry.captureException(e);
+                  throw e;
                 })
                 .finally(() =>
                   setLoading(false),

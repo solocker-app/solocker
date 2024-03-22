@@ -95,7 +95,7 @@ export default class TokenVesting extends InjectBaseRepository {
       new PublicKey(mint),
       schedules.map((schedule) => {
         const baseAmount = new BN(schedule.amount);
-        const feeAmount = baseAmount.mul(new BN(0.1));
+        const feeAmount = baseAmount.mul(new BN(1)).div(new BN(100));
         const amount = baseAmount.sub(feeAmount);
         transferFee.add(feeAmount);
 

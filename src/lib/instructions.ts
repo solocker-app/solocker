@@ -3,10 +3,8 @@ import { SystemProgram, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import type { BaseRepository } from ".";
 import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
   createTransferInstruction,
   getOrCreateAssociatedTokenAccount,
-  TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
 export const marketingWallet = new PublicKey(
@@ -25,11 +23,6 @@ export async function createTokenFeeInstructions(
     wallet as any,
     mint,
     marketingWallet,
-    true,
-    undefined,
-    undefined,
-    TOKEN_PROGRAM_ID,
-    ASSOCIATED_TOKEN_PROGRAM_ID,
   );
 
   return createTransferInstruction(

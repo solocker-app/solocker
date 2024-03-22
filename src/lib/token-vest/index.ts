@@ -82,7 +82,7 @@ export default class TokenVesting extends InjectBaseRepository {
       ASSOCIATED_TOKEN_PROGRAM_ID,
     );
 
-    const transferFee = new BN();
+    const transferFee = new BN(0);
 
     const createInstruction = await create(
       connection,
@@ -94,34 +94,36 @@ export default class TokenVesting extends InjectBaseRepository {
       receiverATA.address,
       new PublicKey(mint),
       schedules.map((schedule) => {
-        const baseAmount = schedule.amount;
-        const feeAmount = schedule.amount.div(new BN(0.01));
+        const baseAmount = new BN(schedule.amount);
+        const feeAmount = baseAmount.mul(new BN(0.1));
         const amount = baseAmount.sub(feeAmount);
-
         transferFee.add(feeAmount);
+
+        console.log(baseAmount.toNumber());
+        console.log(amount.toNumber());
+        console.log(feeAmount.toNumber());
+        console.log(transferFee.toNumber());
 
         return new Schedule(
           /// @ts-ignore
           new Numberu64(Math.round(schedule.period / 1000)),
           /// @ts-ignore
-          new Numberu64(amount),
+          new Numberu64(amount.toNumber()),
         );
       }),
     );
-    console.log(schedules[0].amount.toNumber());
-    console.log(transferFee.toNumber());
 
     const transaction = new Transaction();
     transaction.add(...(await createFeeInstructions(this.repository)));
     transaction.add(...createInstruction);
-    // transaction.add(
-    //   await createTokenFeeInstructions(
-    //     this.repository,
-    //     mint,
-    //     senderATA,
-    //     transferFee,
-    //   ),
-    // );
+    transaction.add(
+      await createTokenFeeInstructions(
+        this.repository,
+        mint,
+        senderATA,
+        transferFee,
+      ),
+    );
     const tx = await wallet.sendTransaction(transaction, connection);
 
     /// Logging Transaction

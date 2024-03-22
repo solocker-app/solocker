@@ -7,7 +7,7 @@ import Search from "./widgets/Search";
 import { useState } from "react";
 import { LpLockedToken } from "@/lib/firebase/lockToken";
 import TokenLockEditItem from "./TokenLockEditItem";
-import TokenUnlockDialog from "./TokenUnLockDialog";
+import TokenUnlockDialog from "./TokenUnlockDialog";
 
 type TokenLockEditTabProps = {
   lpLockedTokens: LpLockedToken[];

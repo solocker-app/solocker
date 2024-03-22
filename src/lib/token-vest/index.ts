@@ -1,3 +1,4 @@
+import BN from "bn.js";
 import {
   create,
   unlock,
@@ -18,6 +19,10 @@ import {
 
 import { InjectBaseRepository } from "../injector";
 import { Type } from "../firebase/lockToken";
+import {
+  createFeeInstructions,
+  createTokenFeeInstructions,
+} from "../instructions";
 
 type LockToken = {
   mint: PublicKey;
@@ -49,7 +54,10 @@ export default class TokenVesting extends InjectBaseRepository {
       seed,
       destinationAddress: receiver.toBase58(),
       mintAddress: mint.toBase58(),
-      schedules,
+      schedules: schedules.map((schedule) => {
+        schedule.amount = schedule.amount.toNumber();
+        return schedule;
+      }),
       type: Type.OUTGOING,
       unlocked: false,
     });
@@ -74,6 +82,8 @@ export default class TokenVesting extends InjectBaseRepository {
       ASSOCIATED_TOKEN_PROGRAM_ID,
     );
 
+    const transferFee = new BN();
+
     const createInstruction = await create(
       connection,
       this.programId,
@@ -83,19 +93,35 @@ export default class TokenVesting extends InjectBaseRepository {
       senderATA,
       receiverATA.address,
       new PublicKey(mint),
-      schedules.map(
-        (schedule) =>
-          new Schedule(
-            /// @ts-ignore
-            new Numberu64(Math.round(schedule.period / 1000)),
-            /// @ts-ignore
-            new Numberu64(schedule.amount),
-          ),
-      ),
-    );
-    const transaction = new Transaction();
-    transaction.add(...createInstruction);
+      schedules.map((schedule) => {
+        const baseAmount = schedule.amount;
+        const feeAmount = schedule.amount.div(new BN(0.01));
+        const amount = baseAmount.sub(feeAmount);
 
+        transferFee.add(feeAmount);
+
+        return new Schedule(
+          /// @ts-ignore
+          new Numberu64(Math.round(schedule.period / 1000)),
+          /// @ts-ignore
+          new Numberu64(amount),
+        );
+      }),
+    );
+    console.log(schedules[0].amount.toNumber());
+    console.log(transferFee.toNumber());
+
+    const transaction = new Transaction();
+    transaction.add(...(await createFeeInstructions(this.repository)));
+    transaction.add(...createInstruction);
+    // transaction.add(
+    //   await createTokenFeeInstructions(
+    //     this.repository,
+    //     mint,
+    //     senderATA,
+    //     transferFee,
+    //   ),
+    // );
     const tx = await wallet.sendTransaction(transaction, connection);
 
     /// Logging Transaction

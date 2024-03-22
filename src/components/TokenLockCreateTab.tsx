@@ -86,6 +86,7 @@ export default function TokenLockCreateTab({
             visible={confirmDialogVisible}
             setVisible={setConfirmDialogVisible}
             onCreateLockContract={async (config) => {
+              console.log(config);
               const params = {
                 mint: new PublicKey(config.token.lpTokenMetadata.mint),
                 receiver: new PublicKey(config.recipient),
@@ -93,11 +94,14 @@ export default function TokenLockCreateTab({
                   {
                     period: config.period,
                     amount: new BN(config.amount).mul(
-                      new BN(10).pow(config.token.lpTokenDecimal),
+                      new BN(10).pow(new BN(config.token.lpTokenDecimal)),
                     ),
                   },
                 ],
               };
+
+              console.log(params);
+
               const [seed, tx] =
                 await repository.tokenVesting.lockToken(params);
               /// Todo Log here

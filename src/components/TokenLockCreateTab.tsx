@@ -1,19 +1,28 @@
+import * as Sentry from "@sentry/nextjs";
+
 import { Fragment, useState } from "react";
 import { Tab } from "@headlessui/react";
+import { PublicKey } from "@solana/web3.js";
+import { ContractInfo, Numberu64, Schedule } from "@bonfida/token-vesting";
 
 import { Config } from "@/lib/models/config.model";
 import { LpInfo } from "@/lib/api/models/raydium.model";
 import { useRepository } from "@/composables";
 
-import { useAppDispatch } from "@/store/hooks";
-import { streamflowAction } from "@/store/slices/streamflow";
-
+import TokenLockInfoDialog from "./TokenLockInfoDialog";
 import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
 
 type TokenLockCreateTabProps = {
   lpInfos: LpInfo[];
+};
+
+type LockedParams = {
+  seed: string;
+  tx: string;
+  lpInfo: LpInfo;
+  contractInfo: ContractInfo;
 };
 
 export default function TokenLockCreateTab({
@@ -23,9 +32,10 @@ export default function TokenLockCreateTab({
   const [config, setConfig] = useState<Partial<Config>>({
     period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   });
+  const [lockedParams, setLockedParams] = useState<LockedParams>();
+
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
-  const dispatch = useAppDispatch();
   const { repository } = useRepository();
 
   return (
@@ -66,38 +76,61 @@ export default function TokenLockCreateTab({
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-      {config.token && config.amount && config.recipient && config.period && (
-        <TokenLockConfirmDialog
-          tokenLock={config as unknown as Config}
-          visible={confirmDialogVisible}
-          setVisible={setConfirmDialogVisible}
-          onCreateLockContract={async (config) => {
-            console.log("Locking....");
-            const { metadataId } =
-              await repository.streamflow.lockToken(config);
-            console.log("Locked....");
-            /// Ignore error from fetching metadata
-            repository.streamflow
-              .getLockToken(metadataId)
-              .then((response) => {
-                const lpInfo = lpInfos.find(
-                  (lpInfo) => lpInfo.lpTokenMetadata.mint === response.mint,
-                )!;
-
-                dispatch(
-                  streamflowAction.addOne({
-                    address: metadataId,
-                    stream: response,
-                    lpInfo,
-                  }),
-                );
-              })
-              .finally(() =>
-                setConfig({
-                  period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+      {!!config.token &&
+        !!config.amount &&
+        !!config.recipient &&
+        !!config.period && (
+          <TokenLockConfirmDialog
+            tokenLock={config as unknown as Config}
+            visible={confirmDialogVisible}
+            setVisible={setConfirmDialogVisible}
+            onCreateLockContract={async (config) => {
+              const params = {
+                mint: new PublicKey(config.token.lpTokenMetadata.mint),
+                receiver: new PublicKey(config.recipient),
+                schedules: [
+                  {
+                    period: config.period,
+                    amount: config.amount,
+                  },
+                ],
+              };
+              const [seed, tx] =
+                await repository.tokenVesting.lockToken(params);
+              /// Todo Log here
+              Sentry.captureMessage(
+                JSON.stringify({
+                  seed,
+                  tx,
                 }),
+                "info",
               );
-          }}
+
+              setLockedParams({
+                tx,
+                seed,
+                lpInfo: config.token,
+                contractInfo: {
+                  schedules: params.schedules.map(
+                    (schedule) =>
+                      new Schedule(
+                        // @ts-ignore
+                        new Numberu64(Math.round(schedule.period / 1000)),
+                        // @ts-ignore
+                        new Numberu64(schedule.amount),
+                      ),
+                  ),
+                  destinationAddress: params.receiver,
+                  mintAddress: params.mint,
+                },
+              });
+            }}
+          />
+        )}
+      {lockedParams && (
+        <TokenLockInfoDialog
+          {...lockedParams}
+          onClose={() => setLockedParams(null)}
         />
       )}
     </>

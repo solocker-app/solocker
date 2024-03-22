@@ -18,7 +18,10 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
 
   return (
     <Firebase>
-      <ConnectionProvider endpoint={endpoint}>
+      <ConnectionProvider
+        endpoint={endpoint}
+        config={{ commitment: "confirmed" }}
+      >
         <WalletProvider
           wallets={wallets}
           autoConnect={true}

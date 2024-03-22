@@ -5,6 +5,7 @@ import { ContractInfo } from "@bonfida/token-vesting";
 import LockInfo from "./LockInfo";
 import { LpInfo } from "@/lib/api/models/raydium.model";
 import OverlapCoinIcon, { getCoinProps } from "../widgets/OverlapCoinIcon";
+import { getTotalLockedAmount } from "@/lib/utils";
 
 type LockInfoListProps = {
   seed?: string;
@@ -17,17 +18,10 @@ export default function LockInfoList({
   seed,
   lpInfo,
 }: LockInfoListProps) {
-  // @ts-ignore
-  const totalLockedAmount =
-    // @ts-ignore
-    contractInfo.schedules
-      .reduceRight((a, b) =>
-        //@ts-ignore
-        a.amount.add(b.amount),
-      )
-      // @ts-ignore
-      .amount.div(new BN(10).pow(new BN(9)));
-
+  const totalLockedAmount = getTotalLockedAmount(
+    contractInfo.schedules,
+    lpInfo.lpTokenDecimal,
+  );
   const releaseTime = new Date(
     // @ts-ignore
     new BN(contractInfo.schedules[0].releaseTime).toNumber(),

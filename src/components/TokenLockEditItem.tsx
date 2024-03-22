@@ -5,29 +5,23 @@ import Image from "next/image";
 
 import { MdLockOutline } from "react-icons/md";
 
-import { Types } from "@streamflow/stream";
-
-import { LpInfo } from "@/lib/api/models/raydium.model";
+import { getTotalLockedAmountN } from "@/lib/utils";
+import { LpLockedToken } from "@/lib/firebase/lockToken";
 
 import LockStatus from "./LockStatus";
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
-import TokenEditLockItemMenu, {
-  TokenLockEditMenuAction,
-} from "./TokenLockEditItemMenu";
 
 type TokenLockListItemProps = {
-  lpInfo: LpInfo;
-  stream: Types.Stream;
-  onAction: (type: TokenLockEditMenuAction) => void;
+  lpLockedToken: LpLockedToken;
+  onClick: () => void;
 };
 
 export default function TokenLockEditItem({
-  onAction,
-  stream,
-  lpInfo,
+  onClick,
+  lpLockedToken: { lpInfo, contractInfo },
 }: TokenLockListItemProps) {
   return (
-    <tr>
+    <tr onClick={onClick}>
       <td>
         <div className="flex items-center">
           <Image
@@ -56,9 +50,10 @@ export default function TokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {stream.depositedAmount
-                .div(new BN(10).pow(new BN(lpInfo.lpTokenDecimal)))
-                .toNumber()}
+              {getTotalLockedAmountN(
+                contractInfo.schedules,
+                new BN(lpInfo.lpTokenDecimal),
+              ).toNumber()}
             </span>
             <span className="text-highlight">
               {lpInfo.lpTokenMetadata.symbol}
@@ -66,21 +61,14 @@ export default function TokenLockEditItem({
           </p>
         </div>
       </td>
-      <td className="truncate">{moment.unix(Number(stream.createdAt)).fromNow()}</td>
-      <td className="truncate">{moment.unix(Number(stream.period)).fromNow()}</td>
-      <td>
-        <LockStatus
-          status={
-            stream.canceledAt > 0
-              ? "cancelled"
-              : stream.closed || stream.end > 0
-                ? "withdraw"
-                : "pending"
-          }
-        />
+      <td className="truncate">
+        {moment.unix(Number(contractInfo.createdAt)).fromNow()}
+      </td>
+      <td className="truncate">
+        {moment.unix(contractInfo.schedules[0].period).fromNow()}
       </td>
       <td>
-        <TokenEditLockItemMenu onAction={onAction} />
+        <LockStatus status={contractInfo.unlocked ? "withdrawn" : "pending"} />
       </td>
     </tr>
   );

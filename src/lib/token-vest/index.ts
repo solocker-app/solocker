@@ -17,6 +17,7 @@ import {
 } from "@solana/spl-token";
 
 import { InjectBaseRepository } from "../injector";
+import { Type } from "../firebase/lockToken";
 
 type LockToken = {
   mint: PublicKey;
@@ -41,7 +42,17 @@ export default class TokenVesting extends InjectBaseRepository {
     schedules,
   }: LockToken): Promise<[string, string]> {
     const seed = generateRandomSeed();
-    const { wallet, connection } = this.repository;
+    const { wallet, connection, firebase } = this.repository;
+
+    /// Logging Seed
+    await firebase.lockToken.saveTransaction(wallet.publicKey.toBase58(), {
+      seed,
+      destinationAddress: receiver.toBase58(),
+      mintAddress: mint.toBase58(),
+      schedules,
+      type: Type.OUTGOING,
+      unlocked: false,
+    });
 
     const senderATA = await getAssociatedTokenAddress(
       mint,
@@ -87,11 +98,18 @@ export default class TokenVesting extends InjectBaseRepository {
 
     const tx = await wallet.sendTransaction(transaction, connection);
 
+    /// Logging Transaction
+    await firebase.lockToken.updateTransaction(
+      wallet.publicKey.toBase58(),
+      seed,
+      { tx },
+    );
+
     return [seed, tx];
   }
 
   async unlockToken(seed: string, mint: PublicKey) {
-    const { connection, wallet } = this.repository;
+    const { connection, wallet, firebase } = this.repository;
     const unlockInstruction = await unlock(
       connection,
       this.programId,
@@ -103,6 +121,11 @@ export default class TokenVesting extends InjectBaseRepository {
     transaction.add(...unlockInstruction);
 
     const tx = await wallet.sendTransaction(transaction, connection);
+    await firebase.lockToken.updateTransaction(
+      wallet.publicKey.toBase58(),
+      seed,
+      { unlocked: true },
+    );
 
     return tx;
   }
@@ -137,6 +160,4 @@ export default class TokenVesting extends InjectBaseRepository {
       ContractInfo.fromBuffer(account.account.data),
     );
   }
-
-  async getLockedLpInfo(tokenAddress: string[]) {}
 }

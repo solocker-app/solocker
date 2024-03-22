@@ -10,7 +10,6 @@ type TokenLockConfirmDialogProps = {
 
 export default function TokenLockInfoDialog({
   tx,
-  seed,
   lpInfo,
   contractInfo,
   onClose,
@@ -25,12 +24,7 @@ export default function TokenLockInfoDialog({
           </button>
         </header>
         <div className="flex-1 flex flex-col space-y-4 overflow-y-scroll overflow-x-hidden">
-          <div className="bg-red-200 text-red-500 p-2 rounded text-sm">
-            Please make sure you copy and save your seed to somewhere save.
-            Token can't be unlocked without providing seed.
-          </div>
           <LockInfoList
-            seed={seed}
             lpInfo={lpInfo}
             contractInfo={contractInfo}
           />

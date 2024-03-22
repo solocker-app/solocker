@@ -67,8 +67,7 @@ export default class LockToken {
 
   async getLpTokens(address: string) {
     const transactions = await this.getTransactions(address);
-    Sentry.captureMessage(JSON.stringify(transactions));
-
+    alert(transactions.length);
     const response = transactions.map(async (transaction) => {
       const { data } = await Api.instance.raydium.fetchLpInfo(
         transaction.mintAddress,

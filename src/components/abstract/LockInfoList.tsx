@@ -3,14 +3,16 @@ import moment from "moment";
 import { ContractInfo } from "@bonfida/token-vesting";
 
 import LockInfo from "./LockInfo";
-import { LpInfo } from "@/lib/api/models/raydium.model";
 import OverlapCoinIcon, { getCoinProps } from "../widgets/OverlapCoinIcon";
+
 import { getTotalLockedAmount } from "@/lib/utils";
+import { LockedToken } from "@/lib/firebase/lockToken";
+import { LpInfo } from "@/lib/api/models/raydium.model";
 
 type LockInfoListProps = {
   seed?: string;
   lpInfo: LpInfo;
-  contractInfo: ContractInfo;
+  contractInfo: ContractInfo | LockedToken;
 };
 
 export default function LockInfoList({
@@ -29,6 +31,10 @@ export default function LockInfoList({
 
   return (
     <div className="flex flex-col space-y-4">
+      <LockInfo title="Number of recipients">
+        <span>1</span>
+        <span>Recipient</span>
+      </LockInfo>
       {seed && (
         <LockInfo title="Lock Seed">
           <small>{seed}</small>

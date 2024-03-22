@@ -7,7 +7,7 @@ import type { Config } from "../models/config.model";
 import Api from "../api";
 import type { BaseRepository } from "..";
 import { InjectBaseRepository } from "../injector";
-import { createFeeInstructions, marketingWallet } from "./instructions";
+import { createFeeInstructions, marketingWallet } from "../instructions";
 
 export default class StreamFlow extends InjectBaseRepository {
   client: StreamflowSolana.SolanaStreamClient;

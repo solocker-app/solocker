@@ -1,3 +1,4 @@
+import BN from "bn.js";
 import * as Sentry from "@sentry/nextjs";
 
 import { Fragment, useState } from "react";
@@ -85,16 +86,22 @@ export default function TokenLockCreateTab({
             visible={confirmDialogVisible}
             setVisible={setConfirmDialogVisible}
             onCreateLockContract={async (config) => {
+              console.log(config);
               const params = {
                 mint: new PublicKey(config.token.lpTokenMetadata.mint),
                 receiver: new PublicKey(config.recipient),
                 schedules: [
                   {
                     period: config.period,
-                    amount: config.amount,
+                    amount: new BN(config.amount).mul(
+                      new BN(10).pow(new BN(config.token.lpTokenDecimal)),
+                    ),
                   },
                 ],
               };
+
+              console.log(params);
+
               const [seed, tx] =
                 await repository.tokenVesting.lockToken(params);
               /// Todo Log here

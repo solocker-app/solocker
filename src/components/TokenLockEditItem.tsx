@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { MdLockOutline } from "react-icons/md";
 
-import { getTotalLockedAmountN } from "@/lib/utils";
+import { getTotalLockedAmount } from "@/lib/utils";
 import { LpLockedToken } from "@/lib/firebase/lockToken";
 
 import LockStatus from "./LockStatus";
@@ -50,7 +50,7 @@ export default function TokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {getTotalLockedAmountN(
+              {getTotalLockedAmount(
                 contractInfo.schedules,
                 new BN(lpInfo.lpTokenDecimal),
               ).toNumber()}

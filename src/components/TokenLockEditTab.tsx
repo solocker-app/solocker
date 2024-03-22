@@ -5,7 +5,12 @@ import { MdSearch } from "react-icons/md";
 import Search from "./widgets/Search";
 
 import { useState } from "react";
+
+import { useAppSelector } from "@/store/hooks";
 import { LpLockedToken } from "@/lib/firebase/lockToken";
+
+import Loading from "./widgets/Loading";
+import ErrorMessage from "./widgets/ErrorMessage";
 import TokenLockEditItem from "./TokenLockEditItem";
 import TokenUnlockDialog from "./TokenUnlockDialog";
 
@@ -16,6 +21,8 @@ type TokenLockEditTabProps = {
 export default function TokenLockEditTab({
   lpLockedTokens,
 }: TokenLockEditTabProps) {
+  const { loadingState } = useAppSelector(state => state.tokenVest);
+
   const [search, setSearch] = useState<string | null>(null);
   const [lpLockedToken, setLpLockedToken] = useState<LpLockedToken | null>(
     null,
@@ -37,7 +44,9 @@ export default function TokenLockEditTab({
           />
         </header>
         <div className="max-h-lg min-h-sm flex flex-col overflow-y-scroll p-4">
-          {lpLockedTokens.length > 0 ? (
+          {
+            loadingState === "success" ?
+            lpLockedTokens.length > 0 ? (
             <table>
               <tr>
                 <th></th>
@@ -73,7 +82,10 @@ export default function TokenLockEditTab({
             </table>
           ) : (
             <TokenLockNotFound />
-          )}
+          ) : loadingState === "failed" ? 
+            <ErrorMessage />
+            : <Loading />     
+          }
         </div>
       </div>
       {lpLockedToken && (

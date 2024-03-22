@@ -2,24 +2,23 @@ import { Connection } from "@solana/web3.js";
 import { Wallet } from "@solana/wallet-adapter-react";
 import type { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 
-import { Umi } from "@metaplex-foundation/umi";
-import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
-import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
+import { TOKEN_VESTING_PROGRAM_ID as _TOKEN_VESTING_PROGRAM_ID } from "@bonfida/token-vesting";
 
 import StreamFlow from "./streamflow";
+import TokenVesting from "./token-vest";
 
 export class BaseRepository {
   readonly streamflow: StreamFlow;
+  readonly tokenVesting: TokenVesting;
 
   constructor(
     readonly connection: Connection,
-    readonly umi: Umi,
     readonly wallet?: Wallet["adapter"],
     readonly signTransaction?: SignerWalletAdapterProps["signTransaction"],
+    TOKEN_VESTING_PROGRAM_ID = _TOKEN_VESTING_PROGRAM_ID,
   ) {
-    this.umi.use(mplTokenMetadata());
-    if (wallet) this.umi.use(walletAdapterIdentity(wallet));
 
-    this.streamflow = new StreamFlow(this);
+    // this.streamflow = new StreamFlow(this);
+    this.tokenVesting = new TokenVesting(TOKEN_VESTING_PROGRAM_ID, this);
   }
 }

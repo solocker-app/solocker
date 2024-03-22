@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@bonfida/token-vesting':
+    specifier: ^0.0.9
+    version: 0.0.9(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
+  '@bonfida/utils':
+    specifier: ^0.0.7
+    version: 0.0.7(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
   '@headlessui/react':
     specifier: ^1.7.18
     version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
@@ -1695,6 +1701,31 @@ packages:
       - bufferutil
       - debug
       - utf-8-validate
+    dev: false
+
+  /@bonfida/token-vesting@0.0.9(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
+    resolution: {integrity: sha512-EzTRdsbiK4ugEybe6Av3iNTjG1rZOvFD2cSa0jBO+czfw45Pxscu0JPKaVOkII9pIImfPNZTh0U9k67jgbd3GQ==}
+    peerDependencies:
+      '@solana/spl-token': 0.3.7
+      '@solana/web3.js': ^1.73.2
+    dependencies:
+      '@solana/spl-token': 0.3.11(@solana/web3.js@1.89.1)(fastestsmallesttextencoderdecoder@1.0.22)
+      '@solana/web3.js': 1.89.1
+      bip32: 2.0.6
+      bn.js: 5.2.1
+      bs58: 4.0.1
+      buffer-layout: 1.2.2
+      tweetnacl: 1.0.3
+    dev: false
+
+  /@bonfida/utils@0.0.7(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
+    resolution: {integrity: sha512-h85/sXUOUzQRbQ42Z977i6V+D+RIySR5LmsDwLervnOLkpwYF2VZtE+CkfRtM+mU9awGSPIRF3POhY7RhXGrDg==}
+    peerDependencies:
+      '@solana/spl-token': ^0.3.6
+      '@solana/web3.js': ^1.70.3
+    dependencies:
+      '@solana/spl-token': 0.3.11(@solana/web3.js@1.89.1)(fastestsmallesttextencoderdecoder@1.0.22)
+      '@solana/web3.js': 1.89.1
     dev: false
 
   /@emurgo/cardano-serialization-lib-browser@11.5.0:
@@ -6911,6 +6942,10 @@ packages:
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
     dev: false
 
+  /@types/node@10.12.18:
+    resolution: {integrity: sha512-fh+pAqt4xRzPfqA6eh3Z2y6fyZavRIumvjhaCL753+TVkGKGhpPeyrJG2JftD0T9q4GF00KjefsQ+PQNDdWQaQ==}
+    dev: false
+
   /@types/node@12.20.55:
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
     dev: false
@@ -8397,6 +8432,19 @@ packages:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
     dependencies:
       file-uri-to-path: 1.0.0
+    dev: false
+
+  /bip32@2.0.6:
+    resolution: {integrity: sha512-HpV5OMLLGTjSVblmrtYRfFFKuQB+GArM0+XP8HGWfJ5vxYBqo+DesvJwOdC2WJ3bCkZShGf0QIfoIpeomVzVdA==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@types/node': 10.12.18
+      bs58check: 2.1.2
+      create-hash: 1.2.0
+      create-hmac: 1.1.7
+      tiny-secp256k1: 1.1.6
+      typeforce: 1.18.0
+      wif: 2.0.6
     dev: false
 
   /bip66@1.1.5:
@@ -16243,6 +16291,12 @@ packages:
     hasBin: true
     dependencies:
       isexe: 2.0.0
+
+  /wif@2.0.6:
+    resolution: {integrity: sha512-HIanZn1zmduSF+BQhkE+YXIbEiH0xPr1012QbFEGB0xsKqJii0/SqJjyn8dFv6y36kOznMgMB+LGcbZTJ1xACQ==}
+    dependencies:
+      bs58check: 2.1.2
+    dev: false
 
   /wif@4.0.0:
     resolution: {integrity: sha512-kADznC+4AFJNXpT8rLhbsfI7EmAcorc5nWvAdKUchGmwXEBD3n55q0/GZ3DBmc6auAvuTSsr/utiKizuXdNYOQ==}

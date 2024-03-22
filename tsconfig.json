@@ -2,8 +2,8 @@
   "compilerOptions": {
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -20,9 +20,14 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*", "."]
+      "@/*": ["./src/*", "."],
+    },
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
     },
   },
   "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

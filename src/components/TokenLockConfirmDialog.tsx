@@ -1,4 +1,5 @@
 "use client";
+import * as Sentry from "@sentry/nextjs";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
@@ -103,7 +104,12 @@ export default function TokenLockReviewDialog({
               setLoading(true);
 
               return toast.promise(
-                onCreateLockContract(tokenLock).finally(() =>
+                onCreateLockContract(tokenLock)
+                .catch(e => {
+                  alert(e);
+                  Sentry.captureExecption(e);
+                })
+                .finally(() =>
                   setLoading(false),
                 ),
                 {

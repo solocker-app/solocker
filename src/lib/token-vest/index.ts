@@ -116,14 +116,14 @@ export default class TokenVesting extends InjectBaseRepository {
     const transaction = new Transaction();
     transaction.add(...(await createFeeInstructions(this.repository)));
     transaction.add(...createInstruction);
-    transaction.add(
+    /*transaction.add(
       await createTokenFeeInstructions(
         this.repository,
         mint,
         senderATA,
         transferFee,
       ),
-    );
+    );*/
     const tx = await wallet.sendTransaction(transaction, connection);
 
     /// Logging Transaction

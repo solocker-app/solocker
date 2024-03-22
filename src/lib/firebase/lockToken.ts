@@ -46,8 +46,14 @@ export default class LockToken {
 
   async getTransactions(address: string): Promise<LockedToken[]> {
     const ref = collection(this.firestore, address);
-    const { docs } = await getDocs(ref);
-    return docs.map(({ id, data }) => ({ id, ...data() })) as LockedToken[];
+    const snapshot = await getDocs(ref);
+    const results: LockedToken[] = [];
+
+    snapshot.forEach((doc) => {
+      results.push({id: doc.id, ...doc.data()});
+    });
+
+    return results;
   }
 
   async saveTransaction(address: string, data: Partial<LockedToken>) {

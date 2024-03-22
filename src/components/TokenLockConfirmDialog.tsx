@@ -107,7 +107,7 @@ export default function TokenLockReviewDialog({
                 onCreateLockContract(tokenLock)
                 .catch(e => {
                   alert(e);
-                  Sentry.captureExecption(e);
+                  Sentry.captureException(e);
                 })
                 .finally(() =>
                   setLoading(false),

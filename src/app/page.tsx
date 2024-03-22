@@ -9,10 +9,10 @@ import TokenLockEditTab from "@/components/TokenLockEditTab";
 import TokenLockCreateTab from "@/components/TokenLockCreateTab";
 import TokenLockConnectWallet from "@/components/TokenLockConnectWallet";
 import { useInitializeTokenLock } from "@/composables/useInitializeTokenLock";
+import TokenLockInfo from "@/components/TokenLockInfoDialog";
 
 function AuthorizedUserOnlyPage() {
-  const { lpInfos, lockedTokens, streamflowLoadingState } =
-    useInitializeTokenLock();
+  const { lpInfos, lockedTokens } = useInitializeTokenLock();
 
   return (
     <Tab.Group
@@ -22,14 +22,20 @@ function AuthorizedUserOnlyPage() {
       <Tab.List className="flex space-x-2 bg-dark/50 rounded-md py-2">
         <Tab
           className={({ selected }) =>
-            join("btn", selected ? "text-secondary p-2 !outline-none" : undefined)
+            join(
+              "btn",
+              selected ? "text-secondary p-2 !outline-none" : undefined,
+            )
           }
         >
           New Lock
         </Tab>
         <Tab
           className={({ selected }) =>
-            join("btn", selected ? "text-secondary p-2 !outline-none" : undefined)
+            join(
+              "btn",
+              selected ? "text-secondary p-2 !outline-none" : undefined,
+            )
           }
         >
           Withdraw
@@ -40,10 +46,7 @@ function AuthorizedUserOnlyPage() {
           <TokenLockCreateTab lpInfos={lpInfos} />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
-          <TokenLockEditTab
-            loadingState={streamflowLoadingState}
-            lockedTokens={lockedTokens}
-          />
+          <TokenLockEditTab />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

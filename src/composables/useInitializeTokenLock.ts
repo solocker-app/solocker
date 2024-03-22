@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/nextjs";
+
 import { useEffect } from "react";
 
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -7,14 +9,11 @@ import {
   getLiquidityPoolInfos,
   raydiumLpInfoSelector,
 } from "@/store/slices/raydiumLpInfo";
-import { streamflowSelector, getLockedTokens } from "@/store/slices/streamflow";
-
-import { useRepository } from "./useRepository";
+import { streamflowSelector } from "@/store/slices/streamflow";
 
 export function useInitializeTokenLock() {
   const { publicKey } = useWallet();
   const dispatch = useAppDispatch();
-  const { repository } = useRepository();
 
   const streamflow = useAppSelector((state) => state.streamFlow);
   const raydiumLpInfo = useAppSelector((state) => state.raydiumLpInfo);
@@ -26,24 +25,12 @@ export function useInitializeTokenLock() {
     if (raydiumLpInfo.loadingState === "idle")
       dispatch(getLiquidityPoolInfos(publicKey.toBase58()))
         .unwrap()
-        .catch(console.log);
+        .catch(Sentry.captureException);
   }, [raydiumLpInfo.loadingState, dispatch]);
-
-  useEffect(() => {
-    if (streamflow.loadingState === "idle")
-      dispatch(
-        getLockedTokens(
-          repository.streamflow.getLockedTokens(publicKey.toBase58()),
-        ),
-      )
-        .unwrap()
-        .catch(console.log);
-  }, [streamflow.loadingState, dispatch]);
 
   return {
     lockedTokens,
     lpInfos,
-    streamflowLoadingState: streamflow.loadingState,
     raydiumLpInfoLoadingState: raydiumLpInfo.loadingState,
   };
 }

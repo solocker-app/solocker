@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Types } from "@streamflow/stream";
@@ -10,16 +10,17 @@ import {
 } from "@/store/slices/raydiumLpInfo";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
-export function useLpLockInfo(stream?: Types.Stream, includeWallet = true) {
+export function useLpLockInfo(mint?: string, includeWallet = true) {
   const { publicKey } = useWallet();
   const dispatch = useAppDispatch();
+  const [error, setError] = useState<Error | null>(null);
   const state = useAppSelector((state) => state.raydiumLpInfo);
 
-  const lpInfo = raydiumLpInfoSelector.selectById(state, stream?.mint);
+  const lpInfo = raydiumLpInfoSelector.selectById(state, mint);
 
   const fetchData = async () => {
     const data = await getLiquidityPoolInfo(state, {
-      mint: stream.mint,
+      mint: mint,
       wallet: includeWallet ? publicKey.toBase58() : null,
     });
 
@@ -27,10 +28,11 @@ export function useLpLockInfo(stream?: Types.Stream, includeWallet = true) {
   };
 
   useEffect(() => {
-    if (stream) fetchData();
-  }, [stream, state, dispatch, publicKey]);
+    if (mint) fetchData().catch(setError);
+  }, [mint, state, dispatch, publicKey]);
 
   return {
     lpInfo,
+    error,
   };
 }

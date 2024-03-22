@@ -36,7 +36,7 @@ export default function TokenLockCreateSelectToken({
           />
           <p className="text-lg font-bold">Solana Lp Locker</p>
         </div>
-        <Search />
+        <Search onChange={() => {}} />
       </header>
       <div className="flex-1 flex flex-col divide-y-1 divide-black overflow-y-scroll">
         {loadingState === "success" ? (

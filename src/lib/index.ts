@@ -14,8 +14,7 @@ export class BaseRepository {
   constructor(
     readonly connection: Connection,
     readonly wallet?: Wallet["adapter"],
-    readonly signTransaction?: SignerWalletAdapterProps["signTransaction"],
-    TOKEN_VESTING_PROGRAM_ID = _TOKEN_VESTING_PROGRAM_ID,
+    readonly TOKEN_VESTING_PROGRAM_ID = _TOKEN_VESTING_PROGRAM_ID,
   ) {
 
     // this.streamflow = new StreamFlow(this);

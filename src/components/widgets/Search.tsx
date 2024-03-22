@@ -4,7 +4,7 @@ import { MdSearch } from "react-icons/md";
 type SearchProps = {
   placeholder?: string;
   minLength?: number;
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
 };
 
 export default function Search({
@@ -23,6 +23,7 @@ export default function Search({
           timer.current = window.setTimeout(() => {
             const value = (event.target as HTMLInputElement).value;
             if (value.trim().length > (minLength ?? 16)) onChange(value);
+            else onChange(null);
           }, 500);
         }}
       />

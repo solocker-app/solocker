@@ -7,6 +7,7 @@ import Search from "./widgets/Search";
 import { useState } from "react";
 import { LpLockedToken } from "@/lib/firebase/lockToken";
 import TokenLockEditItem from "./TokenLockEditItem";
+import TokenUnlockDialog from "./TokenUnLockDialog";
 
 type TokenLockEditTabProps = {
   lpLockedTokens: LpLockedToken[];
@@ -15,7 +16,10 @@ type TokenLockEditTabProps = {
 export default function TokenLockEditTab({
   lpLockedTokens,
 }: TokenLockEditTabProps) {
-  const [search, setSearch] = useState<string | null>();
+  const [search, setSearch] = useState<string | null>(null);
+  const [lpLockedToken, setLpLockedToken] = useState<LpLockedToken | null>(
+    null,
+  );
 
   return (
     <>
@@ -43,18 +47,41 @@ export default function TokenLockEditTab({
                 <th>Period</th>
                 <th>Status</th>
               </tr>
-              {lpLockedTokens.map((token) => (
-                <TokenLockEditItem
-                  lpLockedToken={token}
-                  onClick={() => {}}
-                />
-              ))}
+              {search
+                ? lpLockedTokens
+                    .filter(
+                      (token) =>
+                        token.contractInfo.seed
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                        token.contractInfo.mintAddress
+                          .toLowerCase()
+                          .includes(search.toLowerCase()),
+                    )
+                    .map((lpLockedToken) => (
+                      <TokenLockEditItem
+                        lpLockedToken={lpLockedToken}
+                        onClick={() => setLpLockedToken(lpLockedToken)}
+                      />
+                    ))
+                : lpLockedTokens.map((lpLockedToken) => (
+                    <TokenLockEditItem
+                      lpLockedToken={lpLockedToken}
+                      onClick={() => setLpLockedToken(lpLockedToken)}
+                    />
+                  ))}
             </table>
           ) : (
             <TokenLockNotFound />
           )}
         </div>
       </div>
+      {lpLockedToken && (
+        <TokenUnlockDialog
+          lpTokenLock={lpLockedToken}
+          onClose={() => setLpLockedToken(null)}
+        />
+      )}
     </>
   );
 }

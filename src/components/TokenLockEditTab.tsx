@@ -10,7 +10,7 @@ import { useAppSelector } from "@/store/hooks";
 import { LpLockedToken } from "@/lib/firebase/lockToken";
 
 import Loading from "./widgets/Loading";
-import ErrorMessage from "./widgets/ErrorMessage";
+import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockEditItem from "./TokenLockEditItem";
 import TokenUnlockDialog from "./TokenUnlockDialog";
 
@@ -83,7 +83,7 @@ export default function TokenLockEditTab({
           ) : (
             <TokenLockNotFound />
           ) : loadingState === "failed" ? 
-            <ErrorMessage />
+            <ErrorWidget />
             : <Loading />     
           }
         </div>

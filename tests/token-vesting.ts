@@ -10,6 +10,7 @@ import { signAndSendInstructions } from "@bonfida/utils";
 import { BaseRepository } from "../src/lib";
 import { getDefaultWallet } from "./utils";
 import { isPublicKey } from "../src/lib/utils";
+import { ContractInfo, VestingScheduleHeader } from "@bonfida/token-vesting";
 
 const TOKEN_VESTING_PROGRAM_ID = new PublicKey(
   "DLxB9dSQtA4WJ49hWFhxqiQkD9v6m67Yfk9voxpxrBs4",
@@ -105,8 +106,15 @@ async function main() {
   // );
   // console.log(JSON.stringify(txInfo));
 
+  const contract = VestingScheduleHeader.fromBuffer(
+    Buffer.from(
+      "zJa1kcbqsBRjwg26kdsMEqUDoGsYHgYLCPsdTEaSetaH2pHzoUV2aR9ymTTWH39FL4aM2poxePKE7tGarx5H2LNmCbQLdvuqMDLwYvfFHNPnuCM1tWidrF6GSe8UWdPkvaJKY3eatP3bzxxwtxQYNxBh1",
+    ),
+  );
 
-  console.log(isPublicKey("9ENzb5hJvfPxuAowQKDXF3AfRbxRVDa7w1En4Qkc8x59"))
+  console.log(contract)
+
+  // console.log(isPublicKey("9ENzb5hJvfPxuAowQKDXF3AfRbxRVDa7w1En4Qkc8x59"))
 }
 
 main().catch(console.log);

@@ -46,7 +46,7 @@ function AuthorizedUserOnlyPage() {
           <TokenLockCreateTab lpInfos={lpInfos} />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
-          <TokenLockEditTab />
+          <TokenLockEditTab lpLockedTokens={lockedTokens} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

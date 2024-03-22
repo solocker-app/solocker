@@ -9,17 +9,22 @@ import {
   getLiquidityPoolInfos,
   raydiumLpInfoSelector,
 } from "@/store/slices/raydiumLpInfo";
-import { streamflowSelector } from "@/store/slices/streamflow";
+import {
+  getLpLockedTokens,
+  tokenVestSelectors,
+} from "@/store/slices/tokenVest";
+import { useRepository } from "./useRepository";
 
 export function useInitializeTokenLock() {
   const { publicKey } = useWallet();
+  const { repository } = useRepository();
   const dispatch = useAppDispatch();
 
-  const streamflow = useAppSelector((state) => state.streamFlow);
+  const tokenVest = useAppSelector((state) => state.tokenVest);
   const raydiumLpInfo = useAppSelector((state) => state.raydiumLpInfo);
 
   const lpInfos = raydiumLpInfoSelector.selectAll(raydiumLpInfo);
-  const lockedTokens = streamflowSelector.selectAll(streamflow);
+  const lockedTokens = tokenVestSelectors.selectAll(tokenVest);
 
   useEffect(() => {
     if (raydiumLpInfo.loadingState === "idle")
@@ -28,9 +33,20 @@ export function useInitializeTokenLock() {
         .catch(Sentry.captureException);
   }, [raydiumLpInfo.loadingState, dispatch]);
 
+  useEffect(() => {
+    if (tokenVest.loadingState === "idle")
+      dispatch(
+        getLpLockedTokens({
+          repository,
+          address: publicKey.toBase58(),
+        }),
+      );
+  }, [tokenVest.loadingState, dispatch]);
+
   return {
     lockedTokens,
     lpInfos,
+    tokenVestLoadingstate: tokenVest.loadingState,
     raydiumLpInfoLoadingState: raydiumLpInfo.loadingState,
   };
 }

@@ -1,16 +1,20 @@
 import Link from "next/link";
 
-import { MdLock, MdSearch } from "react-icons/md";
+import { MdSearch } from "react-icons/md";
 
 import Search from "./widgets/Search";
 
-import TokenLockCancel from "./TokenLockCancel";
-import { TokenLockEditMenuAction } from "./TokenLockEditItemMenu";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import NetworkLockInfo from "./NetworkLockInfo";
+import { LpLockedToken } from "@/lib/firebase/lockToken";
+import TokenLockEditItem from "./TokenLockEditItem";
 
-export default function TokenLockEditTab() {
+type TokenLockEditTabProps = {
+  lpLockedTokens: LpLockedToken[];
+};
+
+export default function TokenLockEditTab({
+  lpLockedTokens,
+}: TokenLockEditTabProps) {
   const [search, setSearch] = useState<string | null>();
 
   return (
@@ -29,10 +33,23 @@ export default function TokenLockEditTab() {
           />
         </header>
         <div className="max-h-lg min-h-sm flex flex-col overflow-y-scroll p-4">
-          {search ? (
-            <>
-              <NetworkLockInfo seed={search} />
-            </>
+          {lpLockedTokens.length > 0 ? (
+            <table>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Locked Amount</th>
+                <th>Created At</th>
+                <th>Period</th>
+                <th>Status</th>
+              </tr>
+              {lpLockedTokens.map((token) => (
+                <TokenLockEditItem
+                  lpLockedToken={token}
+                  onClick={() => {}}
+                />
+              ))}
+            </table>
           ) : (
             <TokenLockNotFound />
           )}
@@ -49,7 +66,7 @@ export function TokenLockNotFound() {
         <MdSearch className="text-2xl text-white" />
       </button>
       <div className="flex flex-col space-y-2">
-        <p className="text-lg">Search for a lock contract</p>
+        <p className="text-lg">No Lp token lock found</p>
         <Link
           href="/?tab=new"
           className="btn btn-dark"

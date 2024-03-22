@@ -50,7 +50,7 @@ export default class LockToken {
     const results: LockedToken[] = [];
 
     snapshot.forEach((doc) => {
-      results.push({id: doc.id, ...doc.data()});
+      results.push({id: doc.id, ...doc.data()} as LockedToken);
     });
 
     return results;

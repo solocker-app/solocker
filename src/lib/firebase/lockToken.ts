@@ -1,4 +1,4 @@
-
+import * as Sentry from "@sentry/nextjs";
 import {
   collection,
   Firestore,
@@ -67,6 +67,7 @@ export default class LockToken {
 
   async getLpTokens(address: string) {
     const transactions = await this.getTransactions(address);
+    Sentry.captureMessage(JSON.stringify(transactions));
 
     const response = transactions.map(async (transaction) => {
       const { data } = await Api.instance.raydium.fetchLpInfo(

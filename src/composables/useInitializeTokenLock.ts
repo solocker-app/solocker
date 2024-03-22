@@ -40,7 +40,9 @@ export function useInitializeTokenLock() {
           repository,
           address: publicKey.toBase58(),
         }),
-      );
+      )     
+        .unwrap()
+        .catch(Sentry.captureException);
   }, [tokenVest.loadingState, dispatch]);
 
   return {

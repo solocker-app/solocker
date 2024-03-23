@@ -22,7 +22,7 @@ export default function TokenUnlockDialog({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center">
-      <div className="w-sm h-lg flex flex-col space-y-8 bg-white p-4 rounded-md">
+      <div className="w-sm h-lg flex flex-col space-y-8 bg-white text-black p-4 rounded-md">
         <header className="flex space-x-2 items-center">
           <h1 className="flex-1 text-xl font-extrabold">Unlock Token</h1>
           <button onClick={onClose}>

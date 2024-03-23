@@ -39,7 +39,7 @@ export default function InputDate({ name, value }: InputDateProps) {
             input={false}
             open={true}
             isValidDate={(currentDate: ReturnType<typeof moment>) =>
-              currentDate.isAfter(moment.now())
+              currentDate.isSameOrAfter(moment.now())
             }
             onChange={(value) => {
               if (typeof value !== "string") setFieldValue(name, value.unix());

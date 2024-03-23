@@ -60,7 +60,7 @@ export function getTotalLockedAmount(
   );
 }
 
-const getOrCreateAssociatedTokenAccount = async (
+export const getOrCreateAssociatedTokenAccount = async (
   connection: Connection,
   payer: PublicKey,
   mint: PublicKey,

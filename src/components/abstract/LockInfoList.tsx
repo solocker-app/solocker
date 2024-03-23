@@ -57,7 +57,7 @@ export default function LockInfoList({
         </>
       </LockInfo>
       <LockInfo title="Unlock time">
-        <span>{releaseTime}</span>
+        <span>{moment.unix(releaseTime).fromNow()}</span>
       </LockInfo>
     </div>
   );

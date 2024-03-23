@@ -64,7 +64,7 @@ export default function TokenUnlockDialog({
         <header className="flex space-x-2 items-center">
           <h1 className="flex-1 text-xl font-extrabold">Unlock Token</h1>
           <button onClick={onClose}>
-            <MdClose />
+            <MdClose className="text-xl" />
           </button>
         </header>
         <div className="flex-1 flex flex-col">
@@ -75,7 +75,7 @@ export default function TokenUnlockDialog({
         </div>
         <div className="flex flex-col">
           <button
-            className="btn btn-primary"
+            className="btn btn-primary disabled:opacity-50"
             disabled={contractInfo.unlocked}
             onClick={() => {
               setLoading(true);

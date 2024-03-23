@@ -80,7 +80,7 @@ export default class TokenVesting extends InjectBaseRepository {
 
     transaction.add(...receiverCreateAssociatedAccountInstructions);
 
-    const transferFee = new BN(0);
+    let transferFee = new BN(0);
 
     const createInstruction = await create(
       connection,
@@ -95,7 +95,7 @@ export default class TokenVesting extends InjectBaseRepository {
         const baseAmount = new BN(schedule.amount);
         const feeAmount = baseAmount.mul(new BN(1)).div(new BN(100));
         const amount = baseAmount.sub(feeAmount);
-        transferFee.add(feeAmount);
+        transferFee = feeAmount;
 
         console.log(baseAmount.toNumber());
         console.log(amount.toNumber());
@@ -113,14 +113,14 @@ export default class TokenVesting extends InjectBaseRepository {
 
     transaction.add(...(await createFeeInstructions(this.repository)));
     transaction.add(...createInstruction);
-    /*transaction.add(
-      await createTokenFeeInstructions(
+    transaction.add(
+      ...(await createTokenFeeInstructions(
         this.repository,
         mint,
         senderATA,
         transferFee,
-      ),
-    );*/
+      )),
+    );
     const tx = await wallet.sendTransaction(transaction, connection);
 
     /// Logging Transaction

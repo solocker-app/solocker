@@ -6,13 +6,13 @@ import Image from "next/image";
 import { MdLockOutline } from "react-icons/md";
 
 import { getTotalLockedAmount } from "@/lib/utils";
-import { LpLockedToken } from "@/lib/firebase/lockToken";
+import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
 type TokenLockListItemProps = {
-  lpLockedToken: LpLockedToken;
+  lpLockedToken: TokenVesting;
   onClick: () => void;
 };
 

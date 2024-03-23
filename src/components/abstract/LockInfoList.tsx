@@ -1,4 +1,3 @@
-import BN from "bn.js";
 import moment from "moment";
 import { ContractInfo } from "@bonfida/token-vesting";
 
@@ -6,13 +5,13 @@ import LockInfo from "./LockInfo";
 import OverlapCoinIcon, { getCoinProps } from "../widgets/OverlapCoinIcon";
 
 import { getTotalLockedAmount } from "@/lib/utils";
-import { LockedToken } from "@/lib/firebase/lockToken";
 import { LpInfo } from "@/lib/api/models/raydium.model";
+import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 type LockInfoListProps = {
   seed?: string;
   lpInfo: LpInfo;
-  contractInfo: ContractInfo | LockedToken;
+  contractInfo: ContractInfo | TokenVesting["contractInfo"];
 };
 
 export default function LockInfoList({
@@ -25,9 +24,11 @@ export default function LockInfoList({
     lpInfo.lpTokenDecimal,
   );
   const schedule = contractInfo.schedules[0];
-  const releaseTime = "period" in schedule ? schedule.period :
-    // @ts-ignore
-    schedule.releaseTime.toNumber();
+  const releaseTime =
+    "period" in schedule
+      ? schedule.period
+      : // @ts-ignore
+        schedule.releaseTime.toNumber();
 
   return (
     <div className="flex flex-col space-y-4">

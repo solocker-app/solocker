@@ -7,7 +7,7 @@ import Search from "./widgets/Search";
 import { useState } from "react";
 
 import { useAppSelector } from "@/store/hooks";
-import { LpLockedToken } from "@/lib/firebase/lockToken";
+import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import Loading from "./widgets/Loading";
 import ErrorWidget from "./widgets/ErrorWidget";
@@ -15,23 +15,23 @@ import TokenLockEditItem from "./TokenLockEditItem";
 import TokenUnlockDialog from "./TokenUnlockDialog";
 
 type TokenLockEditTabProps = {
-  lpLockedTokens: LpLockedToken[];
+  lpLockedTokens: TokenVesting[];
 };
 
 export default function TokenLockEditTab({
   lpLockedTokens,
 }: TokenLockEditTabProps) {
-  const { loadingState } = useAppSelector(state => state.tokenVest);
+  const { loadingState } = useAppSelector(state => state.tokenVesting);
 
   const [search, setSearch] = useState<string | null>(null);
-  const [lpLockedToken, setLpLockedToken] = useState<LpLockedToken | null>(
+  const [lpLockedToken, setLpLockedToken] = useState<TokenVesting | null>(
     null,
   );
 
   return (
     <>
       <div className="self-center flex flex-col space-y-8 bg-dark/50 rounded-xl lt-md:min-w-full lt-md:max-w-full md:w-full">
-        <header className="flex flex-col space-y-4 border-b-1 border-b-white/40 p-4">
+        <header className="flex flex-col space-y-4 border-b-1 border-b-white/10 p-4">
           <div className="flex flex-col space-y-2">
             <h1 className="text-xl font-bold">Withdraw</h1>
             <p className="text-highlight">

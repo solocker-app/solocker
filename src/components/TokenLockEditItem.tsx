@@ -62,7 +62,7 @@ export default function TokenLockEditItem({
         </div>
       </td>
       <td className="truncate">
-        {moment.unix(Number(contractInfo.createdAt)).fromNow()}
+        {moment(contractInfo.createdAt).fromNow()}
       </td>
       <td className="truncate">
         {moment.unix(contractInfo.schedules[0].period).fromNow()}

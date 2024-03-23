@@ -23,21 +23,20 @@ type LockedParams = {
   seed: string;
   tx: string;
   lpInfo: LpInfo;
-  contractInfo: ContractInfo;
+  contractInfo: any;
 };
 
 export default function TokenLockCreateTab({
   lpInfos,
 }: TokenLockCreateTabProps) {
+  const { repository } = useRepository();
+
   const [formIndex, setFormIndex] = useState(0);
   const [config, setConfig] = useState<Partial<Config>>({
     period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   });
   const [lockedParams, setLockedParams] = useState<LockedParams>();
-
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
-
-  const { repository } = useRepository();
 
   return (
     <>
@@ -86,7 +85,6 @@ export default function TokenLockCreateTab({
             visible={confirmDialogVisible}
             setVisible={setConfirmDialogVisible}
             onCreateLockContract={async (config) => {
-              console.log(config);
               const params = {
                 mint: new PublicKey(config.token.lpTokenMetadata.mint),
                 receiver: new PublicKey(config.recipient),
@@ -100,33 +98,15 @@ export default function TokenLockCreateTab({
                 ],
               };
 
-              console.log(params);
-
               const [seed, tx] =
                 await repository.tokenVesting.lockToken(params);
-              /// Todo Log here
-              Sentry.captureMessage(
-                JSON.stringify({
-                  seed,
-                  tx,
-                }),
-                "info",
-              );
 
               setLockedParams({
                 tx,
                 seed,
                 lpInfo: config.token,
                 contractInfo: {
-                  schedules: params.schedules.map(
-                    (schedule) =>
-                      new Schedule(
-                        // @ts-ignore
-                        new Numberu64(Math.round(schedule.period / 1000)),
-                        // @ts-ignore
-                        new Numberu64(schedule.amount),
-                      ),
-                  ),
+                  schedules: params.schedules,
                   destinationAddress: params.receiver,
                   mintAddress: params.mint,
                 },

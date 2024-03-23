@@ -89,7 +89,7 @@ export default class TokenVesting extends InjectBaseRepository {
       wallet.publicKey,
       wallet.publicKey,
       senderATA,
-      receiverATA.address,
+      receiverATA,
       new PublicKey(mint),
       schedules.map((schedule) => {
         const baseAmount = new BN(schedule.amount);

@@ -26,7 +26,7 @@ export default function LockInfoList({
   );
   const releaseTime = 
     // @ts-ignore
-    new BN(contractInfo.schedules[0].releaseTime).toNumber();
+    new BN(contractInfo.schedules[0].releaseTime).toNumber() * 1000;
 
   return (
     <div className="flex flex-col space-y-4">

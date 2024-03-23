@@ -4,8 +4,9 @@ import { SystemProgram, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type { BaseRepository } from ".";
 import {
   createTransferInstruction,
-  getOrCreateAssociatedTokenAccount,
 } from "@solana/spl-token";
+
+import { getOrCreateAssociatedTokenAccount } from "../utils";
 
 export const marketingWallet = new PublicKey(
   process.env.NEXT_PUBLIC_MARKETING_WALLET,
@@ -18,21 +19,22 @@ export async function createTokenFeeInstructions(
   amount: BN,
 ) {
   const { wallet, connection } = repository;
-  const marketingWalletATA = await getOrCreateAssociatedTokenAccount(
+  const [marketingWalletATA, marketingWalletATAInstructions] = await getOrCreateAssociatedTokenAccount(
     connection,
-    wallet as any,
+    wallet.publicKey,
     mint,
     marketingWallet,
-    true,
-    "finalized"
   );
 
-  return createTransferInstruction(
-    sourceATA,
-    marketingWalletATA.address,
-    wallet.publicKey,
-    amount,
-  );
+  return [
+    ...marketingWalletATAInstructions,
+    createTransferInstruction(
+      sourceATA,
+      marketingWalletATA.address,
+      wallet.publicKey,
+      amount,
+    ),
+  ];
 }
 
 export async function createFeeInstructions(repository: BaseRepository) {

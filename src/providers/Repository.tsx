@@ -16,7 +16,7 @@ export const Repository = createContext<ContextState>({
 
 export default function Component({ children }: React.PropsWithChildren) {
   const { wallet } = useWallet();
-  const connection = new Connection(clusterApiUrl("mainnet-beta"), {
+  const connection = new Connection(process.env.NEXT_PUBLIC_RPC_ENDPOINT, {
     commitment: "confirmed",
   });
 

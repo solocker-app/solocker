@@ -15,7 +15,9 @@ export const Repository = createContext<ContextState>({
 
 export default function Component({ children }: React.PropsWithChildren) {
   const { wallet } = useWallet();
-  const { connection } = useConnection();
+  const connection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"), {
+    commitment: "confirmed",
+  });
 
   const repository = useMemo(
     () => new BaseRepository(connection, wallet?.adapter),

@@ -72,14 +72,9 @@ export default class TokenVesting extends InjectBaseRepository {
 
     const [receiverATA, receiverCreateAssociatedAccountInstructions] = await getOrCreateAssociatedTokenAccount(
       connection,
-      wallet as any,
+      wallet.publicKey,
       mint,
       receiver,
-      true,
-      undefined,
-      undefined,
-      TOKEN_PROGRAM_ID,
-      ASSOCIATED_TOKEN_PROGRAM_ID,
     );
 
     transactions.add(...receiverCreateAssociatedAccountInstructions);

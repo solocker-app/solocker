@@ -4,12 +4,13 @@ import LockInfoList from "./abstract/LockInfoList";
 
 type TokenLockConfirmDialogProps = {
   tx: string;
-  seed: string;
+  title?: string;
   onClose: () => void;
 } & React.ComponentProps<typeof LockInfoList>;
 
 export default function TokenLockInfoDialog({
   tx,
+  title = "Locked Token Info",
   lpInfo,
   contractInfo,
   onClose,
@@ -18,7 +19,7 @@ export default function TokenLockInfoDialog({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center px-4">
       <div className="w-sm h-lg flex flex-col space-y-8 bg-white text-black p-4 rounded-md">
         <header className="flex">
-          <h1 className="flex-1 text-xl font-bold">Locked Token Info</h1>
+          <h1 className="flex-1 text-xl font-bold">{title}</h1>
           <button onClick={onClose}>
             <MdClose className="text-xl" />
           </button>

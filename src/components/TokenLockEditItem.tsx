@@ -21,7 +21,10 @@ export default function TokenLockEditItem({
   lpLockedToken: { lpInfo, contractInfo },
 }: TokenLockListItemProps) {
   return (
-    <tr onClick={onClick}>
+    <tr
+      className="cursor-pointer"
+      onClick={onClick}
+    >
       <td>
         <div className="flex items-center">
           <Image
@@ -62,7 +65,7 @@ export default function TokenLockEditItem({
         </div>
       </td>
       <td className="truncate">
-        {moment(contractInfo.createdAt).fromNow()}
+        {moment(contractInfo.createdAt).format("MMMM Do YYYY")}
       </td>
       <td className="truncate">
         {moment.unix(contractInfo.schedules[0].period).fromNow()}

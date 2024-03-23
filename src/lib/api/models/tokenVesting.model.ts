@@ -7,6 +7,7 @@ export type TokenVesting = {
     id: string;
     tx: string;
     seed: string;
+    unlockTx: string;
     unlocked: boolean;
     createdAt: number;
     mintAddress: string;

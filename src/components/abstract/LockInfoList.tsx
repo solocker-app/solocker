@@ -11,7 +11,7 @@ import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 type LockInfoListProps = {
   seed?: string;
   lpInfo: LpInfo;
-  contractInfo: ContractInfo | TokenVesting["contractInfo"];
+  contractInfo: TokenVesting["contractInfo"];
 };
 
 export default function LockInfoList({
@@ -31,7 +31,7 @@ export default function LockInfoList({
         schedule.releaseTime.toNumber();
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-2">
       <LockInfo title="Number of recipients">
         <span>1</span>
         <span>Recipient</span>
@@ -57,8 +57,11 @@ export default function LockInfoList({
           />
         </>
       </LockInfo>
+      <LockInfo title="Created At">
+        <span>{moment(contractInfo.createdAt).format("MMMM Do YYYY")}</span>
+      </LockInfo>
       <LockInfo title="Unlock time">
-        <span>{moment.unix(releaseTime).fromNow()}</span>
+        <span>{moment.unix(releaseTime).format("MMMM Do YYYY, h:mm:ss")}</span>
       </LockInfo>
     </div>
   );

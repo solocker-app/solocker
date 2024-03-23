@@ -21,12 +21,10 @@ type TokenLockEditTabProps = {
 export default function TokenLockEditTab({
   lpLockedTokens,
 }: TokenLockEditTabProps) {
-  const { loadingState } = useAppSelector(state => state.tokenVesting);
+  const { loadingState } = useAppSelector((state) => state.tokenVesting);
 
   const [search, setSearch] = useState<string | null>(null);
-  const [lpLockedToken, setLpLockedToken] = useState<TokenVesting | null>(
-    null,
-  );
+  const [lpLockedToken, setLpLockedToken] = useState<TokenVesting | null>(null);
 
   return (
     <>
@@ -44,48 +42,33 @@ export default function TokenLockEditTab({
           />
         </header>
         <div className="max-h-lg min-h-sm flex flex-col overflow-y-scroll p-4">
-        {
-          loadingState === "success" ?
+          {loadingState === "success" ? (
             lpLockedTokens.length > 0 ? (
-            <table>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Locked Amount</th>
-                <th>Created At</th>
-                <th>Period</th>
-                <th>Status</th>
-              </tr>
-              {search
-                ? lpLockedTokens
-                    .filter(
-                      (token) =>
-                        token.contractInfo.seed
-                          .toLowerCase()
-                          .includes(search.toLowerCase()) ||
-                        token.contractInfo.mintAddress
-                          .toLowerCase()
-                          .includes(search.toLowerCase()),
-                    )
-                    .map((lpLockedToken) => (
-                      <TokenLockEditItem
-                        lpLockedToken={lpLockedToken}
-                        onClick={() => setLpLockedToken(lpLockedToken)}
-                      />
-                    ))
-                : lpLockedTokens.map((lpLockedToken) => (
-                    <TokenLockEditItem
-                      lpLockedToken={lpLockedToken}
-                      onClick={() => setLpLockedToken(lpLockedToken)}
-                    />
-                  ))}
-            </table>
-          ) : (
-            <TokenLockNotFound />
-          ) : loadingState === "failed" ? 
+              <table>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Locked Amount</th>
+                  <th>Created At</th>
+                  <th>Period</th>
+                  <th>Status</th>
+                </tr>
+                {lpLockedTokens.map((lpLockedToken, index) => (
+                  <TokenLockEditItem
+                    key={index}
+                    lpLockedToken={lpLockedToken}
+                    onClick={() => setLpLockedToken(lpLockedToken)}
+                  />
+                ))}
+              </table>
+            ) : (
+              <TokenLockNotFound />
+            )
+          ) : loadingState === "failed" ? (
             <ErrorWidget />
-            : <Loading />     
-          }
+          ) : (
+            <Loading />
+          )}
         </div>
       </div>
       {lpLockedToken && (

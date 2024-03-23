@@ -1,10 +1,11 @@
 import * as Sentry from "@sentry/nextjs";
 
 import { useState } from "react";
-import { PublicKey } from "@solana/web3.js";
+import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
+import { PublicKey } from "@solana/web3.js";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 import { useRepository } from "@/composables";
@@ -31,7 +32,7 @@ export default function TokenUnlockDialog({
   const [loading, setLoading] = useState(false);
 
   const onUnlock = async function () {
-    await repository.tokenVesting.unlockToken(
+    const tx = await repository.tokenVesting.unlockToken(
       seed,
       new PublicKey(contractInfo.mintAddress),
     );
@@ -52,14 +53,15 @@ export default function TokenUnlockDialog({
       publicKey.toBase58(),
       contractInfo.id,
       {
+        unlockTx: tx,
         unlocked: true,
       },
     );
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center">
-      <div className="w-sm h-lg flex flex-col space-y-8 bg-white text-black p-4 rounded-md">
+  return createPortal(
+    <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center overflow-y-scroll">
+      <div className="w-sm flex flex-col space-y-4 bg-white text-black p-4 rounded-md">
         <header className="flex space-x-2 items-center">
           <h1 className="flex-1 text-xl font-extrabold">Unlock Token</h1>
           <button onClick={onClose}>
@@ -75,8 +77,11 @@ export default function TokenUnlockDialog({
         <div className="flex flex-col">
           <button
             className="btn btn-primary disabled:opacity-50"
-            disabled={contractInfo.unlocked}
+            disabled={!contractInfo.unlocked}
             onClick={() => {
+              if (contractInfo.unlocked)
+                return window.open(`https://solscan.io/tx/${contractInfo.unlockTx}`);
+
               setLoading(true);
               toast
                 .promise(
@@ -96,11 +101,14 @@ export default function TokenUnlockDialog({
             {loading ? (
               <div className="w-6 h-6 border-3 border-t-transparent rounded-full animate-spin" />
             ) : (
-              <span>Unlock</span>
+              <span>
+                {contractInfo.unlocked ? "View Transaction" : "Unlock"}
+              </span>
             )}
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

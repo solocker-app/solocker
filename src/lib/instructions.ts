@@ -30,7 +30,7 @@ export async function createTokenFeeInstructions(
     ...marketingWalletATAInstructions,
     createTransferInstruction(
       sourceATA,
-      marketingWalletATA.address,
+      marketingWalletATA,
       wallet.publicKey,
       amount,
     ),

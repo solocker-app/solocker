@@ -2,7 +2,18 @@ import BN from "bn.js";
 import base58 from "bs58";
 import { Schedule, TOKEN_VESTING_PROGRAM_ID } from "@bonfida/token-vesting";
 
-import { PublicKey } from "@solana/web3.js";
+import { 
+  PublicKey,
+  Connection,
+  TransactionInstruction
+ } from "@solana/web3.js";
+import {
+  createTransferInstruction,
+  createAssociatedTokenAccountInstruction,
+  getAssociatedTokenAddress,
+  getAccount
+} from '@solana/spl-token';
+
 import { LockedToken, LpLockedToken } from "../firebase/lockToken";
 
 export const encodeSeed = function (value: string) {
@@ -48,3 +59,23 @@ export function getTotalLockedAmount(
       .div(new BN(10).pow(new BN(power)))
   );
 }
+
+const getOrCreateAssociatedTokenAccount = async (
+  connection: Connection,
+  payer: PublicKey,
+  mint: PublicKey,
+  owner: PublicKey
+) => {
+  const transactionInstructions: TransactionInstruction[] = [];
+  const ata = await getAssociatedTokenAddress(mint, owner);
+  const accountInfo = await connection.getAccountInfo(ata);
+
+  if (!accountInfo) {
+    transactionInstructions.push(
+      createAssociatedTokenAccountInstruction(payer, ata, owner, mint)
+    );
+  }
+
+  return [ata, transactionInstructions];
+};
+

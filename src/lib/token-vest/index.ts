@@ -46,6 +46,7 @@ export default class TokenVesting extends InjectBaseRepository {
     receiver,
     schedules,
   }: LockToken): Promise<[string, string]> {
+    const transaction = new Transaction();
     const seed = generateRandomSeed();
     const { wallet, connection, firebase } = this.repository;
 
@@ -110,7 +111,6 @@ export default class TokenVesting extends InjectBaseRepository {
       }),
     );
 
-    const transaction = new Transaction();
     transaction.add(...(await createFeeInstructions(this.repository)));
     transaction.add(...createInstruction);
     /*transaction.add(

@@ -6,7 +6,7 @@ import {
   createTransferInstruction,
 } from "@solana/spl-token";
 
-import { getOrCreateAssociatedTokenAccount } from "../utils";
+import { getOrCreateAssociatedTokenAccount } from "./utils";
 
 export const marketingWallet = new PublicKey(
   process.env.NEXT_PUBLIC_MARKETING_WALLET,

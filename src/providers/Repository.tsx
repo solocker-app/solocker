@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useMemo } from "react";
 
+import { Connection, clusterApiUrl } from  "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { BaseRepository } from "@/lib";
@@ -15,7 +16,7 @@ export const Repository = createContext<ContextState>({
 
 export default function Component({ children }: React.PropsWithChildren) {
   const { wallet } = useWallet();
-  const connection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"), {
+  const connection = new Connection(clusterApiUrl("mainnet-beta"), {
     commitment: "confirmed",
   });
 

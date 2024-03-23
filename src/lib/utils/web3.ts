@@ -65,7 +65,7 @@ export const getOrCreateAssociatedTokenAccount = async (
   payer: PublicKey,
   mint: PublicKey,
   owner: PublicKey
-): Promise<[PublicKey, TransactionInstruction]> => {
+): Promise<[PublicKey, TransactionInstruction[]]> => {
   const transactionInstructions: TransactionInstruction[] = [];
   const ata = await getAssociatedTokenAddress(mint, owner);
   const accountInfo = await connection.getAccountInfo(ata);

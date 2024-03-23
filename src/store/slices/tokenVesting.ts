@@ -1,5 +1,4 @@
 import { BaseRepository } from "@/lib";
-import { LpLockedToken } from "@/lib/firebase/lockToken";
 import {
   createAsyncThunk,
   createEntityAdapter,

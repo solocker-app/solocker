@@ -23,6 +23,8 @@ export async function createTokenFeeInstructions(
     wallet as any,
     mint,
     marketingWallet,
+    true,
+    "finalized"
   );
 
   return createTransferInstruction(

@@ -10,9 +10,9 @@ import {
   raydiumLpInfoSelector,
 } from "@/store/slices/raydiumLpInfo";
 import {
-  getLpLockedTokens,
-  tokenVestSelectors,
-} from "@/store/slices/tokenVest";
+  getTokenVestingByOwner,
+  tokenVestingSelectors,
+} from "@/store/slices/tokenVesting";
 import { useRepository } from "./useRepository";
 
 export function useInitializeTokenLock() {
@@ -20,11 +20,11 @@ export function useInitializeTokenLock() {
   const { repository } = useRepository();
   const dispatch = useAppDispatch();
 
-  const tokenVest = useAppSelector((state) => state.tokenVest);
+  const tokenVesting = useAppSelector((state) => state.tokenVesting);
   const raydiumLpInfo = useAppSelector((state) => state.raydiumLpInfo);
 
   const lpInfos = raydiumLpInfoSelector.selectAll(raydiumLpInfo);
-  const lockedTokens = tokenVestSelectors.selectAll(tokenVest);
+  const lockedTokens = tokenVestingSelectors.selectAll(tokenVesting);
 
   useEffect(() => {
     if (raydiumLpInfo.loadingState === "idle")
@@ -34,21 +34,16 @@ export function useInitializeTokenLock() {
   }, [raydiumLpInfo.loadingState, dispatch]);
 
   useEffect(() => {
-    if (tokenVest.loadingState === "idle")
-      dispatch(
-        getLpLockedTokens({
-          repository,
-          address: publicKey.toBase58(),
-        }),
-      )     
+    if (tokenVesting.loadingState === "idle")
+      dispatch(getTokenVestingByOwner(publicKey.toBase58()))
         .unwrap()
         .catch(Sentry.captureException);
-  }, [tokenVest.loadingState, dispatch]);
+  }, [tokenVesting.loadingState, dispatch]);
 
   return {
     lockedTokens,
     lpInfos,
-    tokenVestLoadingstate: tokenVest.loadingState,
+    tokenVestLoadingstate: tokenVesting.loadingState,
     raydiumLpInfoLoadingState: raydiumLpInfo.loadingState,
   };
 }

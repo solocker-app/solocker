@@ -1,8 +1,8 @@
 import { Menu } from "@headlessui/react";
-import { MdMoreHoriz, MdPageview } from "react-icons/md";
-import { FaMoneyBill, FaUnlock } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { IoIosSend } from "react-icons/io";
+import { MdMoreHoriz, MdPageview } from "react-icons/md";
+import { FaMoneyBill, FaUnlock } from "react-icons/fa";
 
 export enum TokenLockEditMenuAction {
   TOP_UP,

@@ -2,11 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { raydiumLpInfoReducer } from "./slices/raydiumLpInfo";
 import { streamflowReducer } from "./slices/streamflow";
-import { tokenVestReducer } from "./slices/tokenVest";
+import { tokenVestingReducer } from "./slices/tokenVesting";
 
 export const store = configureStore({
   reducer: {
-    tokenVest: tokenVestReducer,
+    tokenVesting: tokenVestingReducer,
     raydiumLpInfo: raydiumLpInfoReducer,
     streamFlow: streamflowReducer,
   },

@@ -1,24 +1,62 @@
+import * as Sentry from "@sentry/nextjs";
+
 import { useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
+import { useWallet } from "@solana/wallet-adapter-react";
+
 import { useRepository } from "@/composables";
-import { LpLockedToken } from "@/lib/firebase/lockToken";
+import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
+
+import { useAppDispatch } from "@/store/hooks";
+import { tokenVestingActions } from "@/store/slices/tokenVesting";
 
 import LockInfoList from "./abstract/LockInfoList";
 
 type TokenUnlockDialogProps = {
-  lpTokenLock: LpLockedToken;
+  lpTokenLock: TokenVesting;
   onClose: () => void;
 };
 
 export default function TokenUnlockDialog({
   onClose,
-  lpTokenLock: { lpInfo, contractInfo },
+  lpTokenLock: { seed, lpInfo, contractInfo },
 }: TokenUnlockDialogProps) {
+  const { publicKey } = useWallet();
+  const dispatch = useAppDispatch();
   const { repository } = useRepository();
+
   const [loading, setLoading] = useState(false);
+
+  const onUnlock = async function () {
+    await repository.tokenVesting.unlockToken(
+      seed,
+      new PublicKey(contractInfo.mintAddress),
+    );
+
+    dispatch(
+      tokenVestingActions.updateOne({
+        id: seed,
+        changes: {
+          contractInfo: {
+            ...contractInfo,
+            unlocked: true,
+          },
+        },
+      }),
+    );
+
+    /// Ignore is this fail
+    await repository.firebase.lockToken.updateTransaction(
+      publicKey.toBase58(),
+      seed,
+      {
+        unlocked: true,
+      },
+    );
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center">
@@ -43,10 +81,10 @@ export default function TokenUnlockDialog({
               setLoading(true);
               toast
                 .promise(
-                  repository.tokenVesting.unlockToken(
-                    contractInfo.seed,
-                    new PublicKey(contractInfo.mintAddress),
-                  ),
+                  onUnlock().catch((error) => {
+                    Sentry.captureException(error);
+                    return Promise.reject(error);
+                  }),
                   {
                     success: "Lp Token unlocked successfully",
                     error: "Lp Token unlock failed, Try again!",

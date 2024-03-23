@@ -50,19 +50,6 @@ export default class TokenVesting extends InjectBaseRepository {
     const seed = generateRandomSeed();
     const { wallet, connection, firebase } = this.repository;
 
-    /// Logging Seed
-    await firebase.lockToken.saveTransaction(wallet.publicKey.toBase58(), {
-      seed,
-      destinationAddress: receiver.toBase58(),
-      mintAddress: mint.toBase58(),
-      schedules: schedules.map((schedule) => {
-        schedule.amount = schedule.amount.toNumber();
-        return schedule;
-      }),
-      type: Type.OUTGOING,
-      unlocked: false,
-    });
-
     const senderATA = await getAssociatedTokenAddress(
       mint,
       wallet.publicKey,
@@ -71,14 +58,15 @@ export default class TokenVesting extends InjectBaseRepository {
       ASSOCIATED_TOKEN_PROGRAM_ID,
     );
 
-    const [receiverATA, receiverCreateAssociatedAccountInstructions] = await getOrCreateAssociatedTokenAccount(
-      connection,
-      wallet.publicKey,
-      mint,
-      receiver,
-    );
-     
-    if(receiverCreateAssociatedAccountInstructions.length > 0)
+    const [receiverATA, receiverCreateAssociatedAccountInstructions] =
+      await getOrCreateAssociatedTokenAccount(
+        connection,
+        wallet.publicKey,
+        mint,
+        receiver,
+      );
+
+    if (receiverCreateAssociatedAccountInstructions.length > 0)
       transaction.add(...receiverCreateAssociatedAccountInstructions);
 
     let transferFee = new BN(0);
@@ -98,11 +86,6 @@ export default class TokenVesting extends InjectBaseRepository {
         const amount = baseAmount.sub(feeAmount);
         transferFee = feeAmount;
 
-        console.log(baseAmount.toNumber());
-        console.log(amount.toNumber());
-        console.log(feeAmount.toNumber());
-        console.log(transferFee.toNumber());
-
         return new Schedule(
           /// @ts-ignore
           new Numberu64(Math.round(schedule.period / 1000)),
@@ -112,7 +95,7 @@ export default class TokenVesting extends InjectBaseRepository {
       }),
     );
 
-    transaction.add(...(await createFeeInstructions(this.repository)));
+    // transaction.add(...(await createFeeInstructions(this.repository)));
     transaction.add(...createInstruction);
     transaction.add(
       ...(await createTokenFeeInstructions(
@@ -125,11 +108,18 @@ export default class TokenVesting extends InjectBaseRepository {
     const tx = await wallet.sendTransaction(transaction, connection);
 
     /// Logging Transaction
-    await firebase.lockToken.updateTransaction(
-      wallet.publicKey.toBase58(),
+    await firebase.lockToken.createTransaction(wallet.publicKey.toBase58(), {
+      tx,
       seed,
-      { tx },
-    );
+      unlocked: false,
+      type: Type.OUTGOING,
+      destinationAddress: receiver.toBase58(),
+      mintAddress: mint.toBase58(),
+      schedules: schedules.map((schedule) => {
+        schedule.amount = schedule.amount.toNumber();
+        return schedule;
+      }),
+    });
 
     return [seed, tx];
   }

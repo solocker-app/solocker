@@ -1,14 +1,16 @@
 import BN from "bn.js";
-import * as Sentry from "@sentry/nextjs";
 
 import { Fragment, useState } from "react";
 import { Tab } from "@headlessui/react";
 import { PublicKey } from "@solana/web3.js";
-import { ContractInfo, Numberu64, Schedule } from "@bonfida/token-vesting";
+
+import { useRepository } from "@/composables";
 
 import { Config } from "@/lib/models/config.model";
 import { LpInfo } from "@/lib/api/models/raydium.model";
-import { useRepository } from "@/composables";
+
+import { useAppDispatch } from "@/store/hooks";
+import { tokenVestingActions } from "@/store/slices/tokenVesting";
 
 import TokenLockInfoDialog from "./TokenLockInfoDialog";
 import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
@@ -29,6 +31,7 @@ type LockedParams = {
 export default function TokenLockCreateTab({
   lpInfos,
 }: TokenLockCreateTabProps) {
+  const dispatch = useAppDispatch();
   const { repository } = useRepository();
 
   const [formIndex, setFormIndex] = useState(0);
@@ -100,6 +103,24 @@ export default function TokenLockCreateTab({
 
               const [seed, tx] =
                 await repository.tokenVesting.lockToken(params);
+
+              dispatch(
+                tokenVestingActions.addOne({
+                  seed,
+                  contractInfo: {
+                    tx,
+                    seed,
+                    id: seed,
+                    schedules: params.schedules,
+                    mintAddress: params.mint.toBase58(),
+                    destinationAddress: params.receiver.toBase58(),
+                    unlocked: false,
+                    createdAt: Date.now(),
+                    type: "outgoing",
+                  },
+                  lpInfo: config.token,
+                }),
+              );
 
               setLockedParams({
                 tx,

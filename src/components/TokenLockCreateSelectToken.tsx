@@ -34,7 +34,7 @@ export default function TokenLockCreateSelectToken({
             width={32}
             height={32}
           />
-          <p className="text-lg font-bold">Solana Lp Locker</p>
+          <p className="text-lg font-bold">Solana SPL Locker</p>
         </div>
         <Search onChange={() => {}} />
       </header>

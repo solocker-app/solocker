@@ -44,9 +44,8 @@ export default function TokenLockEditTab({
           />
         </header>
         <div className="max-h-lg min-h-sm flex flex-col overflow-y-scroll p-4">
-   { loadingState }       
-   {
-            loadingState === "success" ?
+        {
+          loadingState === "success" ?
             lpLockedTokens.length > 0 ? (
             <table>
               <tr>

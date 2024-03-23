@@ -13,12 +13,12 @@ import { PublicKey, Transaction } from "@solana/web3.js";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
-  getOrCreateAssociatedTokenAccount,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
 import { InjectBaseRepository } from "../injector";
 import { Type } from "../firebase/lockToken";
+import { getOrCreateAssociatedTokenAccount } from "../utils";
 import {
   createFeeInstructions,
   createTokenFeeInstructions,
@@ -70,7 +70,7 @@ export default class TokenVesting extends InjectBaseRepository {
       ASSOCIATED_TOKEN_PROGRAM_ID,
     );
 
-    const receiverATA = await getOrCreateAssociatedTokenAccount(
+    const [receiverATA, receiverCreateAssociatedAccountInstructions] = await getOrCreateAssociatedTokenAccount(
       connection,
       wallet as any,
       mint,
@@ -81,6 +81,8 @@ export default class TokenVesting extends InjectBaseRepository {
       TOKEN_PROGRAM_ID,
       ASSOCIATED_TOKEN_PROGRAM_ID,
     );
+
+    transactions.add(...receiverCreateAssociatedAccountInstructions);
 
     const transferFee = new BN(0);
 

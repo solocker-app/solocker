@@ -78,7 +78,7 @@ export default class TokenVesting extends InjectBaseRepository {
       receiver,
     );
 
-    transactions.add(...receiverCreateAssociatedAccountInstructions);
+    transaction.add(...receiverCreateAssociatedAccountInstructions);
 
     const transferFee = new BN(0);
 

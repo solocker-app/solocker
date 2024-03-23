@@ -77,8 +77,9 @@ export default class TokenVesting extends InjectBaseRepository {
       mint,
       receiver,
     );
-
-    transaction.add(...receiverCreateAssociatedAccountInstructions);
+     
+    if(receiverCreateAssociatedAccountInstructions.length > 0)
+      transaction.add(...receiverCreateAssociatedAccountInstructions);
 
     let transferFee = new BN(0);
 

@@ -24,10 +24,9 @@ export default function LockInfoList({
     contractInfo.schedules,
     lpInfo.lpTokenDecimal,
   );
-  const releaseTime = new Date(
+  const releaseTime = 
     // @ts-ignore
-    new BN(contractInfo.schedules[0].releaseTime).toNumber(),
-  );
+    new BN(contractInfo.schedules[0].releaseTime).toNumber();
 
   return (
     <div className="flex flex-col space-y-4">

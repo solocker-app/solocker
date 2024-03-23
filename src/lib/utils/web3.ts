@@ -14,8 +14,6 @@ import {
   getAccount
 } from '@solana/spl-token';
 
-import { LockedToken, LpLockedToken } from "../firebase/lockToken";
-
 export const encodeSeed = function (value: string) {
   return base58.encode(Buffer.from(value).slice(0, 31));
 };
@@ -45,7 +43,7 @@ export const isPublicKey = function (value: string) {
 };
 
 export function getTotalLockedAmount(
-  schedules: Schedule[] | LockedToken["schedules"],
+  schedules: any,
   power: number,
 ): BN {
   return (

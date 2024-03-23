@@ -56,7 +56,7 @@ export default class LockToken {
     return results;
   }
 
-  async saveTransaction(address: string, data: Partial<LockedToken>) {
+  async createTransaction(address: string, data: Partial<LockedToken>) {
     const ref = doc(this.firestore, address, data.seed);
     return setDoc(ref, Object.assign(data, { createdAt: Date.now() }));
   }

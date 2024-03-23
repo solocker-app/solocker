@@ -28,6 +28,6 @@
       "module": "commonjs",
     },
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "tests/api-test.js"],
   "exclude": ["node_modules"],
 }

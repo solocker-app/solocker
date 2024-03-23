@@ -37,6 +37,7 @@ export const tokenVestSlice = createSlice({
         state.loadingState = "failed";
       })
       .addCase(getLpLockedTokens.fulfilled, (state, { payload }) => {
+        state.loadingState = "success";
         tokenVestAdapter.setMany(state, payload);
       });
   },

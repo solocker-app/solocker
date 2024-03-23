@@ -49,13 +49,13 @@ export default function TokenUnlockDialog({
     );
 
     /// Ignore is this fail
-    await repository.firebase.lockToken.updateTransaction(
+    /*await repository.firebase.lockToken.updateTransaction(
       publicKey.toBase58(),
       seed,
       {
         unlocked: true,
       },
-    );
+    );*/
   };
 
   return (

@@ -64,11 +64,11 @@ export default function TokenLockEditItem({
           </p>
         </div>
       </td>
+      <td className="truncate">{moment(contractInfo.createdAt).startOf('day').fromNow()}</td>
       <td className="truncate">
-        {moment(contractInfo.createdAt).format("MMMM Do YYYY")}
-      </td>
-      <td className="truncate">
-        {moment.unix(contractInfo.schedules[0].period).fromNow()}
+        {moment
+          .unix(contractInfo.schedules[0].period)
+          .format("MMMM Do YYYY, h:mm")}
       </td>
       <td>
         <LockStatus status={contractInfo.unlocked ? "withdrawn" : "pending"} />

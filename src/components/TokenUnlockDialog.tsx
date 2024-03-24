@@ -11,31 +11,42 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRepository } from "@/composables";
 import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
-import { useAppDispatch } from "@/store/hooks";
-import { tokenVestingActions } from "@/store/slices/tokenVesting";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  tokenVestingActions,
+  tokenVestingAdapter,
+  tokenVestingSelectors,
+} from "@/store/slices/tokenVesting";
 
 import LockInfoList from "./abstract/LockInfoList";
 
 type TokenUnlockDialogProps = {
-  lpTokenLock: TokenVesting;
+  seed: string;
   onClose: () => void;
 };
 
 export default function TokenUnlockDialog({
   onClose,
-  lpTokenLock: { seed, lpInfo, contractInfo },
+  seed,
 }: TokenUnlockDialogProps) {
   const { publicKey } = useWallet();
-  const dispatch = useAppDispatch();
   const { repository } = useRepository();
+  const dispatch = useAppDispatch();
+  const tokenVesting = useAppSelector((state) => state.tokenVesting);
+  const { lpInfo, contractInfo } = tokenVestingSelectors.selectById(
+    tokenVesting,
+    seed,
+  );
 
   const [loading, setLoading] = useState(false);
 
   const onUnlock = async function () {
-    const tx = await repository.tokenVesting.unlockToken(
+    const unlockTx = await repository.tokenVesting.unlockToken(
       seed,
       new PublicKey(contractInfo.mintAddress),
     );
+
+    console.log(unlockTx)
 
     dispatch(
       tokenVestingActions.updateOne({
@@ -43,6 +54,7 @@ export default function TokenUnlockDialog({
         changes: {
           contractInfo: {
             ...contractInfo,
+            unlockTx,
             unlocked: true,
           },
         },
@@ -53,7 +65,7 @@ export default function TokenUnlockDialog({
       publicKey.toBase58(),
       contractInfo.id,
       {
-        unlockTx: tx,
+        unlockTx,
         unlocked: true,
       },
     );
@@ -79,7 +91,9 @@ export default function TokenUnlockDialog({
             className="btn btn-primary"
             onClick={() => {
               if (contractInfo.unlocked)
-                return window.open(`https://solscan.io/tx/${contractInfo.unlockTx}`);
+                return window.open(
+                  `https://solscan.io/tx/${contractInfo.unlockTx}/`,
+                );
 
               setLoading(true);
               toast

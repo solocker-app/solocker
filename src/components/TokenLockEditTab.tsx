@@ -50,7 +50,7 @@ export default function TokenLockEditTab({
                   <th>Name</th>
                   <th>Locked Amount</th>
                   <th>Created At</th>
-                  <th>Period</th>
+                  <th>Unlock Time</th>
                   <th>Status</th>
                 </tr>
                 {lpLockedTokens.map((lpLockedToken, index) => (
@@ -73,7 +73,7 @@ export default function TokenLockEditTab({
       </div>
       {lpLockedToken && (
         <TokenUnlockDialog
-          lpTokenLock={lpLockedToken}
+          seed={lpLockedToken.seed}
           onClose={() => setLpLockedToken(null)}
         />
       )}

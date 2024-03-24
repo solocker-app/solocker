@@ -1,4 +1,4 @@
-import { Firestore, updateDoc, setDoc, doc } from "firebase/firestore";
+import { Firestore, updateDoc, setDoc, doc, getDoc } from "firebase/firestore";
 
 import { BaseRepository } from "..";
 import { LpInfo } from "../api/models/raydium.model";
@@ -29,7 +29,6 @@ export default class LockToken {
     data: Partial<TokenVesting["contractInfo"]>,
   ) {
     const ref = doc(this.firestore, address, seed);
-
-    return updateDoc(ref, data);
+     return updateDoc(ref, data);
   }
 }

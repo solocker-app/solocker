@@ -76,8 +76,7 @@ export default function TokenUnlockDialog({
         </div>
         <div className="flex flex-col">
           <button
-            className="btn btn-primary disabled:opacity-50"
-            disabled={!contractInfo.unlocked}
+            className="btn btn-primary"
             onClick={() => {
               if (contractInfo.unlocked)
                 return window.open(`https://solscan.io/tx/${contractInfo.unlockTx}`);

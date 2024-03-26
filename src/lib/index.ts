@@ -3,14 +3,12 @@ import { Wallet } from "@solana/wallet-adapter-react";
 
 import { TOKEN_VESTING_PROGRAM_ID as _TOKEN_VESTING_PROGRAM_ID } from "@bonfida/token-vesting";
 
-import StreamFlow from "./streamflow";
 import TokenVesting from "./token-vest";
 import Firebase from "./firebase";
 
 export class BaseRepository {
-  readonly streamflow: StreamFlow;
-  readonly tokenVesting: TokenVesting;
   readonly firebase: Firebase;
+  readonly tokenVesting: TokenVesting;
 
   constructor(
     readonly connection: Connection,

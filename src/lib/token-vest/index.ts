@@ -7,7 +7,7 @@ import {
   Schedule,
   getContractInfo,
   ContractInfo,
-} from "@bonfida/token-vesting";
+} from "@solocker/vesting";
 
 import { PublicKey, Transaction } from "@solana/web3.js";
 import {
@@ -16,13 +16,10 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
-import { InjectBaseRepository } from "../injector";
 import { Type } from "../firebase/lockToken";
+import { InjectBaseRepository } from "../injector";
 import { getOrCreateAssociatedTokenAccount } from "../utils";
-import {
-  createFeeInstructions,
-  createTokenFeeInstructions,
-} from "../instructions";
+import { createTokenFeeInstructions } from "../instructions";
 
 type LockToken = {
   mint: PublicKey;
@@ -86,7 +83,7 @@ export default class TokenVesting extends InjectBaseRepository {
         const amount = baseAmount.sub(feeAmount);
         transferFee = feeAmount;
 
-        return new Schedule(
+        return Schedule.new(
           /// @ts-ignore
           new Numberu64(Math.round(schedule.period / 1000)),
           /// @ts-ignore

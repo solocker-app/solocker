@@ -6,6 +6,7 @@ export type TokenVesting = {
   contractInfo: {
     id: string;
     tx: string;
+    programId: string;
     seed: string;
     unlockTx?: string;
     unlocked: boolean;

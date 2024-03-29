@@ -5,14 +5,19 @@ import { Tab } from "@headlessui/react";
 import { PublicKey } from "@solana/web3.js";
 
 import { TokenConfig } from "@/lib/models/config.model";
+import type { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
+import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import { useRepository } from "@/composables";
-import type { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 
+import { useAppDispatch } from "@/store/hooks";
+import { tokenVestingActions } from "@/store/slices/tokenVesting";
+
+import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
-import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
-import { boolean } from "yup";
+import TokenLockInfoDialog from "./TokenLockInfoDialog";
+import { createPortal } from "react-dom";
 
 type TokenLockCreateTabProps = {
   digitalAssets: DigitalAssetWithJsonMetadata[];
@@ -21,12 +26,14 @@ type TokenLockCreateTabProps = {
 export default function TokenLockCreateTab({
   digitalAssets,
 }: TokenLockCreateTabProps) {
+  const dispatch = useAppDispatch();
   const { repository } = useRepository();
   const [config, setConfig] = useState<Partial<TokenConfig>>({
     period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   });
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [lockParams, setLockedParams] = useState<TokenVesting>(null);
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
   return (
@@ -35,7 +42,7 @@ export default function TokenLockCreateTab({
         as="div"
         key={selectedIndex}
         selectedIndex={selectedIndex}
-        className="flex-1 max-h-2xl flex flex-col space-y-8 bg-dark/50 rounded-xl overflow-y-scroll"
+        className="flex-1 flex flex-col"
       >
         <Tab.Panels>
           <Tab.Panel>
@@ -88,35 +95,46 @@ export default function TokenLockCreateTab({
 
             const [seed, tx] = await repository.tokenVesting.lockToken(params);
 
-            // dispatch(
-            //   tokenVestingActions.addOne({
-            //     seed,
-            //     contractInfo: {
-            //       tx,
-            //       seed,
-            //       id: seed,
-            //       schedules: params.schedules,
-            //       mintAddress: params.mint.toBase58(),
-            //       destinationAddress: params.receiver.toBase58(),
-            //       isReleased: false,
-            //       createdAt: Date.now(),
-            //       type: "outgoing",
-            //     },
-            //     lpInfo: config.token,
-            //   }),
-            // );
+            dispatch(
+              tokenVestingActions.addOne({
+                contractInfo: {
+                  tx,
+                  seed,
+                  id: seed,
+                  totalAmount: new BN(config.amount).toString("hex"),
+                  schedules: params.schedules,
+                  mintAddress: params.mint.toBase58(),
+                  destinationAddress: params.receiver.toBase58(),
+                  createdAt: Date.now(),
+                  type: "outgoing",
+                },
+                mintMetadata: config.token,
+              }),
+            );
 
-            // setLockedParams({
-            //   tx,
-            //   seed,
-            //   lpInfo: config.token,
-            //   contractInfo: {
-            //     schedules: params.schedules,
-            //     destinationAddress: params.receiver,
-            //     mintAddress: params.mint,
-            //   },
-            // });
+            setLockedParams({
+              mintMetadata: config.token,
+              contractInfo: {
+                tx,
+                seed,
+                id: seed,
+                type: "outgoing",
+                createdAt: Date.now(),
+                schedules: params.schedules,
+                mintAddress: params.mint.toBase58(),
+                destinationAddress: params.receiver.toBase58(),
+                totalAmount: new BN(config.amount).toString("hex"),
+              },
+            });
           }}
+        />
+      )}
+      {lockParams && (
+        <TokenLockInfoDialog
+          tx={lockParams.contractInfo.tx}
+          contractInfo={lockParams.contractInfo}
+          digitalAsset={lockParams.mintMetadata}
+          onClose={() => setLockedParams(null)}
         />
       )}
     </>

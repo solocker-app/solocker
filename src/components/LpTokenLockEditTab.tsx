@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { MdSearch } from "react-icons/md";
+import { MdLock, MdSearch } from "react-icons/md";
 
 import Search from "./widgets/Search";
 
@@ -24,14 +24,19 @@ export default function LpTokenLockEditTab({
   const { loadingState } = useAppSelector((state) => state.lpTokenVesting);
 
   const [search, setSearch] = useState<string | null>(null);
-  const [lpLockedToken, setLpLockedToken] = useState<LpTokenVesting | null>(null);
+  const [lpLockedToken, setLpLockedToken] = useState<LpTokenVesting | null>(
+    null,
+  );
 
   return (
     <>
-      <div className="flex-1 max-h-xl self-center flex flex-col space-y-8 bg-dark/50 rounded-xl lt-md:min-w-full lt-md:max-w-full md:w-full">
-        <header className="flex flex-col space-y-4 border-b-1 border-b-white/10 p-4">
+      <div className="flex-1 flex flex-col">
+        <header className="flex flex-col space-y-4 border-b-1 border-b-black p-4">
           <div className="flex flex-col space-y-2">
-            <h1 className="text-xl font-bold">Withdraw</h1>
+            <div className="flex items-center space-x-2">
+              <MdLock className="text-2xl" />
+              <h1 className="text-xl font-bold">Withdraw</h1>
+            </div>
             <p className="text-highlight">
               Withdraw or cancel from lock contracts
             </p>
@@ -41,7 +46,7 @@ export default function LpTokenLockEditTab({
             onChange={setSearch}
           />
         </header>
-        <div className="flex flex-col overflow-y-scroll p-4">
+        <div className="flex-1 flex flex-col overflow-y-scroll p-4">
           {loadingState === "success" ? (
             lpLockedTokens.length > 0 ? (
               <table>

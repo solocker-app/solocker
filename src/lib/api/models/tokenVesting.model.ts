@@ -8,6 +8,7 @@ export type ContractInfo = {
   unlockTx?: string;
   createdAt: number;
   mintAddress: string;
+  totalAmount: string;
   destinationAddress: string;
   schedules: {
     releaseTime: any;
@@ -24,7 +25,6 @@ export type LpTokenVesting = {
 };
 
 export type TokenVesting = {
-  seed: string;
   mintMetadata: DigitalAssetWithJsonMetadata;
   contractInfo: ContractInfo;
 };

@@ -24,7 +24,7 @@ export default function LpTokenLockCreateConfiguration({
     value.token;
 
   return (
-    <section className="flex flex-col">
+    <section className="flex-1 flex flex-col">
       <header className="flex flex-col space-y-4 p-4">
         <div>
           <button
@@ -35,7 +35,7 @@ export default function LpTokenLockCreateConfiguration({
             <p>Back</p>
           </button>
         </div>
-        <div className="flex flex-col space-y-2">
+        <div className="flex-1 flex flex-col space-y-2">
           <h1 className="text-2xl font-black">Lock Liquidity</h1>
           <div className="flex items-center space-x-2">
             <OverlapCoinIcon

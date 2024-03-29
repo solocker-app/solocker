@@ -47,9 +47,9 @@ export default function LpTokenLockCreateTab({
         as="div"
         key={formIndex}
         selectedIndex={formIndex}
-        className="flex-1 max-h-xl flex flex-col space-y-8"
+        className="flex-1 flex flex-col"
       >
-        <Tab.Panels>
+        <Tab.Panels as={Fragment}>
           <Tab.Panel as={Fragment}>
             <TokenLockCreateSelectToken
               lpInfos={lpInfos}
@@ -112,6 +112,7 @@ export default function LpTokenLockCreateTab({
                     tx,
                     seed,
                     id: seed,
+                    totalAmount: new BN(config.amount).toString("hex"),
                     schedules: params.schedules,
                     mintAddress: params.mint.toBase58(),
                     destinationAddress: params.receiver.toBase58(),

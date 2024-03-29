@@ -28,7 +28,7 @@ export default function LpTokenLockEditTab({
 
   return (
     <>
-      <div className="flex-1 max-h-xl self-center flex flex-col space-y-8 bg-dark/50 rounded-xl lt-md:min-w-full lt-md:max-w-full md:w-full">
+      <div className="flex-1 flex flex-col">
         <header className="flex flex-col space-y-4 border-b-1 border-b-white/10 p-4">
           <div className="flex flex-col space-y-2">
             <h1 className="text-xl font-bold">Withdraw</h1>

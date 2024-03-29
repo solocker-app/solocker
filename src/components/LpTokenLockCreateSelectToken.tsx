@@ -25,7 +25,7 @@ export default function LpTokenLockCreateSelectToken({
 
   return (
     <section className="flex-1 flex flex-col">
-      <header className="flex flex-col space-y-4 p-4">
+      <header className="flex flex-col space-y-4 p-4 border-b border-b-black">
         <div className="flex items-center space-x-2">
           <Image
             src="/assets/coins/solana.png"

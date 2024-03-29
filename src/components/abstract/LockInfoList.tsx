@@ -19,14 +19,12 @@ export default function LockInfoList({
   seed,
   digitalAsset,
 }: LockInfoListProps) {
-  const totalLockedAmount = getTotalLockedAmount(
-    contractInfo.schedules,
-    digitalAsset.token.tokenAmount.decimals,
-    "hex",
+  const totalLockedAmount = new BN(contractInfo.totalAmount, "hex").div(
+    new BN(10).pow(new BN(digitalAsset.token.tokenAmount.decimals)),
   );
 
   const schedule = contractInfo.schedules[0];
-  const releaseTime =  new BN(schedule.releaseTime, "hex").toNumber();
+  const releaseTime = new BN(schedule.releaseTime, "hex").toNumber();
 
   return (
     <div className="flex flex-col space-y-2">

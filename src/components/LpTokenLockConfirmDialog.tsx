@@ -1,27 +1,27 @@
 "use client";
 import * as Sentry from "@sentry/nextjs";
-
-import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
 import { join } from "@/lib/utils";
-import { TokenConfig } from "@/lib/models/config.model";
+import { Config } from "@/lib/models/config.model";
 
-type TokenLockReviewDialogProps = {
+import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
+
+type LpTokenLockReviewDialogProps = {
+  tokenLock: Config;
   visible: boolean;
-  tokenLock: TokenConfig;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onCreateLockContract: (config: TokenConfig) => Promise<void>;
+  onCreateLockContract: (config: Config) => Promise<void>;
 };
 
-export default function TokenLockReviewDialog({
+export default function LpTokenLockReviewDialog({
   tokenLock,
   visible,
   setVisible,
   onCreateLockContract,
-}: TokenLockReviewDialogProps) {
+}: LpTokenLockReviewDialogProps) {
   const [loading, setLoading] = useState(false);
 
   return (
@@ -60,15 +60,17 @@ export default function TokenLockReviewDialog({
           <div className="bg-black/20 p-4 rounded-md">
             <p className="text-sm">Total Locked Amount</p>
             <div className="flex items-center space-x-2">
-              <Image
-                src={tokenLock.token.jsonMetadata.image}
-                alt={tokenLock.token.name}
-                width={32}
-                height={32}
+              <OverlapCoinIcon
+                icons={[
+                  getCoinProps(tokenLock.token.baseTokenMetadata),
+                  getCoinProps(tokenLock.token.quoteTokenMetadata),
+                ]}
               />
               <div className="flex space-x-1 text-xl">
                 <h1>{tokenLock.amount}</h1>
-                <span className="text-black/50">{tokenLock.token.symbol}</span>
+                <span className="text-black/50">
+                  {tokenLock.token.lpTokenMetadata.symbol}
+                </span>
               </div>
             </div>
           </div>
@@ -103,11 +105,13 @@ export default function TokenLockReviewDialog({
 
               return toast.promise(
                 onCreateLockContract(tokenLock)
-                  .catch((e) => {
-                    Sentry.captureException(e);
-                    throw e;
-                  })
-                  .finally(() => setLoading(false)),
+                .catch(e => {
+                  Sentry.captureException(e);
+                  throw e;
+                })
+                .finally(() =>
+                  setLoading(false),
+                ),
                 {
                   pending: "Creating lock contract",
                   success: "Liquidity token has been locked successfully",

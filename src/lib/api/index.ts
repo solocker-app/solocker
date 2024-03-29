@@ -1,10 +1,13 @@
 import axios, { AxiosInstance } from "axios";
 import RaydiumApi from "./raydium";
 import { TokenVestingApi } from "./tokenVesting";
+import { MetaplexApi } from "./metaplex";
 
 class ApiImpl {
   readonly raydium: RaydiumApi;
+  readonly metaplex: MetaplexApi;
   readonly tokenVesting: TokenVestingApi;
+  
   private readonly axios: AxiosInstance;
 
   constructor() {
@@ -13,6 +16,7 @@ class ApiImpl {
     });
 
     this.raydium = new RaydiumApi(this.axios);
+    this.metaplex = new MetaplexApi(this.axios);
     this.tokenVesting = new TokenVestingApi(this.axios);
   }
 }

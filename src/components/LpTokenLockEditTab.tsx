@@ -7,24 +7,24 @@ import Search from "./widgets/Search";
 import { useState } from "react";
 
 import { useAppSelector } from "@/store/hooks";
-import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
+import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import Loading from "./widgets/Loading";
 import ErrorWidget from "./widgets/ErrorWidget";
-import TokenLockEditItem from "./TokenLockEditItem";
-import TokenUnlockDialog from "./TokenUnlockDialog";
+import LpTokenLockEditItem from "./LpTokenLockEditItem";
+import TokenUnlockDialog from "./LpTokenUnlockDialog";
 
 type TokenLockEditTabProps = {
-  lockedTokens: TokenVesting[];
+  lpLockedTokens: LpTokenVesting[];
 };
 
 export default function LpTokenLockEditTab({
-  lockedTokens,
+  lpLockedTokens,
 }: TokenLockEditTabProps) {
-  const { loadingState } = useAppSelector((state) => state.tokenVesting);
+  const { loadingState } = useAppSelector((state) => state.lpTokenVesting);
 
   const [search, setSearch] = useState<string | null>(null);
-  const [lockedToken, setLockedToken] = useState<TokenVesting | null>(null);
+  const [lpLockedToken, setLpLockedToken] = useState<LpTokenVesting | null>(null);
 
   return (
     <>
@@ -41,9 +41,9 @@ export default function LpTokenLockEditTab({
             onChange={setSearch}
           />
         </header>
-        <div className="flex-1 flex flex-col overflow-y-scroll p-4">
+        <div className="flex flex-col overflow-y-scroll p-4">
           {loadingState === "success" ? (
-            lockedTokens.length > 0 ? (
+            lpLockedTokens.length > 0 ? (
               <table>
                 <tr>
                   <th></th>
@@ -53,11 +53,11 @@ export default function LpTokenLockEditTab({
                   <th>Unlock Time</th>
                   <th>Status</th>
                 </tr>
-                {lockedTokens.map((lockedToken, index) => (
-                  <TokenLockEditItem
+                {lpLockedTokens.map((lpLockedToken, index) => (
+                  <LpTokenLockEditItem
                     key={index}
-                    lockedToken={lockedToken}
-                    onClick={() => setLockedToken(lockedToken)}
+                    lpLockedToken={lpLockedToken}
+                    onClick={() => setLpLockedToken(lpLockedToken)}
                   />
                 ))}
               </table>
@@ -71,10 +71,10 @@ export default function LpTokenLockEditTab({
           )}
         </div>
       </div>
-      {lockedToken && (
+      {lpLockedToken && (
         <TokenUnlockDialog
-          seed={lockedToken.contractInfo.seed}
-          onClose={() => setLockedToken(null)}
+          seed={lpLockedToken.contractInfo.seed}
+          onClose={() => setLpLockedToken(null)}
         />
       )}
     </>
@@ -88,9 +88,9 @@ export function TokenLockNotFound() {
         <MdSearch className="text-2xl text-white" />
       </button>
       <div className="flex flex-col space-y-2">
-        <p className="text-lg">No token lock found</p>
+        <p className="text-lg">No Lp token lock found</p>
         <Link
-          href="?tab=new"
+          href="/?tab=new"
           className="btn btn-dark"
         >
           Create Lock Contract

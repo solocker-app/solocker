@@ -6,31 +6,32 @@ import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
 import { PublicKey } from "@solana/web3.js";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 import { useRepository } from "@/composables";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  tokenVestingActions,
-  tokenVestingSelectors,
-} from "@/store/slices/tokenVesting";
+  lpTokenVestingActions,
+  lpTokenVestingSelectors,
+} from "@/store/slices/lpTokenVesting";
 
-import LockInfoList from "./abstract/LockInfoList";
+import LockInfoList from "./abstract/LpLockInfoList";
 
-type TokenUnlockDialogProps = {
+type LpTokenUnlockDialogProps = {
   seed: string;
   onClose: () => void;
 };
 
-export default function TokenUnlockDialog({
+export default function LpTokenUnlockDialog({
   onClose,
   seed,
-}: TokenUnlockDialogProps) {
-  const dispatch = useAppDispatch();
+}: LpTokenUnlockDialogProps) {
+  const { publicKey } = useWallet();
   const { repository } = useRepository();
-
-  const tokenVesting = useAppSelector((state) => state.tokenVesting);
-  const { mintMetadata, contractInfo } = tokenVestingSelectors.selectById(
+  const dispatch = useAppDispatch();
+  const tokenVesting = useAppSelector((state) => state.lpTokenVesting);
+  const { lpInfo, contractInfo } = lpTokenVestingSelectors.selectById(
     tokenVesting,
     seed,
   );
@@ -44,7 +45,7 @@ export default function TokenUnlockDialog({
     );
 
     dispatch(
-      tokenVestingActions.updateOne({
+      lpTokenVestingActions.updateOne({
         id: seed,
         changes: {
           contractInfo: {
@@ -70,7 +71,7 @@ export default function TokenUnlockDialog({
         </header>
         <div className="flex-1 flex flex-col">
           <LockInfoList
-            digitalAsset={mintMetadata}
+            lpInfo={lpInfo}
             contractInfo={contractInfo}
           />
         </div>
@@ -79,7 +80,7 @@ export default function TokenUnlockDialog({
             disabled={contractInfo.schedules.every(
               (schedule) => schedule.isReleased,
             )}
-            className="btn btn-primary disabled:opacity-50"
+            className="btn btn-primary"
             onClick={() => {
               setLoading(true);
               toast
@@ -89,9 +90,9 @@ export default function TokenUnlockDialog({
                     return Promise.reject(error);
                   }),
                   {
-                    success: "Token unlocked successfully",
-                    error: "Token unlock failed, Try again!",
-                    pending: "Token unlocking...",
+                    success: "Lp Token unlocked successfully",
+                    error: "Lp Token unlock failed, Try again!",
+                    pending: "Lp Token unlocking...",
                   },
                 )
                 .finally(() => setLoading(false));

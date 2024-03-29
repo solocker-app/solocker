@@ -2,9 +2,7 @@ import BN from "bn.js";
 import { SystemProgram, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import type { BaseRepository } from ".";
-import {
-  createTransferInstruction,
-} from "@solana/spl-token";
+import { createTransferInstruction } from "@solana/spl-token";
 
 import { getOrCreateAssociatedTokenAccount } from "./utils";
 
@@ -19,12 +17,13 @@ export async function createTokenFeeInstructions(
   amount: BN,
 ) {
   const { wallet, connection } = repository;
-  const [marketingWalletATA, marketingWalletATAInstructions] = await getOrCreateAssociatedTokenAccount(
-    connection,
-    wallet.publicKey,
-    mint,
-    marketingWallet,
-  );
+  const [marketingWalletATA, marketingWalletATAInstructions] =
+    await getOrCreateAssociatedTokenAccount(
+      connection,
+      wallet.publicKey,
+      mint,
+      marketingWallet,
+    );
 
   return [
     ...marketingWalletATAInstructions,
@@ -32,7 +31,7 @@ export async function createTokenFeeInstructions(
       sourceATA,
       marketingWalletATA,
       wallet.publicKey,
-      amount,
+      amount as any,
     ),
   ];
 }

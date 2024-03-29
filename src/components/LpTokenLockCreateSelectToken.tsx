@@ -1,29 +1,30 @@
 import Image from "next/image";
 import { MdSearch } from "react-icons/md";
 
+import { LpInfo } from "@/lib/api/models/raydium.model";
+
 import { useAppSelector } from "@/store/hooks";
-import type { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 
 import Search from "./widgets/Search";
 import Loading from "./widgets/Loading";
 import ErrorWidget from "./widgets/ErrorWidget";
-import TokenLockCreateSelectTokenItem from "./TokenLockCreateSelectTokenItem";
+import LpTokenLockCreateSelectTokenItem from "./LpTokenLockCreateSelectTokenItem";
 
-type TokenLockCreateSelectProps = {
-  value?: DigitalAssetWithJsonMetadata;
-  digitalAssets: DigitalAssetWithJsonMetadata[];
-  onSelect: (value: DigitalAssetWithJsonMetadata) => void;
+type LpTokenLockCreateSelectProps = {
+  lpInfos: LpInfo[];
+  value?: LpInfo;
+  onSelect: (value: LpInfo) => void;
 };
 
-export default function TokenLockCreateSelectToken({
-  digitalAssets,
+export default function LpTokenLockCreateSelectToken({
+  lpInfos,
   value,
   onSelect,
-}: TokenLockCreateSelectProps) {
-  const { loadingState } = useAppSelector((state) => state.digitalAsset);
+}: LpTokenLockCreateSelectProps) {
+  const { loadingState } = useAppSelector((state) => state.raydiumLpInfo);
 
   return (
-    <section className="min-h-lg max-h-xl flex flex-col space-y-2 md:min-h-xl">
+    <section className="flex-1 flex flex-col">
       <header className="flex flex-col space-y-4 p-4">
         <div className="flex items-center space-x-2">
           <Image
@@ -33,23 +34,26 @@ export default function TokenLockCreateSelectToken({
             width={32}
             height={32}
           />
-          <p className="text-lg font-bold">Solana Token Locker</p>
+          <p className="text-lg font-bold">Solana SPL Locker</p>
         </div>
         <Search onChange={() => {}} />
       </header>
       <div className="flex-1 flex flex-col divide-y-1 divide-black overflow-y-scroll">
         {loadingState === "success" ? (
-          digitalAssets.length > 0 ? (
-            digitalAssets.map((digitalAsset, index) => (
-              <TokenLockCreateSelectTokenItem
+          lpInfos.length > 0 ? (
+            lpInfos.map((lpInfo, index) => (
+              <LpTokenLockCreateSelectTokenItem
                 key={index}
-                digitalAsset={digitalAsset}
-                selected={value && digitalAsset.publicKey === value.publicKey}
-                onSelect={() => onSelect(digitalAsset)}
+                lpInfo={lpInfo}
+                selected={
+                  value &&
+                  value.lpTokenMetadata.mint === lpInfo.lpTokenMetadata.mint
+                }
+                onSelect={() => onSelect(lpInfo)}
               />
             ))
           ) : (
-            <EmptyToken />
+            <EmptyLiquidityToken />
           )
         ) : loadingState === "failed" ? (
           <ErrorWidget />
@@ -61,16 +65,16 @@ export default function TokenLockCreateSelectToken({
   );
 }
 
-function EmptyToken() {
+function EmptyLiquidityToken() {
   return (
     <div className="m-auto flex flex-col space-y-2 text-center px-2">
       <div className="self-center flex flex-col bg-white text-black w-8 h-8 rounded-full">
         <MdSearch className="m-auto text-lg" />
       </div>
       <div>
-        <h1 className="text-lg font-bold">No Token Found</h1>
+        <h1 className="text-lg font-bold">No LP Token Found</h1>
         <p className="text-highlight">
-          Do you have any spl token? Try searching instead.
+          Add liquidity to your favorite project and check here.
         </p>
       </div>
     </div>

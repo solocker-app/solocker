@@ -11,6 +11,10 @@ type Navigation = {
      href: "/", 
    }, 
    { 
+    name: "Token Locker", 
+    href: "/token-lock", 
+  }, 
+   { 
      name: "Staking", 
      href: "", 
      disabled: true, 

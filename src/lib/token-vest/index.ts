@@ -7,7 +7,7 @@ import {
   Schedule,
   getContractInfo,
   ContractInfo,
-} from "@bonfida/token-vesting";
+} from "@solocker/vesting";
 
 import { PublicKey, Transaction } from "@solana/web3.js";
 import {
@@ -16,19 +16,17 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
-import { InjectBaseRepository } from "../injector";
 import { Type } from "../firebase/lockToken";
+import { InjectBaseRepository } from "../injector";
 import { getOrCreateAssociatedTokenAccount } from "../utils";
-import {
-  createFeeInstructions,
-  createTokenFeeInstructions,
-} from "../instructions";
+import { createTokenFeeInstructions } from "../instructions";
 
 type LockToken = {
   mint: PublicKey;
   receiver: PublicKey;
   schedules: {
-    period: any;
+    releaseTime: any;
+    isReleased: boolean;
     amount: any;
   }[];
 };
@@ -86,9 +84,9 @@ export default class TokenVesting extends InjectBaseRepository {
         const amount = baseAmount.sub(feeAmount);
         transferFee = feeAmount;
 
-        return new Schedule(
+        return Schedule.new(
           /// @ts-ignore
-          new Numberu64(Math.round(schedule.period / 1000)),
+          new Numberu64(Math.round(schedule.releaseTime / 1000)),
           /// @ts-ignore
           new Numberu64(amount.toNumber()),
         );
@@ -111,7 +109,6 @@ export default class TokenVesting extends InjectBaseRepository {
     await firebase.lockToken.createTransaction(wallet.publicKey.toBase58(), {
       tx,
       seed,
-      unlocked: false,
       type: Type.OUTGOING,
       destinationAddress: receiver.toBase58(),
       mintAddress: mint.toBase58(),
@@ -137,11 +134,6 @@ export default class TokenVesting extends InjectBaseRepository {
     transaction.add(...unlockInstruction);
 
     const tx = await wallet.sendTransaction(transaction, connection);
-    await firebase.lockToken.updateTransaction(
-      wallet.publicKey.toBase58(),
-      seed,
-      { unlocked: true },
-    );
 
     return tx;
   }

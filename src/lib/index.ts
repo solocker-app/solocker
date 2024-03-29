@@ -1,16 +1,18 @@
-import { Connection } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 import { Wallet } from "@solana/wallet-adapter-react";
 
-import { TOKEN_VESTING_PROGRAM_ID as _TOKEN_VESTING_PROGRAM_ID } from "@bonfida/token-vesting";
+// import { TOKEN_VESTING_PROGRAM_ID as _TOKEN_VESTING_PROGRAM_ID } from "@bonfida/token-vesting";
 
-import StreamFlow from "./streamflow";
 import TokenVesting from "./token-vest";
 import Firebase from "./firebase";
 
+export const _TOKEN_VESTING_PROGRAM_ID = new PublicKey(
+  "888UZeqfZHU8oMmLJdcEgGGYRWwWKSG8Jx1DU83EDxCx",
+);
+
 export class BaseRepository {
-  readonly streamflow: StreamFlow;
-  readonly tokenVesting: TokenVesting;
   readonly firebase: Firebase;
+  readonly tokenVesting: TokenVesting;
 
   constructor(
     readonly connection: Connection,

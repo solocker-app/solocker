@@ -50,8 +50,7 @@ export default function TokenUnlockDialog({
           contractInfo: {
             ...contractInfo,
             schedules: contractInfo.schedules.map((schedule) => {
-              schedule.isReleased = true;
-              return schedule;
+              return Object.assign(schedule, { isReleased: true });
             }),
           },
         },

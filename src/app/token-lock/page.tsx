@@ -1,17 +1,17 @@
 "use client";
-import { Fragment } from "react";
 import { Tab } from "@headlessui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 import { join } from "@/lib/utils";
 
-import LpTokenLockEditTab from "@/components/LpTokenLockEditTab";
-import LpTokenLockCreateTab from "@/components/LpTokenLockCreateTab";
+import TokenLockEditTab from "@/components/TokenLockEditTab";
+import TokenLockCreateTab from "@/components/TokenLockCreateTab";
 import TokenLockConnectWallet from "@/components/TokenLockConnectWallet";
-import { useLpInitializeTokenLock } from "@/composables/useInitializeLpTokenLock";
+import { Fragment } from "react";
+import useInitailizeTokenLock from "@/composables/useInitializeTokenLock";
 
-function AuthorizedUserOnlyPage() {
-  const { lpInfos, lockedTokens } = useLpInitializeTokenLock();
+export function AuthorizedUserOnlyPage() {
+  const { digitalAssets, lockedTokens } = useInitailizeTokenLock();
 
   return (
     <Tab.Group
@@ -40,12 +40,12 @@ function AuthorizedUserOnlyPage() {
           Withdraw
         </Tab>
       </Tab.List>
-      <Tab.Panels as={Fragment}>
+      <Tab.Panels className="flex-1 flex flex-col">
         <Tab.Panel as={Fragment}>
-          <LpTokenLockCreateTab lpInfos={lpInfos} />
+          <TokenLockCreateTab digitalAssets={digitalAssets} />
         </Tab.Panel>
         <Tab.Panel as={Fragment}>
-          <LpTokenLockEditTab lpLockedTokens={lockedTokens} />
+          <TokenLockEditTab lockedTokens={lockedTokens} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

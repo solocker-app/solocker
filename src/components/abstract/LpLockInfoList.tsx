@@ -1,28 +1,28 @@
 import moment from "moment";
-import Image from "next/image";
+import { ContractInfo } from "@bonfida/token-vesting";
 
 import LockInfo from "./LockInfo";
+import OverlapCoinIcon, { getCoinProps } from "../widgets/OverlapCoinIcon";
 
 import { getTotalLockedAmount } from "@/lib/utils";
-import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
-import { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
+import { LpInfo } from "@/lib/api/models/raydium.model";
+import { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 type LockInfoListProps = {
   seed?: string;
-  digitalAsset: DigitalAssetWithJsonMetadata;
-  contractInfo: TokenVesting["contractInfo"];
+  lpInfo: LpInfo;
+  contractInfo: LpTokenVesting["contractInfo"];
 };
 
 export default function LockInfoList({
   contractInfo,
   seed,
-  digitalAsset,
+  lpInfo,
 }: LockInfoListProps) {
   const totalLockedAmount = getTotalLockedAmount(
     contractInfo.schedules,
-    digitalAsset.token.tokenAmount.decimals,
+    lpInfo.lpTokenDecimal,
   );
-
   const schedule = contractInfo.schedules[0];
   const releaseTime =
     "period" in schedule
@@ -45,14 +45,15 @@ export default function LockInfoList({
         <>
           <div className="flex-1 flex space-x-1">
             <span>{totalLockedAmount.toNumber()}</span>
-            <span className="text-black/50">{digitalAsset.symbol}</span>
+            <span className="text-black/50">
+              {lpInfo.lpTokenMetadata.symbol}
+            </span>
           </div>
-          <Image
-            className="rounded-full"
-            src={digitalAsset.jsonMetadata.image}
-            alt={digitalAsset.name}
-            width={32}
-            height={32}
+          <OverlapCoinIcon
+            icons={[
+              getCoinProps(lpInfo.baseTokenMetadata),
+              getCoinProps(lpInfo.quoteTokenMetadata),
+            ]}
           />
         </>
       </LockInfo>

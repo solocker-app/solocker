@@ -1,20 +1,20 @@
 import { MdClose } from "react-icons/md";
 
-import LockInfoList from "./abstract/LockInfoList";
+import LpLockInfoList from "./abstract/LpLockInfoList";
 
-type TokenLockConfirmDialogProps = {
+type LpTokenLockConfirmDialogProps = {
   tx: string;
   title?: string;
   onClose: () => void;
-} & React.ComponentProps<typeof LockInfoList>;
+} & React.ComponentProps<typeof LpLockInfoList>;
 
-export default function TokenLockInfoDialog({
+export default function LpTokenLockInfoDialog({
   tx,
-  title = "Token Info",
-  digitalAsset,
+  title = "Locked Token Info",
+  lpInfo,
   contractInfo,
   onClose,
-}: TokenLockConfirmDialogProps) {
+}: LpTokenLockConfirmDialogProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center px-4">
       <div className="w-sm h-lg flex flex-col space-y-8 bg-white text-black p-4 rounded-md">
@@ -25,8 +25,8 @@ export default function TokenLockInfoDialog({
           </button>
         </header>
         <div className="flex-1 flex flex-col space-y-4 overflow-y-scroll overflow-x-hidden">
-          <LockInfoList
-            digitalAsset={digitalAsset}
+          <LpLockInfoList
+            lpInfo={lpInfo}
             contractInfo={contractInfo}
           />
         </div>

@@ -12,26 +12,26 @@ import { useRepository } from "@/composables";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  tokenVestingActions,
-  tokenVestingSelectors,
-} from "@/store/slices/tokenVesting";
+  lpTokenVestingActions,
+  lpTokenVestingSelectors,
+} from "@/store/slices/lpTokenVesting";
 
-import LockInfoList from "./abstract/LockInfoList";
+import LockInfoList from "./abstract/LpLockInfoList";
 
-type TokenUnlockDialogProps = {
+type LpTokenUnlockDialogProps = {
   seed: string;
   onClose: () => void;
 };
 
-export default function TokenUnlockDialog({
+export default function LpTokenUnlockDialog({
   onClose,
   seed,
-}: TokenUnlockDialogProps) {
+}: LpTokenUnlockDialogProps) {
   const { publicKey } = useWallet();
   const { repository } = useRepository();
   const dispatch = useAppDispatch();
-  const tokenVesting = useAppSelector((state) => state.tokenVesting);
-  const { mintMetadata, contractInfo } = tokenVestingSelectors.selectById(
+  const tokenVesting = useAppSelector((state) => state.lpTokenVesting);
+  const { lpInfo, contractInfo } = lpTokenVestingSelectors.selectById(
     tokenVesting,
     seed,
   );
@@ -44,8 +44,10 @@ export default function TokenUnlockDialog({
       new PublicKey(contractInfo.mintAddress),
     );
 
+    console.log(unlockTx)
+
     dispatch(
-      tokenVestingActions.updateOne({
+      lpTokenVestingActions.updateOne({
         id: seed,
         changes: {
           contractInfo: {
@@ -78,7 +80,7 @@ export default function TokenUnlockDialog({
         </header>
         <div className="flex-1 flex flex-col">
           <LockInfoList
-            digitalAsset={mintMetadata}
+            lpInfo={lpInfo}
             contractInfo={contractInfo}
           />
         </div>

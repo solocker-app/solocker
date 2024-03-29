@@ -1,12 +1,13 @@
-import { BaseRepository } from "@/lib";
 import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { LoadingState } from "../types";
+
 import Api from "@/lib/api";
 import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
+
+import { LoadingState } from "../types";
 
 export const getTokenVestingByOwner = createAsyncThunk(
   "tokenVest/getTokenVestingByOwner",
@@ -45,3 +46,4 @@ export const tokenVestingSlice = createSlice({
 export const tokenVestingReducer = tokenVestingSlice.reducer;
 export const tokenVestingActions = tokenVestingSlice.actions;
 export const tokenVestingSelectors = tokenVestingAdapter.getSelectors();
+

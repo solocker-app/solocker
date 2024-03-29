@@ -1,25 +1,28 @@
-import Image from "next/image";
 import { MdArrowBack } from "react-icons/md";
 
 import { Formik } from "formik";
 
-import { TokenConfig } from "@/lib/models/config.model";
+import { Config } from "@/lib/models/config.model";
 
 import InputDate from "./widgets/InputDate";
 import InputAmount from "./widgets/InputAmount";
 import InputRecipient from "./widgets/InputRecipient";
+import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
-type TokenLockCreateConfigurationProps = {
+type LpTokenLockCreateConfigurationProps = {
   onBack: () => void;
-  value: Partial<TokenConfig>;
-  setValue: React.Dispatch<React.SetStateAction<Partial<TokenConfig>>>;
+  value: Partial<Config>;
+  setValue: React.Dispatch<React.SetStateAction<Partial<Config>>>;
 };
 
-export default function TokenLockCreateConfiguration({
+export default function LpTokenLockCreateConfiguration({
   value,
   setValue,
   onBack,
-}: TokenLockCreateConfigurationProps) {
+}: LpTokenLockCreateConfigurationProps) {
+  const { lpTokenMetadata, baseTokenMetadata, quoteTokenMetadata } =
+    value.token;
+
   return (
     <section className="flex flex-col">
       <header className="flex flex-col space-y-4 p-4">
@@ -28,20 +31,20 @@ export default function TokenLockCreateConfiguration({
             className="flex items-center space-x-2"
             onClick={onBack}
           >
-            <MdArrowBack className="text-2xl" />
+            <MdArrowBack className="text-lg" />
             <p>Back</p>
           </button>
         </div>
         <div className="flex flex-col space-y-2">
-          <h1 className="text-2xl font-black">Lock Token</h1>
+          <h1 className="text-2xl font-black">Lock Liquidity</h1>
           <div className="flex items-center space-x-2">
-            <Image
-              src={value.token.jsonMetadata.image}
-              alt={value.token.name}
-              width={32}
-              height={32}
+            <OverlapCoinIcon
+              icons={[
+                getCoinProps(baseTokenMetadata),
+                getCoinProps(quoteTokenMetadata),
+              ]}
             />
-            <p className="text-base text-highlight">{value.token.name}</p>
+            <p className="text-base text-highlight">{lpTokenMetadata.name}</p>
           </div>
         </div>
       </header>
@@ -61,8 +64,8 @@ export default function TokenLockCreateConfiguration({
             <InputAmount
               name="amount"
               info={{
-                symbol: value.token.symbol,
-                amount: value.token.token.tokenAmount.uiAmount,
+                symbol: value.token.lpTokenMetadata.symbol,
+                amount: Number(value.token.addedLpAmount),
               }}
               value={values.amount}
             />

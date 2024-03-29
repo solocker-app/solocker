@@ -2,22 +2,24 @@ import BN from "bn.js";
 import moment from "moment";
 
 import Image from "next/image";
+
 import { MdLockOutline } from "react-icons/md";
 
 import { getTotalLockedAmount } from "@/lib/utils";
-import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
+import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
+import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
 
-type TokenLockListItemProps = {
+type LpTokenLockListItemProps = {
+  lpLockedToken: LpTokenVesting;
   onClick: () => void;
-  lockedToken: TokenVesting;
 };
 
-export default function TokenLockEditItem({
+export default function LpTokenLockEditItem({
   onClick,
-  lockedToken: { mintMetadata: metadata, contractInfo },
-}: TokenLockListItemProps) {
+  lpLockedToken: { lpInfo, contractInfo },
+}: LpTokenLockListItemProps) {
   return (
     <tr
       className="cursor-pointer"
@@ -37,13 +39,13 @@ export default function TokenLockEditItem({
       </td>
       <td>
         <div className="flex items-center space-x-2">
-          <Image
-            src={metadata.jsonMetadata.image}
-            alt={metadata.name}
-            width={32}
-            height={32}
+          <OverlapCoinIcon
+            icons={[
+              getCoinProps(lpInfo.baseTokenMetadata),
+              getCoinProps(lpInfo.quoteTokenMetadata),
+            ]}
           />
-          <p className="text-xs">{metadata.symbol}</p>
+          <p className="text-xs">{lpInfo.lpTokenMetadata.symbol}</p>
         </div>
       </td>
       <td>
@@ -51,18 +53,18 @@ export default function TokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {/* {getTotalLockedAmount(
+              {getTotalLockedAmount(
                 contractInfo.schedules,
-                metadata.token.tokenAmount.decimals,
-              ).toNumber()} */}
+                new BN(lpInfo.lpTokenDecimal),
+              ).toNumber()}
             </span>
-            <span className="text-highlight">{metadata.symbol}</span>
+            <span className="text-highlight">
+              {lpInfo.lpTokenMetadata.symbol}
+            </span>
           </p>
         </div>
       </td>
-      <td className="truncate">
-        {moment(contractInfo.createdAt).startOf("day").fromNow()}
-      </td>
+      <td className="truncate">{moment(contractInfo.createdAt).startOf('day').fromNow()}</td>
       <td className="truncate">
         {moment
           .unix(contractInfo.schedules[0].period)

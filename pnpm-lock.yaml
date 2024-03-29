@@ -130,6 +130,12 @@ devDependencies:
   '@babel/preset-typescript':
     specifier: ^7.23.3
     version: 7.23.3(@babel/core@7.23.7)
+  '@types/bn.js':
+    specifier: ^5.1.5
+    version: 5.1.5
+  '@types/human-number':
+    specifier: ^1.0.2
+    version: 1.0.2
   '@types/jest':
     specifier: ^29.5.11
     version: 29.5.11
@@ -5701,6 +5707,12 @@ packages:
       '@babel/types': 7.23.6
     dev: true
 
+  /@types/bn.js@5.1.5:
+    resolution: {integrity: sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==}
+    dependencies:
+      '@types/node': 20.11.5
+    dev: true
+
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
@@ -5740,6 +5752,10 @@ packages:
       '@types/react': 18.2.48
       hoist-non-react-statics: 3.3.2
     dev: false
+
+  /@types/human-number@1.0.2:
+    resolution: {integrity: sha512-Xm2hW0MXOjX/IOrRv8IRLycwVz23cU51b3fUn3Km5q8+4oM88uJaZ36dD1S0qINg92jhfQm7iEuAxZefIIffYg==}
+    dev: true
 
   /@types/istanbul-lib-coverage@2.0.6:
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}

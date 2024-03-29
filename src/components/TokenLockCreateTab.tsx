@@ -1,144 +1,120 @@
 import BN from "bn.js";
 
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { Tab } from "@headlessui/react";
 import { PublicKey } from "@solana/web3.js";
 
+import { TokenConfig } from "@/lib/models/config.model";
+
 import { useRepository } from "@/composables";
+import type { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 
-import { Config } from "@/lib/models/config.model";
-import { LpInfo } from "@/lib/api/models/raydium.model";
-
-import { useAppDispatch } from "@/store/hooks";
-import { tokenVestingActions } from "@/store/slices/tokenVesting";
-
-import TokenLockInfoDialog from "./TokenLockInfoDialog";
-import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
+import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 
 type TokenLockCreateTabProps = {
-  lpInfos: LpInfo[];
-};
-
-type LockedParams = {
-  seed: string;
-  tx: string;
-  lpInfo: LpInfo;
-  contractInfo: any;
+  digitalAssets: DigitalAssetWithJsonMetadata[];
 };
 
 export default function TokenLockCreateTab({
-  lpInfos,
+  digitalAssets,
 }: TokenLockCreateTabProps) {
-  const dispatch = useAppDispatch();
   const { repository } = useRepository();
-
-  const [formIndex, setFormIndex] = useState(0);
-  const [config, setConfig] = useState<Partial<Config>>({
+  const [config, setConfig] = useState<Partial<TokenConfig>>({
     period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   });
-  const [lockedParams, setLockedParams] = useState<LockedParams>();
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
   return (
     <>
       <Tab.Group
         as="div"
-        key={formIndex}
-        selectedIndex={formIndex}
-        className="flex flex-col space-y-8 bg-dark/50 rounded-xl"
+        key={selectedIndex}
+        selectedIndex={selectedIndex}
+        className="flex-1 max-h-2xl flex flex-col space-y-8 bg-dark/50 rounded-xl overflow-y-scroll"
       >
         <Tab.Panels>
-          <Tab.Panel as={Fragment}>
+          <Tab.Panel>
             <TokenLockCreateSelectToken
-              lpInfos={lpInfos}
-              value={config.token}
-              onSelect={(value) => {
+              digitalAssets={digitalAssets}
+              onSelect={(token) =>
                 setConfig((config) => {
-                  config.token = value;
-
+                  config.token = token;
+                  setSelectedIndex(1);
                   return config;
-                });
-
-                setFormIndex(1);
-              }}
+                })
+              }
             />
           </Tab.Panel>
-          <Tab.Panel as={Fragment}>
+          <Tab.Panel>
             <TokenLockCreateConfiguration
               value={config}
               setValue={(value) => {
                 setConfig((config) => {
+                  setTimeout(() => setConfirmDialogVisible(true));
                   return Object.assign(config, value);
                 });
-                setConfirmDialogVisible(true);
               }}
-              onBack={() => setFormIndex(0)}
+              onBack={() => setSelectedIndex(0)}
             />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-      {!!config.token &&
-        !!config.amount &&
-        !!config.recipient &&
-        !!config.period && (
-          <TokenLockConfirmDialog
-            tokenLock={config as unknown as Config}
-            visible={confirmDialogVisible}
-            setVisible={setConfirmDialogVisible}
-            onCreateLockContract={async (config) => {
-              const params = {
-                mint: new PublicKey(config.token.lpTokenMetadata.mint),
-                receiver: new PublicKey(config.recipient),
-                schedules: [
-                  {
-                    period: config.period,
-                    amount: new BN(config.amount).mul(
-                      new BN(10).pow(new BN(config.token.lpTokenDecimal)),
+      {confirmDialogVisible && (
+        <TokenLockConfirmDialog
+          tokenLock={config as unknown as TokenConfig}
+          visible={confirmDialogVisible}
+          setVisible={setConfirmDialogVisible}
+          onCreateLockContract={async (config) => {
+            const params = {
+              mint: new PublicKey(config.token.mint),
+              receiver: new PublicKey(config.recipient),
+              schedules: [
+                {
+                  period: config.period,
+                  amount: new BN(Number(config.amount)).mul(
+                    new BN(10).pow(
+                      new BN(config.token.token.tokenAmount.decimals),
                     ),
-                  },
-                ],
-              };
-
-              const [seed, tx] =
-                await repository.tokenVesting.lockToken(params);
-
-              dispatch(
-                tokenVestingActions.addOne({
-                  seed,
-                  contractInfo: {
-                    tx,
-                    seed,
-                    id: seed,
-                    schedules: params.schedules,
-                    mintAddress: params.mint.toBase58(),
-                    destinationAddress: params.receiver.toBase58(),
-                    unlocked: false,
-                    createdAt: Date.now(),
-                    type: "outgoing",
-                  },
-                  lpInfo: config.token,
-                }),
-              );
-
-              setLockedParams({
-                tx,
-                seed,
-                lpInfo: config.token,
-                contractInfo: {
-                  schedules: params.schedules,
-                  destinationAddress: params.receiver,
-                  mintAddress: params.mint,
+                  ),
                 },
-              });
-            }}
-          />
-        )}
-      {lockedParams && (
-        <TokenLockInfoDialog
-          {...lockedParams}
-          onClose={() => setLockedParams(null)}
+              ],
+            };
+
+            const [seed, tx] = await repository.tokenVesting.lockToken(params);
+
+            // dispatch(
+            //   tokenVestingActions.addOne({
+            //     seed,
+            //     contractInfo: {
+            //       tx,
+            //       seed,
+            //       id: seed,
+            //       schedules: params.schedules,
+            //       mintAddress: params.mint.toBase58(),
+            //       destinationAddress: params.receiver.toBase58(),
+            //       unlocked: false,
+            //       createdAt: Date.now(),
+            //       type: "outgoing",
+            //     },
+            //     lpInfo: config.token,
+            //   }),
+            // );
+
+            // setLockedParams({
+            //   tx,
+            //   seed,
+            //   lpInfo: config.token,
+            //   contractInfo: {
+            //     schedules: params.schedules,
+            //     destinationAddress: params.receiver,
+            //     mintAddress: params.mint,
+            //   },
+            // });
+          }}
         />
       )}
     </>

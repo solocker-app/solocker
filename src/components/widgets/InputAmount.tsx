@@ -2,22 +2,25 @@ import { useFormik, useFormikContext, Field, ErrorMessage } from "formik";
 import { LpInfo } from "@/lib/api/models/raydium.model";
 
 type InputAmountProps = {
-  lpInfo: LpInfo;
+  info: {
+    symbol: string;
+    amount: number;
+  };
   value?: number;
   name: string;
 };
 
-export default function InputAmount({ lpInfo, value, name }: InputAmountProps) {
+export default function InputAmount({ info, value, name }: InputAmountProps) {
   const { setFieldValue } = useFormikContext();
-  const { lpTokenMetadata, addedLpAmount } = lpInfo;
+  const { symbol, amount } = info;
 
   return (
     <div className="flex flex-col space-y-2">
-      <label className="font-medium">Enter LP Token Amount</label>
+      <label className="font-medium">Enter Token Amount</label>
       <div className="flex flex-col bg-black p-4 rounded-xl">
         <div className="flex space-x-1 items-center justify-end text-sm">
           <span>Balance:</span>
-          <span>{Number(addedLpAmount)}</span>
+          <span>{amount.toFixed(2)}</span>
         </div>
         <div className="flex space-x-2 items-center">
           <Field
@@ -26,13 +29,11 @@ export default function InputAmount({ lpInfo, value, name }: InputAmountProps) {
             className="w-4/5 p-2 bg-transparent font-bold outline-none md:text-lg"
           />
           <div className="flex space-x-2 item-center">
-            <h1 className="text-nowrap text-sm font-bold truncate">
-              {lpTokenMetadata.symbol}
-            </h1>
+            <h1 className="text-nowrap text-sm font-bold truncate">{symbol}</h1>
             <button
               type="button"
               className="btn btn-primary !px-3 !py-1 text-xs uppercase"
-              onClick={() => setFieldValue(name, Number(addedLpAmount))}
+              onClick={() => setFieldValue(name, amount.toFixed(2))}
             >
               Max
             </button>
@@ -47,7 +48,7 @@ export default function InputAmount({ lpInfo, value, name }: InputAmountProps) {
                 type="button"
                 className="px-4 py-1.5 border border-dark rounded-full"
                 onClick={() =>
-                  setFieldValue(name, Number(addedLpAmount) * (split / 100))
+                  setFieldValue(name, (amount * (split / 100)).toFixed(2))
                 }
               >
                 {split}%

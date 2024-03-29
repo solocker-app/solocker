@@ -7,12 +7,12 @@ import Search from "./widgets/Search";
 import { useState } from "react";
 
 import { useAppSelector } from "@/store/hooks";
-import type { LpTokenVesting, TokenVesting } from "@/lib/api/models/tokenVesting.model";
+import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import Loading from "./widgets/Loading";
 import ErrorWidget from "./widgets/ErrorWidget";
 import TokenLockEditItem from "./TokenLockEditItem";
-import TokenUnlockDialog from "./LpTokenUnlockDialog";
+import TokenUnlockDialog from "./TokenUnlockDialog";
 
 type TokenLockEditTabProps = {
   lockedTokens: TokenVesting[];
@@ -24,7 +24,7 @@ export default function LpTokenLockEditTab({
   const { loadingState } = useAppSelector((state) => state.tokenVesting);
 
   const [search, setSearch] = useState<string | null>(null);
-  const [lpLockedToken, setLpLockedToken] = useState<LpTokenVesting | null>(null);
+  const [lockedToken, setLockedToken] = useState<TokenVesting | null>(null);
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function LpTokenLockEditTab({
                   <TokenLockEditItem
                     key={index}
                     lockedToken={lockedToken}
-                    onClick={() => setLpLockedToken(lpLockedToken)}
+                    onClick={() => setLockedToken(lockedToken)}
                   />
                 ))}
               </table>
@@ -71,10 +71,10 @@ export default function LpTokenLockEditTab({
           )}
         </div>
       </div>
-      {lpLockedToken && (
+      {lockedToken && (
         <TokenUnlockDialog
-          seed={lpLockedToken.seed}
-          onClose={() => setLpLockedToken(null)}
+          seed={lockedToken.contractInfo.seed}
+          onClose={() => setLockedToken(null)}
         />
       )}
     </>

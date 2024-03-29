@@ -40,21 +40,22 @@ export default function TokenLockEditItem({
           <Image
             src={metadata.jsonMetadata.image}
             alt={metadata.name}
-            width={32}
-            height={32}
+            width={24}
+            height={24}
           />
-          <p className="text-xs">{metadata.symbol}</p>
+          <p className="text-sm">{metadata.symbol}</p>
         </div>
       </td>
       <td>
-        <div className="flex space-x-2 items-center">
+        <div className="flex space-x-1 items-center justify-center">
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {/* {getTotalLockedAmount(
+              {getTotalLockedAmount(
                 contractInfo.schedules,
                 metadata.token.tokenAmount.decimals,
-              ).toNumber()} */}
+                "hex",
+              ).toNumber()}
             </span>
             <span className="text-highlight">{metadata.symbol}</span>
           </p>
@@ -65,11 +66,17 @@ export default function TokenLockEditItem({
       </td>
       <td className="truncate">
         {moment
-          .unix(contractInfo.schedules[0].period)
+          .unix(new BN(contractInfo.schedules[0].releaseTime, "hex").toNumber())
           .format("MMMM Do YYYY, h:mm")}
       </td>
       <td>
-        <LockStatus status={contractInfo.unlocked ? "withdrawn" : "pending"} />
+        <LockStatus
+          status={
+            contractInfo.schedules.every((schedule) => schedule.isReleased)
+              ? "withdrawn"
+              : "pending"
+          }
+        />
       </td>
     </tr>
   );

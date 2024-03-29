@@ -73,7 +73,7 @@ export default function LpTokenLockEditTab({
       </div>
       {lpLockedToken && (
         <TokenUnlockDialog
-          seed={lpLockedToken.seed}
+          seed={lpLockedToken.contractInfo.seed}
           onClose={() => setLpLockedToken(null)}
         />
       )}

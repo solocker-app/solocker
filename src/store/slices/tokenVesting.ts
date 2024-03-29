@@ -16,7 +16,7 @@ export const getTokenVestingByOwner = createAsyncThunk(
 );
 
 export const tokenVestingAdapter = createEntityAdapter<TokenVesting>({
-  selectId: (model) => model.seed,
+  selectId: (model) => model.contractInfo.seed,
 });
 
 export const tokenVestingSlice = createSlice({

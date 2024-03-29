@@ -6,13 +6,13 @@ export type ContractInfo = {
   tx: string;
   seed: string;
   unlockTx?: string;
-  unlocked: boolean;
   createdAt: number;
   mintAddress: string;
   destinationAddress: string;
   schedules: {
-    period: number;
+    releaseTime: any;
     amount: any;
+    isReleased: boolean;
   }[];
   type: "outgoing" | "incoming";
 };

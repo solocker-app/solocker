@@ -12,6 +12,7 @@ import type { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
 import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
+import { boolean } from "yup";
 
 type TokenLockCreateTabProps = {
   digitalAssets: DigitalAssetWithJsonMetadata[];
@@ -74,7 +75,8 @@ export default function TokenLockCreateTab({
               receiver: new PublicKey(config.recipient),
               schedules: [
                 {
-                  period: config.period,
+                  isReleased: false,
+                  releaseTime: config.period,
                   amount: new BN(Number(config.amount)).mul(
                     new BN(10).pow(
                       new BN(config.token.token.tokenAmount.decimals),
@@ -96,7 +98,7 @@ export default function TokenLockCreateTab({
             //       schedules: params.schedules,
             //       mintAddress: params.mint.toBase58(),
             //       destinationAddress: params.receiver.toBase58(),
-            //       unlocked: false,
+            //       isReleased: false,
             //       createdAt: Date.now(),
             //       type: "outgoing",
             //     },

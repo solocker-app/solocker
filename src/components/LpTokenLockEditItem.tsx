@@ -55,7 +55,7 @@ export default function LpTokenLockEditItem({
             <span>
               {getTotalLockedAmount(
                 contractInfo.schedules,
-              lpInfo.lpTokenDecimal,
+                lpInfo.lpTokenDecimal,
               ).toNumber()}
             </span>
             <span className="text-highlight">
@@ -64,14 +64,22 @@ export default function LpTokenLockEditItem({
           </p>
         </div>
       </td>
-      <td className="truncate">{moment(contractInfo.createdAt).startOf('day').fromNow()}</td>
+      <td className="truncate">
+        {moment(contractInfo.createdAt).startOf("day").fromNow()}
+      </td>
       <td className="truncate">
         {moment
-          .unix(contractInfo.schedules[0].period)
+          .unix(contractInfo.schedules[0].releaseTime)
           .format("MMMM Do YYYY, h:mm")}
       </td>
       <td>
-        <LockStatus status={contractInfo.unlocked ? "withdrawn" : "pending"} />
+        <LockStatus
+          status={
+            contractInfo.schedules.every((schedule) => schedule.isReleased)
+              ? "withdrawn"
+              : "pending"
+          }
+        />
       </td>
     </tr>
   );

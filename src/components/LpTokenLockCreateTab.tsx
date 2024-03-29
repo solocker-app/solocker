@@ -93,7 +93,8 @@ export default function LpTokenLockCreateTab({
                 receiver: new PublicKey(config.recipient),
                 schedules: [
                   {
-                    period: config.period,
+                    isReleased: false,
+                    releaseTime: config.period,
                     amount: new BN(config.amount).mul(
                       new BN(10).pow(new BN(config.token.lpTokenDecimal)),
                     ),
@@ -114,7 +115,6 @@ export default function LpTokenLockCreateTab({
                     schedules: params.schedules,
                     mintAddress: params.mint.toBase58(),
                     destinationAddress: params.receiver.toBase58(),
-                    unlocked: false,
                     createdAt: Date.now(),
                     type: "outgoing",
                   },

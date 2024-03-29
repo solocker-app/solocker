@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
 import { PublicKey } from "@solana/web3.js";
-import { useWallet } from "@solana/wallet-adapter-react";
 
 import { useRepository } from "@/composables";
 
@@ -27,9 +26,9 @@ export default function TokenUnlockDialog({
   onClose,
   seed,
 }: TokenUnlockDialogProps) {
-  const { publicKey } = useWallet();
-  const { repository } = useRepository();
   const dispatch = useAppDispatch();
+  const { repository } = useRepository();
+
   const tokenVesting = useAppSelector((state) => state.tokenVesting);
   const { mintMetadata, contractInfo } = tokenVestingSelectors.selectById(
     tokenVesting,
@@ -39,7 +38,7 @@ export default function TokenUnlockDialog({
   const [loading, setLoading] = useState(false);
 
   const onUnlock = async function () {
-    const unlockTx = await repository.tokenVesting.unlockToken(
+    await repository.tokenVesting.unlockToken(
       seed,
       new PublicKey(contractInfo.mintAddress),
     );
@@ -50,20 +49,13 @@ export default function TokenUnlockDialog({
         changes: {
           contractInfo: {
             ...contractInfo,
-            unlockTx,
-            unlocked: true,
+            schedules: contractInfo.schedules.map((schedule) => {
+              schedule.isReleased = true;
+              return schedule;
+            }),
           },
         },
       }),
-    );
-
-    await repository.firebase.lockToken.updateTransaction(
-      publicKey.toBase58(),
-      contractInfo.id,
-      {
-        unlockTx,
-        unlocked: true,
-      },
     );
   };
 
@@ -84,13 +76,11 @@ export default function TokenUnlockDialog({
         </div>
         <div className="flex flex-col">
           <button
-            className="btn btn-primary"
+            disabled={contractInfo.schedules.every(
+              (schedule) => schedule.isReleased,
+            )}
+            className="btn btn-primary disabled:opacity-50"
             onClick={() => {
-              if (contractInfo.unlocked)
-                return window.open(
-                  `https://solscan.io/tx/${contractInfo.unlockTx}/`,
-                );
-
               setLoading(true);
               toast
                 .promise(
@@ -99,9 +89,9 @@ export default function TokenUnlockDialog({
                     return Promise.reject(error);
                   }),
                   {
-                    success: "Lp Token unlocked successfully",
-                    error: "Lp Token unlock failed, Try again!",
-                    pending: "Lp Token unlocking...",
+                    success: "Token unlocked successfully",
+                    error: "Token unlock failed, Try again!",
+                    pending: "Token unlocking...",
                   },
                 )
                 .finally(() => setLoading(false));
@@ -110,9 +100,7 @@ export default function TokenUnlockDialog({
             {loading ? (
               <div className="w-6 h-6 border-3 border-t-transparent rounded-full animate-spin" />
             ) : (
-              <span>
-                {contractInfo.unlocked ? "View Transaction" : "Unlock"}
-              </span>
+              <span>Unlock</span>
             )}
           </button>
         </div>

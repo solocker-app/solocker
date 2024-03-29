@@ -1,18 +1,14 @@
-import BN from "bn.js";
+import BN, { Endianness } from "bn.js";
 import base58 from "bs58";
 import { Schedule, TOKEN_VESTING_PROGRAM_ID } from "@bonfida/token-vesting";
 
-import { 
-  PublicKey,
-  Connection,
-  TransactionInstruction
- } from "@solana/web3.js";
+import { PublicKey, Connection, TransactionInstruction } from "@solana/web3.js";
 import {
   createTransferInstruction,
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddress,
-  getAccount
-} from '@solana/spl-token';
+  getAccount,
+} from "@solana/spl-token";
 
 export const encodeSeed = function (value: string) {
   return base58.encode(Buffer.from(value).slice(0, 31));
@@ -45,16 +41,18 @@ export const isPublicKey = function (value: string) {
 export function getTotalLockedAmount(
   schedules: any,
   power: number,
+  base?: string | number | "hex",
 ): BN {
   return (
     schedules
-      .map((schedule) => new BN(schedule.amount))
+      // @ts-ignore
+      .map((schedule) => new BN(schedule.amount, base))
       .reduceRight((a, b) =>
         //@ts-ignore
         a.add(b.amount),
       )
       // @ts-ignore
-      .div(new BN(10).pow(new BN(power)))
+      .div(new BN(10).pow(new BN(6)))
   );
 }
 
@@ -62,7 +60,7 @@ export const getOrCreateAssociatedTokenAccount = async (
   connection: Connection,
   payer: PublicKey,
   mint: PublicKey,
-  owner: PublicKey
+  owner: PublicKey,
 ): Promise<[PublicKey, TransactionInstruction[]]> => {
   const transactionInstructions: TransactionInstruction[] = [];
   const ata = await getAssociatedTokenAddress(mint, owner);
@@ -70,10 +68,9 @@ export const getOrCreateAssociatedTokenAccount = async (
 
   if (!accountInfo) {
     transactionInstructions.push(
-      createAssociatedTokenAccountInstruction(payer, ata, owner, mint)
+      createAssociatedTokenAccountInstruction(payer, ata, owner, mint),
     );
   }
 
   return [ata, transactionInstructions];
 };
-

@@ -6,6 +6,7 @@ import LockInfo from "./LockInfo";
 import { getTotalLockedAmount } from "@/lib/utils";
 import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 import { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
+import { BN } from "bn.js";
 
 type LockInfoListProps = {
   seed?: string;
@@ -21,14 +22,11 @@ export default function LockInfoList({
   const totalLockedAmount = getTotalLockedAmount(
     contractInfo.schedules,
     digitalAsset.token.tokenAmount.decimals,
+    "hex",
   );
 
   const schedule = contractInfo.schedules[0];
-  const releaseTime =
-    "period" in schedule
-      ? schedule.period
-      : // @ts-ignore
-        schedule.releaseTime.toNumber();
+  const releaseTime =  new BN(schedule.releaseTime, "hex").toNumber();
 
   return (
     <div className="flex flex-col space-y-2">

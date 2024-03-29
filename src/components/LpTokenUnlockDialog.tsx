@@ -39,12 +39,10 @@ export default function LpTokenUnlockDialog({
   const [loading, setLoading] = useState(false);
 
   const onUnlock = async function () {
-    const unlockTx = await repository.tokenVesting.unlockToken(
+    await repository.tokenVesting.unlockToken(
       seed,
       new PublicKey(contractInfo.mintAddress),
     );
-
-    console.log(unlockTx)
 
     dispatch(
       lpTokenVestingActions.updateOne({
@@ -52,20 +50,13 @@ export default function LpTokenUnlockDialog({
         changes: {
           contractInfo: {
             ...contractInfo,
-            unlockTx,
-            unlocked: true,
+            schedules: contractInfo.schedules.map((schedule) => {
+              schedule.isReleased = true;
+              return schedule;
+            }),
           },
         },
       }),
-    );
-
-    await repository.firebase.lockToken.updateTransaction(
-      publicKey.toBase58(),
-      contractInfo.id,
-      {
-        unlockTx,
-        unlocked: true,
-      },
     );
   };
 
@@ -86,13 +77,11 @@ export default function LpTokenUnlockDialog({
         </div>
         <div className="flex flex-col">
           <button
+            disabled={contractInfo.schedules.every(
+              (schedule) => schedule.isReleased,
+            )}
             className="btn btn-primary"
             onClick={() => {
-              if (contractInfo.unlocked)
-                return window.open(
-                  `https://solscan.io/tx/${contractInfo.unlockTx}/`,
-                );
-
               setLoading(true);
               toast
                 .promise(
@@ -112,9 +101,7 @@ export default function LpTokenUnlockDialog({
             {loading ? (
               <div className="w-6 h-6 border-3 border-t-transparent rounded-full animate-spin" />
             ) : (
-              <span>
-                {contractInfo.unlocked ? "View Transaction" : "Unlock"}
-              </span>
+              <span>Unlock</span>
             )}
           </button>
         </div>

@@ -55,7 +55,7 @@ export default function LpTokenLockEditItem({
             <span>
               {getTotalLockedAmount(
                 contractInfo.schedules,
-                new BN(lpInfo.lpTokenDecimal),
+              lpInfo.lpTokenDecimal,
               ).toNumber()}
             </span>
             <span className="text-highlight">

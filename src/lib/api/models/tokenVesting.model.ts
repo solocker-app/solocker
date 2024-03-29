@@ -12,7 +12,7 @@ export type ContractInfo = {
   destinationAddress: string;
   schedules: {
     period: number;
-    amount: number;
+    amount: any;
   }[];
   type: "outgoing" | "incoming";
 };

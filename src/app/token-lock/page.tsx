@@ -10,7 +10,7 @@ import TokenLockConnectWallet from "@/components/TokenLockConnectWallet";
 import { Fragment } from "react";
 import useInitailizeTokenLock from "@/composables/useInitializeTokenLock";
 
-export function AuthorizedUserOnlyPage() {
+function AuthorizedUserOnlyPage() {
   const { digitalAssets, lockedTokens } = useInitailizeTokenLock();
 
   return (

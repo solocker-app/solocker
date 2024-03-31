@@ -23,18 +23,6 @@ export default function TokenLockEditItem({
       onClick={onClick}
     >
       <td>
-        <div className="flex items-center">
-          <Image
-            src="/assets/coins/ray.png"
-            alt="raydium"
-            className="w-6 h-6 rounded-full"
-            width={24}
-            height={24}
-          />
-          <p className="invisible">xxxxx</p>
-        </div>
-      </td>
-      <td>
         <div className="flex items-center space-x-2">
           <Image
             src={metadata.jsonMetadata.image}

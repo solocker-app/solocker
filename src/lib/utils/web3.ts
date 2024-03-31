@@ -1,10 +1,9 @@
-import BN, { Endianness } from "bn.js";
+import BN from "bn.js";
 import base58 from "bs58";
-import { Schedule, TOKEN_VESTING_PROGRAM_ID } from "@bonfida/token-vesting";
+import { TOKEN_VESTING_PROGRAM_ID } from "@solocker/vesting";
 
 import { PublicKey, Connection, TransactionInstruction } from "@solana/web3.js";
 import {
-  createTransferInstruction,
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddress,
   getAccount,

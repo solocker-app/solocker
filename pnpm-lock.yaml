@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@bonfida/token-vesting':
-    specifier: ^0.0.9
-    version: 0.0.9(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
   '@bonfida/utils':
     specifier: ^0.0.7
     version: 0.0.7(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
@@ -60,8 +57,8 @@ dependencies:
     specifier: ^1.89.1
     version: 1.89.1
   '@solocker/vesting':
-    specifier: ^0.0.1
-    version: 0.0.1(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
+    specifier: ^0.0.2
+    version: 0.0.2(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
   animate.css:
     specifier: ^4.1.1
     version: 4.1.1
@@ -123,7 +120,7 @@ dependencies:
     specifier: ^10.0.4
     version: 10.0.4(react-dom@18.2.0)(react@18.2.0)
   yup:
-    specifier: ^1.3.2
+    specifier: ^1.3.3
     version: 1.3.3
 
 devDependencies:
@@ -1638,21 +1635,6 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
-
-  /@bonfida/token-vesting@0.0.9(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
-    resolution: {integrity: sha512-EzTRdsbiK4ugEybe6Av3iNTjG1rZOvFD2cSa0jBO+czfw45Pxscu0JPKaVOkII9pIImfPNZTh0U9k67jgbd3GQ==}
-    peerDependencies:
-      '@solana/spl-token': 0.3.7
-      '@solana/web3.js': ^1.73.2
-    dependencies:
-      '@solana/spl-token': 0.3.11(@solana/web3.js@1.89.1)(fastestsmallesttextencoderdecoder@1.0.22)
-      '@solana/web3.js': 1.89.1
-      bip32: 2.0.6
-      bn.js: 5.2.1
-      bs58: 4.0.1
-      buffer-layout: 1.2.2
-      tweetnacl: 1.0.3
-    dev: false
 
   /@bonfida/utils@0.0.7(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
     resolution: {integrity: sha512-h85/sXUOUzQRbQ42Z977i6V+D+RIySR5LmsDwLervnOLkpwYF2VZtE+CkfRtM+mU9awGSPIRF3POhY7RhXGrDg==}
@@ -5131,8 +5113,8 @@ packages:
       uuid: 9.0.1
     dev: false
 
-  /@solocker/vesting@0.0.1(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
-    resolution: {integrity: sha512-zAGzKU6JYh359W26bVTrso7TuHaydgBTGx18a8xfoVN+Dp9Hwpt49D03pcZszCcqgWsxid3wOth7ijEOYDrrtw==}
+  /@solocker/vesting@0.0.2(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
+    resolution: {integrity: sha512-Qp6RKQojfeeK7YOgYw+Brrs1XDkOpNEIrtuIxIB4pl9w+UhnpflytcPJhxLKtDbEnP1V+6jwk6z+lmR7FYFKnA==}
     peerDependencies:
       '@solana/spl-token': 0.3.7
       '@solana/web3.js': ^1.73.2

@@ -44,9 +44,8 @@ export default function LpTokenLockEditTab({
         <div className="flex-1 flex flex-col overflow-y-scroll p-4">
           {loadingState === "success" ? (
             lockedTokens.length > 0 ? (
-              <table>
+              <table className="!font-normal">
                 <tr>
-                  <th></th>
                   <th>Name</th>
                   <th>Locked Amount</th>
                   <th>Created At</th>

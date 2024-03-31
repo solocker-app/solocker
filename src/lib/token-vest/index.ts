@@ -112,10 +112,7 @@ export default class TokenVesting extends InjectBaseRepository {
       type: Type.OUTGOING,
       destinationAddress: receiver.toBase58(),
       mintAddress: mint.toBase58(),
-      schedules: schedules.map((schedule) => {
-        schedule.amount = schedule.amount.toNumber();
-        return schedule;
-      }),
+      schedules,
     });
 
     return [seed, tx];

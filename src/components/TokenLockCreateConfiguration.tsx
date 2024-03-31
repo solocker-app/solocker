@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { MdArrowBack } from "react-icons/md";
 
+import { number, object, string } from "yup";
 import { Formik } from "formik";
 
 import { TokenConfig } from "@/lib/models/config.model";
@@ -8,6 +9,7 @@ import { TokenConfig } from "@/lib/models/config.model";
 import InputDate from "./widgets/InputDate";
 import InputAmount from "./widgets/InputAmount";
 import InputRecipient from "./widgets/InputRecipient";
+import { isPublicKey } from "@/lib/utils";
 
 type TokenLockCreateConfigurationProps = {
   onBack: () => void;
@@ -20,6 +22,22 @@ export default function TokenLockCreateConfiguration({
   setValue,
   onBack,
 }: TokenLockCreateConfigurationProps) {
+  const validateSchema = object().shape({
+    amount: number()
+      .moreThan(
+        0,
+        "At least 0.000000001 " + value.token.symbol + " is required",
+      )
+      .test("validate-balance", "Insufficient balance", (amount) => {
+        return amount <= value.token.token.tokenAmount.uiAmount;
+      })
+      .required(),
+    recipient: string()
+      .required()
+      .test("validate-address", "Invalid Solana address", (recipient) =>
+        isPublicKey(recipient),
+      ),
+  });
   return (
     <section className="flex flex-col">
       <header className="flex flex-col space-y-4 p-4">
@@ -51,6 +69,7 @@ export default function TokenLockCreateConfiguration({
           period: value.period,
           recipient: value.recipient,
         }}
+        validationSchema={validateSchema}
         onSubmit={(value) => setValue(value)}
       >
         {({ values, handleSubmit }) => (

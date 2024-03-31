@@ -84,16 +84,17 @@ export default function LpTokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
+            const amount =
+              Number(config.amount) * Math.pow(10, config.token.lpTokenDecimal);
+
             const params = {
               mint: new PublicKey(config.token.lpTokenMetadata.mint),
               receiver: new PublicKey(config.recipient),
               schedules: [
                 {
+                  amount,
                   isReleased: false,
                   releaseTime: config.period,
-                  amount: new BN(config.amount).mul(
-                    new BN(10).pow(new BN(config.token.lpTokenDecimal)),
-                  ),
                 },
               ],
             };
@@ -106,15 +107,15 @@ export default function LpTokenLockCreateTab({
                 tx,
                 seed,
                 id: seed,
-                totalAmount: new BN(config.amount).toString(),
+                type: "outgoing",
+                totalAmount: new BN(amount).toString("hex"),
                 schedules: params.schedules.map((schedule: any) => {
                   schedule.amount = schedule.amount.toString();
                   return schedule;
                 }),
                 mintAddress: params.mint.toBase58(),
                 destinationAddress: params.receiver.toBase58(),
-                createdAt: Date.now(),
-                type: "outgoing",
+                createdAt: new BN(Date.now() / 1000).toString("hex"),
               },
               lpInfo: config.token,
             };

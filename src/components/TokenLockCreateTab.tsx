@@ -76,9 +76,9 @@ export default function TokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
-            const amount = new BN(Number(config.amount)).mul(
-              new BN(10).pow(new BN(config.token.token.tokenAmount.decimals)),
-            );
+            const amount =
+              Number(config.amount) *
+              Math.pow(10, config.token.token.tokenAmount.decimals);
 
             const params = {
               mint: new PublicKey(config.token.mint),
@@ -100,15 +100,15 @@ export default function TokenLockCreateTab({
                 tx,
                 seed,
                 id: seed,
-                totalAmount: new BN(Number(config.amount)).toString(),
+                type: "outgoing",
+                totalAmount: new BN(amount).toString("hex"),
                 schedules: params.schedules.map((schedule: any) => {
-                  schedule.amount = schedule.amount.toString();
+                  schedule.amount = new BN(schedule.amount).toString();
                   return schedule;
                 }),
                 mintAddress: params.mint.toBase58(),
                 destinationAddress: params.receiver.toBase58(),
-                createdAt: Date.now(),
-                type: "outgoing",
+                createdAt: new BN(Date.now() / 1000).toString("hex"),
               },
             };
 

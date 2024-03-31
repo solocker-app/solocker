@@ -53,10 +53,8 @@ export default function LpTokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {getTotalLockedAmount(
-                contractInfo.schedules,
-                lpInfo.lpTokenDecimal,
-              ).toNumber()}
+              {new BN(contractInfo.totalAmount, "hex").toNumber() /
+                Math.pow(10, lpInfo.lpTokenDecimal)}
             </span>
             <span className="text-highlight">
               {lpInfo.lpTokenMetadata.symbol}
@@ -65,12 +63,14 @@ export default function LpTokenLockEditItem({
         </div>
       </td>
       <td className="truncate">
-        {moment(contractInfo.createdAt).startOf("day").fromNow()}
+        {moment
+          .unix(new BN(contractInfo.createdAt, "hex").toNumber())
+          .fromNow()}
       </td>
       <td className="truncate">
         {moment
-          .unix(contractInfo.schedules[0].releaseTime)
-          .format("MMMM Do YYYY, h:mm")}
+          .unix(new BN(contractInfo.schedules[0].releaseTime, "hex").toNumber())
+          .format("MMMM Do YYYY, h:mm a")}
       </td>
       <td>
         <LockStatus

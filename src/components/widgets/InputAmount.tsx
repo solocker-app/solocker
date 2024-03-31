@@ -25,6 +25,7 @@ export default function InputAmount({ info, value, name }: InputAmountProps) {
         <div className="flex space-x-2 items-center">
           <Field
             name={name}
+            type="number"
             placeholder="0.0"
             className="w-4/5 p-2 bg-transparent font-bold outline-none md:text-lg"
           />
@@ -56,10 +57,9 @@ export default function InputAmount({ info, value, name }: InputAmountProps) {
             ))}
         </div>
       </div>
-      <ErrorMessage
-        name={name}
-        className="text-sm text-red-500"
-      />
+      <span className="text-sm text-red-500 first-letter:capitalize">
+        <ErrorMessage name={name} />
+      </span>
     </div>
   );
 }

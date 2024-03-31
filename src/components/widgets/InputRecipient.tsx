@@ -67,10 +67,9 @@ export default function InputAddress({ name }: InputAddressProps) {
           className="bg-black p-4 outline-none rounded-xl"
         />
       </div>
-      <ErrorMessage
-        name={name}
-        className="text-sm text-red-500"
-      />
+      <span className="text-sm text-red-500 first-letter:capitalize">
+        <ErrorMessage name={name} />
+      </span>
     </Tab.Group>
   );
 }

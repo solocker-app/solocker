@@ -1,12 +1,12 @@
+import { BN } from "bn.js";
+
 import moment from "moment";
 import Image from "next/image";
 
 import LockInfo from "./LockInfo";
 
-import { getTotalLockedAmount } from "@/lib/utils";
 import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 import { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
-import { BN } from "bn.js";
 
 type LockInfoListProps = {
   seed?: string;
@@ -19,11 +19,12 @@ export default function LockInfoList({
   seed,
   digitalAsset,
 }: LockInfoListProps) {
-  const totalLockedAmount = new BN(contractInfo.totalAmount, "hex").div(
-    new BN(10).pow(new BN(digitalAsset.token.tokenAmount.decimals)),
-  );
+  const totalLockedAmount =
+    new BN(contractInfo.totalAmount, "hex").toNumber() /
+    Math.pow(10, digitalAsset.token.tokenAmount.decimals);
 
   const schedule = contractInfo.schedules[0];
+  const createdAt = new BN(contractInfo.createdAt, "hex").toNumber();
   const releaseTime = new BN(schedule.releaseTime, "hex").toNumber();
 
   return (
@@ -40,7 +41,7 @@ export default function LockInfoList({
       <LockInfo title="Total Locked Amount">
         <>
           <div className="flex-1 flex space-x-1">
-            <span>{totalLockedAmount.toNumber()}</span>
+            <span>{totalLockedAmount}</span>
             <span className="text-black/50">{digitalAsset.symbol}</span>
           </div>
           <Image
@@ -53,7 +54,7 @@ export default function LockInfoList({
         </>
       </LockInfo>
       <LockInfo title="Created At">
-        <span>{moment(contractInfo.createdAt).format("MMMM Do YYYY")}</span>
+        <span>{moment.unix(createdAt).format("MMMM Do YYYY")}</span>
       </LockInfo>
       <LockInfo title="Unlock time">
         <span>{moment.unix(releaseTime).format("MMMM Do YYYY, h:mm:ss")}</span>

@@ -38,19 +38,22 @@ export default function TokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {new BN(contractInfo.totalAmount, "hex").toNumber() / Math.pow(10, metadata.token.tokenAmount.decimals)}
+              {new BN(contractInfo.totalAmount, "hex").toNumber() /
+                Math.pow(10, metadata.token.tokenAmount.decimals)}
             </span>
             <span className="text-highlight">{metadata.symbol}</span>
           </p>
         </div>
       </td>
       <td className="truncate">
-        {moment(contractInfo.createdAt).startOf("day").fromNow()}
+        {moment
+          .unix(new BN(contractInfo.createdAt, "hex").toNumber())
+          .fromNow()}
       </td>
       <td className="truncate">
         {moment
           .unix(new BN(contractInfo.schedules[0].releaseTime, "hex").toNumber())
-          .format("MMMM Do YYYY, h:mm")}
+          .format("MMMM Do YYYY, h:mm a")}
       </td>
       <td>
         <LockStatus

@@ -6,7 +6,7 @@ export type ContractInfo = {
   tx: string;
   seed: string;
   unlockTx?: string;
-  createdAt: number;
+  createdAt: string;
   mintAddress: string;
   totalAmount: string;
   destinationAddress: string;

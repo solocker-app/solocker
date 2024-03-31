@@ -6,8 +6,9 @@ import { PublicKey } from "@solana/web3.js";
 
 import { useRepository } from "@/composables";
 
-import { Config } from "@/lib/models/config.model";
-import { LpInfo } from "@/lib/api/models/raydium.model";
+import type { Config } from "@/lib/models/config.model";
+import type { LpInfo } from "@/lib/api/models/raydium.model";
+import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import { useAppDispatch } from "@/store/hooks";
 import { lpTokenVestingActions } from "@/store/slices/lpTokenVesting";
@@ -22,8 +23,6 @@ type TokenLockCreateTabProps = {
 };
 
 type LockedParams = {
-  seed: string;
-  tx: string;
   lpInfo: LpInfo;
   contractInfo: any;
 };
@@ -38,7 +37,7 @@ export default function LpTokenLockCreateTab({
   const [config, setConfig] = useState<Partial<Config>>({
     period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   });
-  const [lockedParams, setLockedParams] = useState<LockedParams>();
+  const [lockedParams, setLockedParams] = useState<LpTokenVesting>();
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
   return (
@@ -79,67 +78,63 @@ export default function LpTokenLockCreateTab({
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-      {!!config.token &&
-        !!config.amount &&
-        !!config.recipient &&
-        !!config.period && (
-          <TokenLockConfirmDialog
-            tokenLock={config as unknown as Config}
-            visible={confirmDialogVisible}
-            setVisible={setConfirmDialogVisible}
-            onCreateLockContract={async (config) => {
-              const params = {
-                mint: new PublicKey(config.token.lpTokenMetadata.mint),
-                receiver: new PublicKey(config.recipient),
-                schedules: [
-                  {
-                    isReleased: false,
-                    releaseTime: config.period,
-                    amount: new BN(config.amount).mul(
-                      new BN(10).pow(new BN(config.token.lpTokenDecimal)),
-                    ),
-                  },
-                ],
-              };
+      {confirmDialogVisible && (
+        <TokenLockConfirmDialog
+          tokenLock={config as unknown as Config}
+          visible={confirmDialogVisible}
+          setVisible={setConfirmDialogVisible}
+          onCreateLockContract={async (config) => {
+            const params = {
+              mint: new PublicKey(config.token.lpTokenMetadata.mint),
+              receiver: new PublicKey(config.recipient),
+              schedules: [
+                {
+                  isReleased: false,
+                  releaseTime: config.period,
+                  amount: new BN(config.amount).mul(
+                    new BN(10).pow(new BN(config.token.lpTokenDecimal)),
+                  ),
+                },
+              ],
+            };
 
-              const [seed, tx] =
-                await repository.tokenVesting.lockToken(params);
+            const [seed, tx] = await repository.tokenVesting.lockToken(params);
 
-              dispatch(
-                lpTokenVestingActions.addOne({
-                  seed,
-                  contractInfo: {
-                    tx,
-                    seed,
-                    id: seed,
-                    totalAmount: new BN(config.amount).toString("hex"),
-                    schedules: params.schedules,
-                    mintAddress: params.mint.toBase58(),
-                    destinationAddress: params.receiver.toBase58(),
-                    createdAt: Date.now(),
-                    type: "outgoing",
-                  },
-                  lpInfo: config.token,
-                }),
-              );
-
-              setLockedParams({
+            const lpTokenVesting: LpTokenVesting = {
+              seed,
+              contractInfo: {
                 tx,
                 seed,
-                lpInfo: config.token,
-                contractInfo: {
-                  schedules: params.schedules,
-                  destinationAddress: params.receiver,
-                  mintAddress: params.mint,
-                },
-              });
-            }}
-          />
-        )}
+                id: seed,
+                totalAmount: new BN(config.amount).toString(),
+                schedules: params.schedules.map((schedule: any) => {
+                  schedule.amount = schedule.amount.toString();
+                  return schedule;
+                }),
+                mintAddress: params.mint.toBase58(),
+                destinationAddress: params.receiver.toBase58(),
+                createdAt: Date.now(),
+                type: "outgoing",
+              },
+              lpInfo: config.token,
+            };
+
+            dispatch(lpTokenVestingActions.addOne(lpTokenVesting));
+
+            setLockedParams(lpTokenVesting);
+          }}
+        />
+      )}
       {lockedParams && (
         <TokenLockInfoDialog
           {...lockedParams}
-          onClose={() => setLockedParams(null)}
+          onClose={() => {
+            setLockedParams(null);
+            setConfirmDialogVisible(false);
+            setConfig({
+              period: config.period,
+            });
+          }}
         />
       )}
     </>

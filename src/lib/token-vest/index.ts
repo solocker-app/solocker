@@ -86,7 +86,7 @@ export default class TokenVesting extends InjectBaseRepository {
 
         return Schedule.new(
           /// @ts-ignore
-          new Numberu64(Math.round(schedule.releaseTime / 1000)),
+          new Numberu64(schedule.releaseTime),
           /// @ts-ignore
           new Numberu64(amount.toNumber()),
         );

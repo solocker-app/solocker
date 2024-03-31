@@ -1,6 +1,7 @@
 "use client";
 import * as Sentry from "@sentry/nextjs";
 
+import moment from "moment";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -55,6 +56,12 @@ export default function TokenLockReviewDialog({
             <p className="text-sm">Number of recipients</p>
             <div className="flex space-x-1 text-xl">
               <h1>1 Recipient</h1>
+            </div>
+          </div>
+          <div className="bg-black/20 p-4 rounded-md">
+            <p className="text-sm">Release Time</p>
+            <div className="flex space-x-1 text-xl">
+              <h1>{moment.unix(tokenLock.period).fromNow()}</h1>
             </div>
           </div>
           <div className="bg-black/20 p-4 rounded-md">

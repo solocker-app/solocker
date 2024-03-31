@@ -40,7 +40,7 @@ function AuthorizedUserOnlyPage() {
           Withdraw
         </Tab>
       </Tab.List>
-      <Tab.Panels className="flex-1 flex flex-col max-h-2xl flex flex-col  bg-dark/50 rounded-xl overflow-y-scroll">
+      <Tab.Panels className="flex-1 flex flex-col max-h-4xl flex flex-col  bg-dark/50 rounded-xl overflow-y-scroll">
         <Tab.Panel as={Fragment}>
           <TokenLockCreateTab digitalAssets={digitalAssets} />
         </Tab.Panel>

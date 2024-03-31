@@ -4,7 +4,6 @@ import moment from "moment";
 import Image from "next/image";
 import { MdLockOutline } from "react-icons/md";
 
-import { getTotalLockedAmount } from "@/lib/utils";
 import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
@@ -51,9 +50,7 @@ export default function TokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {new BN(contractInfo.totalAmount, "hex")
-                .div(new BN(10).pow(new BN(metadata.token.tokenAmount.decimals)))
-                .toNumber()}
+              {contractInfo.totalAmount}
             </span>
             <span className="text-highlight">{metadata.symbol}</span>
           </p>

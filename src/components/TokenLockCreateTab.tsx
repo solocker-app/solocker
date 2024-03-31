@@ -13,11 +13,10 @@ import { useRepository } from "@/composables";
 import { useAppDispatch } from "@/store/hooks";
 import { tokenVestingActions } from "@/store/slices/tokenVesting";
 
+import TokenLockInfoDialog from "./TokenLockInfoDialog";
 import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
-import TokenLockInfoDialog from "./TokenLockInfoDialog";
-import { createPortal } from "react-dom";
 
 type TokenLockCreateTabProps = {
   digitalAssets: DigitalAssetWithJsonMetadata[];
@@ -77,6 +76,10 @@ export default function TokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
+            const amount = new BN(Number(config.amount)).mul(
+              new BN(10).pow(new BN(config.token.token.tokenAmount.decimals)),
+            );
+
             const params = {
               mint: new PublicKey(config.token.mint),
               receiver: new PublicKey(config.recipient),
@@ -84,48 +87,33 @@ export default function TokenLockCreateTab({
                 {
                   isReleased: false,
                   releaseTime: config.period,
-                  amount: new BN(Number(config.amount)).mul(
-                    new BN(10).pow(
-                      new BN(config.token.token.tokenAmount.decimals),
-                    ),
-                  ),
+                  amount,
                 },
               ],
             };
 
             const [seed, tx] = await repository.tokenVesting.lockToken(params);
 
-            dispatch(
-              tokenVestingActions.addOne({
-                contractInfo: {
-                  tx,
-                  seed,
-                  id: seed,
-                  totalAmount: new BN(config.amount).toString("hex"),
-                  schedules: params.schedules,
-                  mintAddress: params.mint.toBase58(),
-                  destinationAddress: params.receiver.toBase58(),
-                  createdAt: Date.now(),
-                  type: "outgoing",
-                },
-                mintMetadata: config.token,
-              }),
-            );
-
-            setLockedParams({
+            const tokenVesting: TokenVesting = {
               mintMetadata: config.token,
               contractInfo: {
                 tx,
                 seed,
                 id: seed,
-                type: "outgoing",
-                createdAt: Date.now(),
-                schedules: params.schedules,
+                totalAmount: new BN(Number(config.amount)).toString(),
+                schedules: params.schedules.map((schedule: any) => {
+                  schedule.amount = schedule.amount.toString();
+                  return schedule;
+                }),
                 mintAddress: params.mint.toBase58(),
                 destinationAddress: params.receiver.toBase58(),
-                totalAmount: new BN(config.amount).toString("hex"),
+                createdAt: Date.now(),
+                type: "outgoing",
               },
-            });
+            };
+
+            setLockedParams(tokenVesting);
+            dispatch(tokenVestingActions.addOne(tokenVesting));
           }}
         />
       )}
@@ -134,7 +122,10 @@ export default function TokenLockCreateTab({
           tx={lockParams.contractInfo.tx}
           contractInfo={lockParams.contractInfo}
           digitalAsset={lockParams.mintMetadata}
-          onClose={() => setLockedParams(null)}
+          onClose={() => {
+            setLockedParams(null);
+            setConfirmDialogVisible(false);
+          }}
         />
       )}
     </>

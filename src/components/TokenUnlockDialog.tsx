@@ -17,6 +17,7 @@ import {
 
 import LockInfoList from "./abstract/LockInfoList";
 import TokenLockInfoDialog from "./TokenLockInfoDialog";
+import Link from "next/link";
 
 type TokenUnlockDialogProps = {
   seed: string;
@@ -54,7 +55,7 @@ export default function TokenUnlockDialog({
           contractInfo: {
             ...contractInfo,
             schedules: contractInfo.schedules.map((schedule) => {
-              return Object.assign(schedule, { isReleased: true });
+              return { ...schedule, isReleased: true };
             }),
           },
         },
@@ -78,12 +79,12 @@ export default function TokenUnlockDialog({
               contractInfo={contractInfo}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex space-x-2">
             <button
               disabled={contractInfo.schedules.every(
                 (schedule) => schedule.isReleased,
               )}
-              className="btn btn-primary disabled:opacity-50"
+              className="flex-1 btn btn-primary disabled:opacity-50"
               onClick={() => {
                 setLoading(true);
                 toast

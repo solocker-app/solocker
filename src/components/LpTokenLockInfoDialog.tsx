@@ -3,13 +3,11 @@ import { MdClose } from "react-icons/md";
 import LpLockInfoList from "./abstract/LpLockInfoList";
 
 type LpTokenLockConfirmDialogProps = {
-  tx: string;
   title?: string;
   onClose: () => void;
 } & React.ComponentProps<typeof LpLockInfoList>;
 
 export default function LpTokenLockInfoDialog({
-  tx,
   title = "Locked Token Info",
   lpInfo,
   contractInfo,
@@ -34,7 +32,7 @@ export default function LpTokenLockInfoDialog({
           <button
             className="btn btn-primary text-white"
             onClick={() => {
-              window.open(`https://solscan.io/tx/${tx}`);
+              window.open(`https://solscan.io/tx/${contractInfo.tx}`);
             }}
           >
             View Transaction

@@ -43,10 +43,12 @@ export default class TokenVesting extends InjectBaseRepository {
     mint,
     receiver,
     schedules,
-  }: LockToken): Promise<[string, string]> {
+  }: LockToken): Promise<[string, string, BN, BN]> {
     const transaction = new Transaction();
     const seed = generateRandomSeed();
     const { wallet, connection, firebase } = this.repository;
+
+    console.log("programId: ", this.programId.toBase58());
 
     const senderATA = await getAssociatedTokenAddress(
       mint,
@@ -68,6 +70,7 @@ export default class TokenVesting extends InjectBaseRepository {
       transaction.add(...receiverCreateAssociatedAccountInstructions);
 
     let transferFee = new BN(0);
+    let totalAmount = new BN(0);
 
     const createInstruction = await create(
       connection,
@@ -83,6 +86,7 @@ export default class TokenVesting extends InjectBaseRepository {
         const feeAmount = baseAmount.mul(new BN(1)).div(new BN(100));
         const amount = baseAmount.sub(feeAmount);
         transferFee = feeAmount;
+        totalAmount = totalAmount.add(baseAmount);
 
         return Schedule.new(
           /// @ts-ignore
@@ -115,11 +119,14 @@ export default class TokenVesting extends InjectBaseRepository {
       schedules,
     });
 
-    return [seed, tx];
+    return [seed, tx, totalAmount, transferFee];
   }
 
   async unlockToken(seed: string, mint: PublicKey) {
-    const { connection, wallet, firebase } = this.repository;
+    console.log("seed: ", seed);
+    console.log("programId: ", this.programId.toBase58());
+
+    const { connection, wallet } = this.repository;
     const unlockInstruction = await unlock(
       connection,
       this.programId,
@@ -136,6 +143,8 @@ export default class TokenVesting extends InjectBaseRepository {
   }
 
   async getLockedTokenBySeed(seed: string) {
+    console.log("programId: ", this.programId.toBase58());
+
     const { connection } = this.repository;
     const [vestingAccountKey] = PublicKey.findProgramAddressSync(
       [Buffer.from(seed).slice(0, 31)],

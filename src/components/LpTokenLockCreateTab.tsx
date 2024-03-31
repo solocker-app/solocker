@@ -99,7 +99,7 @@ export default function LpTokenLockCreateTab({
               ],
             };
 
-            const [seed, tx] = await repository.tokenVesting.lockToken(params);
+            const [seed, tx, totalAmount] = await repository.tokenVesting.lockToken(params);
 
             const lpTokenVesting: LpTokenVesting = {
               seed,
@@ -108,7 +108,7 @@ export default function LpTokenLockCreateTab({
                 seed,
                 id: seed,
                 type: "outgoing",
-                totalAmount: new BN(amount).toString("hex"),
+                totalAmount: totalAmount.toString("hex"),
                 schedules: params.schedules.map((schedule: any) => {
                   schedule.amount = schedule.amount.toString();
                   return schedule;

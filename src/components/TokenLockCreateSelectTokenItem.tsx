@@ -20,6 +20,7 @@ export default function TokenLockCreateSelectTokenItem({
     >
       <div className="flex-1 flex space-x-2 items-center">
         <Image
+          className="rounded-full"
           src={digitalAsset.jsonMetadata.image}
           alt={digitalAsset.name}
           width={32}

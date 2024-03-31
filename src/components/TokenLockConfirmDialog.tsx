@@ -68,6 +68,7 @@ export default function TokenLockReviewDialog({
             <p className="text-sm">Total Locked Amount</p>
             <div className="flex items-center space-x-2">
               <Image
+                className="rounded-full"
                 src={tokenLock.token.jsonMetadata.image}
                 alt={tokenLock.token.name}
                 width={32}

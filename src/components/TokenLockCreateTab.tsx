@@ -65,7 +65,12 @@ export default function TokenLockCreateTab({
                   return Object.assign(config, value);
                 });
               }}
-              onBack={() => setSelectedIndex(0)}
+              onBack={() => {
+                setSelectedIndex(0);
+                setConfig({
+                  period: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+                });
+              }}
             />
           </Tab.Panel>
         </Tab.Panels>
@@ -92,7 +97,8 @@ export default function TokenLockCreateTab({
               ],
             };
 
-            const [seed, tx] = await repository.tokenVesting.lockToken(params);
+            const [seed, tx, totalAmount] =
+              await repository.tokenVesting.lockToken(params);
 
             const tokenVesting: TokenVesting = {
               mintMetadata: config.token,
@@ -101,7 +107,7 @@ export default function TokenLockCreateTab({
                 seed,
                 id: seed,
                 type: "outgoing",
-                totalAmount: new BN(amount).toString("hex"),
+                totalAmount: totalAmount.toString("hex"),
                 schedules: params.schedules.map((schedule: any) => {
                   schedule.amount = new BN(schedule.amount).toString();
                   return schedule;

@@ -1,7 +1,9 @@
 import { MdArrowBack } from "react-icons/md";
 
 import { Formik } from "formik";
+import { object, number, string } from "yup";
 
+import { isPublicKey } from "@/lib/utils";
 import { Config } from "@/lib/models/config.model";
 
 import InputDate from "./widgets/InputDate";
@@ -22,7 +24,24 @@ export default function LpTokenLockCreateConfiguration({
 }: LpTokenLockCreateConfigurationProps) {
   const { lpTokenMetadata, baseTokenMetadata, quoteTokenMetadata } =
     value.token;
-
+  const validateSchema = object().shape({
+    amount: number()
+      .moreThan(
+        0,
+        "At least 0.000000001 " +
+          value.token.lpTokenMetadata.symbol +
+          " is required",
+      )
+      .test("validate-balance", "Insufficient balance", (amount) => {
+        return amount <= value.token.addedLpAmount;
+      })
+      .required(),
+    recipient: string()
+      .required()
+      .test("validate-address", "Invalid Solana address", (recipient) =>
+        isPublicKey(recipient),
+      ),
+  });
   return (
     <section className="flex-1 flex flex-col">
       <header className="flex flex-col space-y-4 p-4">
@@ -54,6 +73,7 @@ export default function LpTokenLockCreateConfiguration({
           period: value.period,
           recipient: value.recipient,
         }}
+        validationSchema={validateSchema}
         onSubmit={(value) => setValue(value)}
       >
         {({ values, handleSubmit }) => (

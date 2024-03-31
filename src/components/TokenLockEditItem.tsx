@@ -25,6 +25,7 @@ export default function TokenLockEditItem({
       <td>
         <div className="flex items-center space-x-2">
           <Image
+            className="rounded-full"
             src={metadata.jsonMetadata.image}
             alt={metadata.name}
             width={24}

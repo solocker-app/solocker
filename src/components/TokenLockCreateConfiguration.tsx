@@ -54,6 +54,7 @@ export default function TokenLockCreateConfiguration({
           <h1 className="text-2xl font-black">Lock Token</h1>
           <div className="flex items-center space-x-2">
             <Image
+              className="rounded-full"
               src={value.token.jsonMetadata.image}
               alt={value.token.name}
               width={32}

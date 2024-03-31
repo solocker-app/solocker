@@ -50,7 +50,7 @@ export default function TokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {contractInfo.totalAmount}
+              {new BN(contractInfo.totalAmount, "hex").toNumber() / Math.pow(10, metadata.token.tokenAmount.decimals)}
             </span>
             <span className="text-highlight">{metadata.symbol}</span>
           </p>

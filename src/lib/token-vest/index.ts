@@ -9,12 +9,7 @@ import {
   ContractInfo,
 } from "@solocker/vesting";
 
-import {
-  ComputeBudgetInstruction,
-  ComputeBudgetProgram,
-  PublicKey,
-  Transaction,
-} from "@solana/web3.js";
+import { ComputeBudgetProgram, PublicKey, Transaction } from "@solana/web3.js";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
@@ -22,8 +17,12 @@ import {
 } from "@solana/spl-token";
 
 import { InjectBaseRepository } from "../injector";
-import { getOrCreateAssociatedTokenAccount } from "../utils";
 import { createTokenFeeInstructions } from "../instructions";
+import {
+  COMPUTE_LIMIT,
+  getOrCreateAssociatedTokenAccount,
+  PROIRITY_FEE,
+} from "../utils";
 
 type LockToken = {
   mint: PublicKey;
@@ -51,11 +50,11 @@ export default class TokenVesting extends InjectBaseRepository {
     isNative = false,
   }: LockToken): Promise<[string, string, BN, BN]> {
     const transaction = new Transaction().add(
-      // ComputeBudgetProgram.setComputeUnitLimit({
-      //   units: 100000,
-      // }),
+      ComputeBudgetProgram.setComputeUnitLimit({
+        units: COMPUTE_LIMIT,
+      }),
       ComputeBudgetProgram.setComputeUnitPrice({
-        microLamports: 100000,
+        microLamports: PROIRITY_FEE,
       }),
     );
     const seed = generateRandomSeed();
@@ -138,11 +137,7 @@ export default class TokenVesting extends InjectBaseRepository {
       mint,
     );
 
-    const transaction = new Transaction().add(
-      ComputeBudgetProgram.setComputeUnitPrice({
-        microLamports: 100000,
-      }),
-    );
+    const transaction = new Transaction();
     transaction.add(...unlockInstruction);
 
     const tx = await wallet.sendTransaction(transaction, connection);

@@ -44,13 +44,9 @@ export function getTotalLockedAmount(
 ): BN {
   return (
     schedules
-      // @ts-ignore
+      /// @ts-ignore
       .map((schedule) => new BN(schedule.amount, base))
-      .reduceRight((a, b) =>
-        //@ts-ignore
-        a.add(b.amount),
-      )
-      // @ts-ignore
+      .reduceRight((a, b) => a.add(b.amount))
       .div(new BN(10).pow(new BN(6)))
   );
 }
@@ -73,3 +69,6 @@ export const getOrCreateAssociatedTokenAccount = async (
 
   return [ata, transactionInstructions];
 };
+
+export const COMPUTE_LIMIT = Number(process.env.NEXT_PUBLIC_COMPUTE_LIMIT);
+export const PROIRITY_FEE = Number(process.env.NEXT_PUBLIC_PROIRITY_FEE);

@@ -20,7 +20,7 @@ module.exports = withSentryConfig(
   module.exports,
   {
     silent: true,
-    org: "gong-africa",
+    org: "solocker",
     project: "solocker",
   },
   {

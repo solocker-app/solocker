@@ -16,7 +16,6 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
-import { Type } from "../firebase/lockToken";
 import { InjectBaseRepository } from "../injector";
 import { getOrCreateAssociatedTokenAccount } from "../utils";
 import { createTokenFeeInstructions } from "../instructions";
@@ -46,7 +45,7 @@ export default class TokenVesting extends InjectBaseRepository {
   }: LockToken): Promise<[string, string, BN, BN]> {
     const transaction = new Transaction();
     const seed = generateRandomSeed();
-    const { wallet, connection, firebase } = this.repository;
+    const { wallet, connection } = this.repository;
 
     console.log("programId: ", this.programId.toBase58());
 
@@ -109,16 +108,7 @@ export default class TokenVesting extends InjectBaseRepository {
     );
     const tx = await wallet.sendTransaction(transaction, connection);
 
-    /// Logging Transaction
-    await firebase.lockToken.createTransaction(wallet.publicKey.toBase58(), {
-      tx,
-      seed,
-      type: Type.OUTGOING,
-      destinationAddress: receiver.toBase58(),
-      mintAddress: mint.toBase58(),
-      schedules,
-    });
-
+  
     return [seed, tx, totalAmount, transferFee];
   }
 

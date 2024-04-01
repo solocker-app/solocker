@@ -25,7 +25,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.25",
     "@solana/web3.js": "^1.89.1",
-    "@solocker/vesting": "^0.0.4",
+    "@solocker/vesting": "^0.0.5",
     "animate.css": "^4.1.1",
     "axios": "^1.6.7",
     "bn.js": "^5.2.1",

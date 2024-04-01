@@ -57,8 +57,8 @@ dependencies:
     specifier: ^1.89.1
     version: 1.89.1
   '@solocker/vesting':
-    specifier: ^0.0.4
-    version: 0.0.4(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
+    specifier: ^0.0.5
+    version: 0.0.5(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1)
   animate.css:
     specifier: ^4.1.1
     version: 4.1.1
@@ -5113,8 +5113,8 @@ packages:
       uuid: 9.0.1
     dev: false
 
-  /@solocker/vesting@0.0.4(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
-    resolution: {integrity: sha512-0yS78zdRICruDteWmzIaCTIZZM2tssRLgcUBpFmXWn5nzieFxhr5AKTSLLCpEUpDkz5sLcN5Xy54tChfijIxRw==}
+  /@solocker/vesting@0.0.5(@solana/spl-token@0.3.11)(@solana/web3.js@1.89.1):
+    resolution: {integrity: sha512-sDmz3NicqMtjoM0NfNywzXvmJxP4b4VqeD50FRMwjpjzO85B7Y9bp22xp0ZNbGOcZTY0kO5mfKA/IVsFJWRa/g==}
     peerDependencies:
       '@solana/spl-token': 0.3.7
       '@solana/web3.js': ^1.73.2

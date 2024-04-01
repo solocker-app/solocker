@@ -23,6 +23,7 @@ import { createTokenFeeInstructions } from "../instructions";
 type LockToken = {
   mint: PublicKey;
   receiver: PublicKey;
+  isNative?: boolean;
   schedules: {
     releaseTime: any;
     isReleased: boolean;
@@ -42,6 +43,7 @@ export default class TokenVesting extends InjectBaseRepository {
     mint,
     receiver,
     schedules,
+    isNative = false,
   }: LockToken): Promise<[string, string, BN, BN]> {
     const transaction = new Transaction();
     const seed = generateRandomSeed();
@@ -77,7 +79,7 @@ export default class TokenVesting extends InjectBaseRepository {
       Buffer.from(seed),
       wallet.publicKey,
       wallet.publicKey,
-      senderATA,
+      isNative ? senderATA : wallet.publicKey,
       receiverATA,
       new PublicKey(mint),
       schedules.map((schedule) => {
@@ -94,6 +96,7 @@ export default class TokenVesting extends InjectBaseRepository {
           new Numberu64(amount.toNumber()),
         );
       }),
+      isNative,
     );
 
     // transaction.add(...(await createFeeInstructions(this.repository)));
@@ -108,7 +111,6 @@ export default class TokenVesting extends InjectBaseRepository {
     );
     const tx = await wallet.sendTransaction(transaction, connection);
 
-  
     return [seed, tx, totalAmount, transferFee];
   }
 

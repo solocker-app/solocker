@@ -86,6 +86,7 @@ export default function TokenLockCreateTab({
               Math.pow(10, config.token.token.tokenAmount.decimals);
 
             const params = {
+              isNative: config.token.token.isNative,
               mint: new PublicKey(config.token.mint),
               receiver: new PublicKey(config.recipient),
               schedules: [

@@ -19,7 +19,6 @@ export type ContractInfo = {
 };
 
 export type LpTokenVesting = {
-  seed: string;
   lpInfo: LpInfo;
   contractInfo: ContractInfo;
 };

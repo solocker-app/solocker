@@ -102,7 +102,6 @@ export default function LpTokenLockCreateTab({
               await repository.tokenVesting.lockToken(params);
 
             const lpTokenVesting: LpTokenVesting = {
-              seed,
               contractInfo: {
                 tx,
                 seed,

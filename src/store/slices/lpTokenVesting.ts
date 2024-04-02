@@ -1,3 +1,4 @@
+import BN from "bn.js";
 import {
   createAsyncThunk,
   createEntityAdapter,
@@ -16,7 +17,10 @@ export const getLpTokenVestingByOwner = createAsyncThunk(
 );
 
 export const lpTokenVestingAdapter = createEntityAdapter<LpTokenVesting>({
-  selectId: (model) => model.seed,
+  selectId: (model) => model.contractInfo.seed,
+  sortComparer: (a, b) =>
+    new BN(b.contractInfo.createdAt, "hex").toNumber() -
+    new BN(a.contractInfo.createdAt, "hex").toNumber(),
 });
 
 export const lpTokenVestingSlice = createSlice({

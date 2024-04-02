@@ -22,11 +22,6 @@ type TokenLockCreateTabProps = {
   lpInfos: LpInfo[];
 };
 
-type LockedParams = {
-  lpInfo: LpInfo;
-  contractInfo: any;
-};
-
 export default function LpTokenLockCreateTab({
   lpInfos,
 }: TokenLockCreateTabProps) {

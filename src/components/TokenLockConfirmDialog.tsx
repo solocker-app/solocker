@@ -91,12 +91,12 @@ export default function TokenLockReviewDialog({
                 height={24}
               />
               <div className="flex">
-                <div className="flex items-center text-xl">
+                <div className="hidden items-center text-xl">
                   <h1>2</h1>
                   <span className="text-black/50">SOL</span>
                 </div>
                 <div className="flex items-center space-x-1 text-xl">
-                  <h1>+</h1>
+                  <h1 className="hidden">+</h1>
                   <span className="text-black/50">1%</span>
                 </div>
               </div>

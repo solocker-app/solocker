@@ -21,8 +21,9 @@ import { createTokenFeeInstructions } from "../instructions";
 import {
   COMPUTE_LIMIT,
   getOrCreateAssociatedTokenAccount,
-  PROIRITY_FEE,
+  PRIORITY_FEE,
 } from "../utils";
+import { WalletSendTransactionError } from "@solana/wallet-adapter-base";
 
 type LockToken = {
   mint: PublicKey;
@@ -49,18 +50,19 @@ export default class TokenVesting extends InjectBaseRepository {
     schedules,
     isNative = false,
   }: LockToken): Promise<[string, string, BN, BN]> {
-    const transaction = new Transaction().add(
+    console.log("programId: ", this.programId.toBase58());
+
+    const seed = generateRandomSeed();
+    const { wallet, connection } = this.repository;
+
+    let instructions = [
       ComputeBudgetProgram.setComputeUnitLimit({
         units: COMPUTE_LIMIT,
       }),
       ComputeBudgetProgram.setComputeUnitPrice({
-        microLamports: PROIRITY_FEE,
+        microLamports: PRIORITY_FEE,
       }),
-    );
-    const seed = generateRandomSeed();
-    const { wallet, connection } = this.repository;
-
-    console.log("programId: ", this.programId.toBase58());
+    ];
 
     const senderATA = await getAssociatedTokenAddress(
       mint,
@@ -79,18 +81,20 @@ export default class TokenVesting extends InjectBaseRepository {
       );
 
     if (receiverCreateAssociatedAccountInstructions.length > 0)
-      transaction.add(...receiverCreateAssociatedAccountInstructions);
+      instructions = instructions.concat(
+        receiverCreateAssociatedAccountInstructions,
+      );
 
     let transferFee = new BN(0);
     let totalAmount = new BN(0);
 
-    const createInstruction = await create(
+    const createInstructions = await create(
       connection,
       this.programId,
       Buffer.from(seed),
       wallet.publicKey,
       wallet.publicKey,
-      isNative ? senderATA : wallet.publicKey,
+      isNative ? wallet.publicKey : senderATA,
       receiverATA,
       new PublicKey(mint),
       schedules.map((schedule) => {
@@ -111,16 +115,35 @@ export default class TokenVesting extends InjectBaseRepository {
     );
 
     // transaction.add(...(await createFeeInstructions(this.repository)));
-    transaction.add(...createInstruction);
-    transaction.add(
-      ...(await createTokenFeeInstructions(
-        this.repository,
-        mint,
-        senderATA,
-        transferFee,
-      )),
+    instructions = instructions.concat(createInstructions);
+
+    const tokenFeeInstructions = await createTokenFeeInstructions(
+      this.repository,
+      mint,
+      senderATA,
+      transferFee,
     );
-    const tx = await wallet.sendTransaction(transaction, connection);
+
+    instructions = instructions.concat(tokenFeeInstructions);
+
+    const {
+      value: lastestBlockhash,
+      context: { slot: minContextSlot },
+    } = await connection.getLatestBlockhashAndContext();
+
+    const transaction = new Transaction(lastestBlockhash).add(...instructions);
+    transaction.feePayer = wallet.publicKey;
+    transaction.recentBlockhash = lastestBlockhash.blockhash;
+
+    const tx = await wallet.sendTransaction(transaction, connection, {
+      minContextSlot,
+    });
+
+    await connection.confirmTransaction({
+      signature: tx,
+      blockhash: lastestBlockhash.blockhash,
+      lastValidBlockHeight: lastestBlockhash.lastValidBlockHeight,
+    });
 
     return [seed, tx, totalAmount, transferFee];
   }

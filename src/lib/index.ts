@@ -1,4 +1,4 @@
-import { Connection } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 import { Wallet } from "@solana/wallet-adapter-react";
 
 import { TOKEN_VESTING_PROGRAM_ID } from "@solocker/vesting";
@@ -13,6 +13,9 @@ export class BaseRepository {
     readonly wallet?: Wallet["adapter"],
     readonly VESTING_PROGRAM_ID = TOKEN_VESTING_PROGRAM_ID,
   ) {
-    this.tokenVesting = new TokenVesting(TOKEN_VESTING_PROGRAM_ID, this);
+    this.tokenVesting = new TokenVesting(
+      VESTING_PROGRAM_ID,
+      this,
+    );
   }
 }

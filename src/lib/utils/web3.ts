@@ -6,7 +6,6 @@ import { PublicKey, Connection, TransactionInstruction } from "@solana/web3.js";
 import {
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddress,
-  getAccount,
 } from "@solana/spl-token";
 
 export const encodeSeed = function (value: string) {
@@ -70,5 +69,5 @@ export const getOrCreateAssociatedTokenAccount = async (
   return [ata, transactionInstructions];
 };
 
+export const PRIORITY_FEE = Number(process.env.NEXT_PUBLIC_PRIORITY_FEE);
 export const COMPUTE_LIMIT = Number(process.env.NEXT_PUBLIC_COMPUTE_LIMIT);
-export const PROIRITY_FEE = Number(process.env.NEXT_PUBLIC_PROIRITY_FEE);

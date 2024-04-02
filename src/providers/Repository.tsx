@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useMemo } from "react";
 
-import { Connection, clusterApiUrl } from  "@solana/web3.js";
+import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { BaseRepository } from "@/lib";
@@ -21,7 +21,11 @@ export default function Component({ children }: React.PropsWithChildren) {
   });
 
   const repository = useMemo(
-    () => new BaseRepository(connection, wallet?.adapter),
+    () =>
+      new BaseRepository(
+        connection,
+        wallet?.adapter,
+      ),
     [connection, wallet],
   );
 

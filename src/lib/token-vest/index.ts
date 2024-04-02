@@ -160,10 +160,26 @@ export default class TokenVesting extends InjectBaseRepository {
       mint,
     );
 
-    const transaction = new Transaction();
+    const {
+      value: lastestBlockhash,
+      context: { slot: minContextSlot },
+    } = await connection.getLatestBlockhashAndContext();
+
+    const transaction = new Transaction(lastestBlockhash);
     transaction.add(...unlockInstruction);
 
-    const tx = await wallet.sendTransaction(transaction, connection);
+    transaction.feePayer = wallet.publicKey;
+    transaction.recentBlockhash = lastestBlockhash.blockhash;
+
+    const tx = await wallet.sendTransaction(transaction, connection, {
+      minContextSlot,
+    });
+
+    await connection.confirmTransaction({
+      signature: tx,
+      blockhash: lastestBlockhash.blockhash,
+      lastValidBlockHeight: lastestBlockhash.lastValidBlockHeight,
+    });
 
     return tx;
   }

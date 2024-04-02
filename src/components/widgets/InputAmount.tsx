@@ -1,5 +1,4 @@
-import { useFormik, useFormikContext, Field, ErrorMessage } from "formik";
-import { LpInfo } from "@/lib/api/models/raydium.model";
+import { useFormikContext, Field, ErrorMessage } from "formik";
 
 type InputAmountProps = {
   info: {
@@ -10,7 +9,7 @@ type InputAmountProps = {
   name: string;
 };
 
-export default function InputAmount({ info, value, name }: InputAmountProps) {
+export default function InputAmount({ info, name }: InputAmountProps) {
   const { setFieldValue } = useFormikContext();
   const { symbol, amount } = info;
 
@@ -34,7 +33,7 @@ export default function InputAmount({ info, value, name }: InputAmountProps) {
             <button
               type="button"
               className="btn btn-primary !px-3 !py-1 text-xs uppercase"
-              onClick={() => setFieldValue(name, amount.toFixed(2))}
+              onClick={() => setFieldValue(name, Number(amount.toFixed(2)))}
             >
               Max
             </button>
@@ -49,7 +48,7 @@ export default function InputAmount({ info, value, name }: InputAmountProps) {
                 type="button"
                 className="px-4 py-1.5 border border-dark rounded-full"
                 onClick={() =>
-                  setFieldValue(name, (amount * (split / 100)).toFixed(2))
+                  setFieldValue(name, Number((amount * (split / 100)).toFixed(2)))
                 }
               >
                 {split}%

@@ -29,7 +29,7 @@ export default function TokenLockCreateConfiguration({
         "At least 0.000000001 " + value.token.symbol + " is required",
       )
       .test("validate-amount", "max amount supported exceeded", (amount) => {
-        return amount <= 9999999999;
+        return amount <= Math.pow(10, value.token.token.tokenAmount.decimals);
       })
       .test("validate-balance", "Insufficient balance", (amount) => {
         return amount <= value.token.token.tokenAmount.uiAmount;

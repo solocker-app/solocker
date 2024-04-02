@@ -7,6 +7,7 @@ import { MdLockOutline } from "react-icons/md";
 import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
+import { safeBN, unsafeBnToNumber } from "@/lib/utils";
 
 type TokenLockListItemProps = {
   onClick: () => void;
@@ -39,8 +40,11 @@ export default function TokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {new BN(contractInfo.totalAmount, "hex").toNumber() /
-                Math.pow(10, metadata.token.tokenAmount.decimals)}
+              {unsafeBnToNumber(
+                safeBN(contractInfo.totalAmount).div(
+                  new BN(10).pow(new BN(metadata.token.tokenAmount.decimals)),
+                ),
+              )}
             </span>
             <span className="text-highlight">{metadata.symbol}</span>
           </p>

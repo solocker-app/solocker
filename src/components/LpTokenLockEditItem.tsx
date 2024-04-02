@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { MdLockOutline } from "react-icons/md";
 
-import { getTotalLockedAmount } from "@/lib/utils";
+import { safeBN, unsafeBnToNumber } from "@/lib/utils";
 import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
@@ -53,8 +53,11 @@ export default function LpTokenLockEditItem({
           <MdLockOutline />
           <p className="flex items-center space-x-1">
             <span>
-              {new BN(contractInfo.totalAmount, "hex").toNumber() /
-                Math.pow(10, lpInfo.lpTokenDecimal)}
+              {unsafeBnToNumber(
+                safeBN(contractInfo.totalAmount).div(
+                  new BN(10).pow(new BN(lpInfo.lpTokenDecimal)),
+                ),
+              )}
             </span>
             <span className="text-highlight">
               {lpInfo.lpTokenMetadata.symbol}

@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import LockInfo from "./LockInfo";
 
+import { safeBN, unsafeBnToNumber } from "@/lib/utils";
 import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 import { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 
@@ -19,9 +20,11 @@ export default function LockInfoList({
   seed,
   digitalAsset,
 }: LockInfoListProps) {
-  const totalLockedAmount =
-    new BN(contractInfo.totalAmount, "hex").toNumber() /
-    Math.pow(10, digitalAsset.token.tokenAmount.decimals);
+  const totalLockedAmount = unsafeBnToNumber(
+    safeBN(contractInfo.totalAmount).div(
+      new BN(10).pow(new BN(digitalAsset.token.tokenAmount.decimals)),
+    ),
+  );
 
   const schedule = contractInfo.schedules[0];
   const createdAt = new BN(contractInfo.createdAt, "hex").toNumber();

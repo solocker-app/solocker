@@ -4,6 +4,7 @@ import moment from "moment";
 import LockInfo from "./LockInfo";
 import OverlapCoinIcon, { getCoinProps } from "../widgets/OverlapCoinIcon";
 
+import { safeBN, unsafeBnToNumber } from "@/lib/utils";
 import type { LpInfo } from "@/lib/api/models/raydium.model";
 import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
@@ -18,9 +19,11 @@ export default function LockInfoList({
   seed,
   lpInfo,
 }: LockInfoListProps) {
-  const totalLockedAmount =
-    new BN(contractInfo.totalAmount, "hex").toNumber() /
-    Math.pow(10, lpInfo.lpTokenDecimal);
+  const totalLockedAmount = unsafeBnToNumber(
+    safeBN(contractInfo.totalAmount).div(
+      new BN(10).pow(new BN(lpInfo.lpTokenDecimal)),
+    ),
+  );
 
   const schedule = contractInfo.schedules[0];
   const createdAt = new BN(contractInfo.createdAt, "hex").toNumber();

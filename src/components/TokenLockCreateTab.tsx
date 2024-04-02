@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Tab } from "@headlessui/react";
 import { PublicKey } from "@solana/web3.js";
 
+import { safeBN, unsafeBN } from "@/lib/utils";
 import { TokenConfig } from "@/lib/models/config.model";
 import type { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
@@ -81,11 +82,9 @@ export default function TokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
-            const amount = new BN(
-              /// @ts-ignore
-              BigInt(
-                config.amount *
-                  Math.pow(10, config.token.token.tokenAmount.decimals),
+            const amount = unsafeBN(
+              safeBN(config.amount).mul(
+                new BN(10).pow(new BN(config.token.token.tokenAmount.decimals)),
               ),
             );
 

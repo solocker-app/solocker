@@ -6,6 +6,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import { useRepository } from "@/composables";
 
+import { safeBN, unsafeBN } from "@/lib/utils";
 import type { Config } from "@/lib/models/config.model";
 import type { LpInfo } from "@/lib/api/models/raydium.model";
 import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
@@ -79,8 +80,10 @@ export default function LpTokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
-            const amount = new BN(config.amount).mul(
-              new BN(10).pow(new BN(config.token.lpTokenDecimal)),
+            const amount = unsafeBN(
+              safeBN(config.amount).mul(
+                new BN(10).pow(new BN(config.token.lpTokenDecimal)),
+              ),
             );
 
             const params = {

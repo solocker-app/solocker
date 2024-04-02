@@ -1,5 +1,9 @@
 "use client";
 import * as Sentry from "@sentry/nextjs";
+
+import moment from "moment";
+import humanNumber from "human-number";
+
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
@@ -58,6 +62,12 @@ export default function LpTokenLockReviewDialog({
             </div>
           </div>
           <div className="bg-black/20 p-4 rounded-md">
+            <p className="text-sm">Release Time</p>
+            <div className="flex space-x-1 text-xl">
+              <h1>{moment.unix(tokenLock.period).fromNow()}</h1>
+            </div>
+          </div>
+          <div className="bg-black/20 p-4 rounded-md">
             <p className="text-sm">Total Locked Amount</p>
             <div className="flex items-center space-x-2">
               <OverlapCoinIcon
@@ -67,7 +77,7 @@ export default function LpTokenLockReviewDialog({
                 ]}
               />
               <div className="flex space-x-1 text-xl">
-                <h1>{tokenLock.amount}</h1>
+                <h1>{humanNumber(tokenLock.amount)}</h1>
                 <span className="text-black/50">
                   {tokenLock.token.lpTokenMetadata.symbol}
                 </span>
@@ -85,11 +95,11 @@ export default function LpTokenLockReviewDialog({
               />
               <div className="flex">
                 <div className="flex items-center text-xl">
-                  <h1>2</h1>
+                  <h1>0</h1>
                   <span className="text-black/50">SOL</span>
                 </div>
                 <div className="flex items-center space-x-1 text-xl">
-                  <h1>+</h1>
+                  <h1>-</h1>
                   <span className="text-black/50">1%</span>
                 </div>
               </div>

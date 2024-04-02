@@ -32,6 +32,9 @@ export default function LpTokenLockCreateConfiguration({
           value.token.lpTokenMetadata.symbol +
           " is required",
       )
+      .test("validate-amount", "max amount supported exceeded", (amount) => {
+        return amount <= 9999999999;
+      })
       .test("validate-balance", "Insufficient balance", (amount) => {
         return amount <= value.token.addedLpAmount;
       })

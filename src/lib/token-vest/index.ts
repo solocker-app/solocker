@@ -30,9 +30,9 @@ type LockToken = {
   receiver: PublicKey;
   isNative?: boolean;
   schedules: {
-    releaseTime: any;
+    amount: BN;
+    releaseTime: number;
     isReleased: boolean;
-    amount: any;
   }[];
 };
 
@@ -98,17 +98,20 @@ export default class TokenVesting extends InjectBaseRepository {
       receiverATA,
       new PublicKey(mint),
       schedules.map((schedule) => {
-        const baseAmount = new BN(schedule.amount);
+        const baseAmount = schedule.amount;
         const feeAmount = baseAmount.mul(new BN(1)).div(new BN(100));
         const amount = baseAmount.sub(feeAmount);
         transferFee = feeAmount;
         totalAmount = totalAmount.add(baseAmount);
 
+        console.log(console.log(amount.toString()))
+        
+
         return Schedule.new(
           /// @ts-ignore
           new Numberu64(schedule.releaseTime),
           /// @ts-ignore
-          new Numberu64(amount.toNumber()),
+          new Numberu64(amount.toString("hex"), "hex"),
         );
       }),
       isNative,

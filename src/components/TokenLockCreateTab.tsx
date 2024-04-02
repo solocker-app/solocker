@@ -81,9 +81,13 @@ export default function TokenLockCreateTab({
           visible={confirmDialogVisible}
           setVisible={setConfirmDialogVisible}
           onCreateLockContract={async (config) => {
-            const amount =
-              Number(config.amount) *
-              Math.pow(10, config.token.token.tokenAmount.decimals);
+            const amount = new BN(
+              /// @ts-ignore
+              BigInt(
+                config.amount *
+                  Math.pow(10, config.token.token.tokenAmount.decimals),
+              ),
+            );
 
             const params = {
               isNative: config.token.token.isNative,

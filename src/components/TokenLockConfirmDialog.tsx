@@ -2,6 +2,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 import moment from "moment";
+import humanNumber from "human-number";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -75,7 +76,7 @@ export default function TokenLockReviewDialog({
                 height={32}
               />
               <div className="flex space-x-1 text-xl">
-                <h1>{tokenLock.amount}</h1>
+                <h1>{humanNumber(tokenLock.amount)}</h1>
                 <span className="text-black/50">{tokenLock.token.symbol}</span>
               </div>
             </div>

@@ -67,6 +67,21 @@ export const getOrCreateAssociatedTokenAccount = async (
   return [ata, transactionInstructions];
 };
 
+export const retry = async <T extends () => Promise<Awaited<ReturnType<T>>>>(
+  func: T,
+  maxRetry: number = 6,
+) => {
+  const attempts = 0;
+  while (attempts < maxRetry) {
+    try {
+      return await func();
+    } catch (error) {
+      if (attempts === maxRetry) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+  }
+};
+
 export const PRIORITY_FEE = Number(process.env.NEXT_PUBLIC_PRIORITY_FEE);
 export const COMPUTE_LIMIT = Number(process.env.NEXT_PUBLIC_COMPUTE_LIMIT);
 
@@ -80,4 +95,6 @@ export const lpTokenFeePercentatge = Number(
   process.env.NEXT_PUBLIC_LP_TOKEN_LOCK_FEE,
 );
 
-export const lpSolanaTokenFee = Number(process.env.NEXT_PUBLIC_LP_TOKEN_LOCK_SOLANA_FEE);
+export const lpSolanaTokenFee = Number(
+  process.env.NEXT_PUBLIC_LP_TOKEN_LOCK_SOLANA_FEE,
+);

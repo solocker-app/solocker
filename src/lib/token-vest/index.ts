@@ -25,6 +25,7 @@ import {
   COMPUTE_LIMIT,
   getOrCreateAssociatedTokenAccount,
   PRIORITY_FEE,
+  retry,
 } from "../utils";
 import { safeBN, unsafeBN } from "@solocker/safe-bn";
 
@@ -147,7 +148,9 @@ export default class TokenVesting extends InjectBaseRepository {
     const {
       value: lastestBlockhash,
       context: { slot: minContextSlot },
-    } = await connection.getLatestBlockhashAndContext();
+    } = await connection.getLatestBlockhashAndContext({
+      commitment: "finalized",
+    });
 
     const transaction = new Transaction(lastestBlockhash).add(...instructions);
     transaction.feePayer = wallet.publicKey;
@@ -155,13 +158,18 @@ export default class TokenVesting extends InjectBaseRepository {
 
     const tx = await wallet.sendTransaction(transaction, connection, {
       minContextSlot,
+      maxRetries: 0,
+      preflightCommitment: "confirmed",
     });
 
-    await connection.confirmTransaction({
-      signature: tx,
-      blockhash: lastestBlockhash.blockhash,
-      lastValidBlockHeight: lastestBlockhash.lastValidBlockHeight,
-    });
+    await connection.confirmTransaction(
+      {
+        signature: tx,
+        blockhash: lastestBlockhash.blockhash,
+        lastValidBlockHeight: lastestBlockhash.lastValidBlockHeight,
+      },
+      "confirmed",
+    );
 
     return [seed, tx, totalAmount, transferFee];
   }

@@ -189,7 +189,9 @@ export default class TokenVesting extends InjectBaseRepository {
     const {
       value: lastestBlockhash,
       context: { slot: minContextSlot },
-    } = await connection.getLatestBlockhashAndContext();
+    } = await connection.getLatestBlockhashAndContext({
+      commitment: "finalized",
+    });
 
     const transaction = new Transaction(lastestBlockhash);
     transaction.add(...unlockInstruction);

@@ -6,6 +6,7 @@ type LockStatusProps = {
 
 export default function LockStatus({ status }: LockStatusProps) {
   const colorScheme = {
+    ready: "bg-secondary text-white",
     pending: "bg-amber-100 text-amber-500",
     withdrawn: "bg-green-100 text-green-500",
   };

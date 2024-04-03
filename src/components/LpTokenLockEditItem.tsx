@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { MdLockOutline } from "react-icons/md";
 
-import { safeBN, unsafeBnToNumber } from "@/lib/utils";
+import { canWithdraw, safeBN, unsafeBnToNumber } from "@/lib/utils";
 import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
@@ -80,7 +80,9 @@ export default function LpTokenLockEditItem({
           status={
             contractInfo.schedules.every((schedule) => schedule.isReleased)
               ? "withdrawn"
-              : "pending"
+              : canWithdraw(contractInfo.schedules)
+                ? "ready"
+                : "pending"
           }
         />
       </td>

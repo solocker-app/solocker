@@ -7,6 +7,7 @@ import {
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
+import { ContractInfo } from "../api/models/tokenVesting.model";
 
 export const encodeSeed = function (value: string) {
   return base58.encode(Buffer.from(value).slice(0, 31));
@@ -36,19 +37,16 @@ export const isPublicKey = function (value: string) {
   }
 };
 
-export function getTotalLockedAmount(
-  schedules: any,
-  power: number,
-  base?: string | number | "hex",
-): BN {
-  return (
-    schedules
-      /// @ts-ignore
-      .map((schedule) => new BN(schedule.amount, base))
-      .reduceRight((a, b) => a.add(b.amount))
-      .div(new BN(10).pow(new BN(6)))
-  );
-}
+export const canWithdraw = (schedules: ContractInfo["schedules"]) => {
+  return schedules.some((schedule) => {
+    return (
+      new BN(schedule.releaseTime, "hex").toNumber() <=
+        Math.floor(Date.now() / 1000) &&
+      !schedule.isReleased &&
+      new BN(schedule.amount).isZero
+    );
+  });
+};
 
 export const getOrCreateAssociatedTokenAccount = async (
   connection: Connection,

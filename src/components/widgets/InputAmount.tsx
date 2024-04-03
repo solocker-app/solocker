@@ -19,7 +19,7 @@ export default function InputAmount({ info, name }: InputAmountProps) {
       <div className="flex flex-col bg-black p-4 rounded-xl">
         <div className="flex space-x-1 items-center justify-end text-sm">
           <span>Balance:</span>
-          <span>{amount.toFixed(2)}</span>
+          <span>{amount.toFixed(4)}</span>
         </div>
         <div className="flex space-x-2 items-center">
           <Field

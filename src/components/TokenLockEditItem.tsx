@@ -7,7 +7,7 @@ import { MdLockOutline } from "react-icons/md";
 import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
-import { safeBN, unsafeBnToNumber } from "@/lib/utils";
+import { canWithdraw, safeBN, unsafeBnToNumber } from "@/lib/utils";
 
 type TokenLockListItemProps = {
   onClick: () => void;
@@ -65,7 +65,9 @@ export default function TokenLockEditItem({
           status={
             contractInfo.schedules.every((schedule) => schedule.isReleased)
               ? "withdrawn"
-              : "pending"
+              : canWithdraw(contractInfo.schedules)
+                ? "ready"
+                : "pending"
           }
         />
       </td>

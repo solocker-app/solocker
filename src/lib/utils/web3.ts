@@ -43,7 +43,7 @@ export const canWithdraw = (schedules: ContractInfo["schedules"]) => {
       new BN(schedule.releaseTime, "hex").toNumber() <=
         Math.floor(Date.now() / 1000) &&
       !schedule.isReleased &&
-      new BN(schedule.amount).isZero
+      new BN(schedule.amount, "hex").isZero
     );
   });
 };

@@ -51,8 +51,7 @@ export default function LpTokenUnlockDialog({
           contractInfo: {
             ...contractInfo,
             schedules: contractInfo.schedules.map((schedule) => {
-              schedule.isReleased = true;
-              return schedule;
+              return {...schedule, isReleased: true};
             }),
           },
         },

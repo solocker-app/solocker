@@ -33,7 +33,7 @@ export default function InputAmount({ info, name }: InputAmountProps) {
             <button
               type="button"
               className="btn btn-primary !px-3 !py-1 text-xs uppercase"
-              onClick={() => setFieldValue(name, Number(amount.toFixed(2)))}
+              onClick={() => setFieldValue(name, amount)}
             >
               Max
             </button>
@@ -48,7 +48,7 @@ export default function InputAmount({ info, name }: InputAmountProps) {
                 type="button"
                 className="px-4 py-1.5 border border-dark rounded-full"
                 onClick={() =>
-                  setFieldValue(name, Number((amount * (split / 100)).toFixed(2)))
+                  setFieldValue(name, amount * (split / 100))
                 }
               >
                 {split}%

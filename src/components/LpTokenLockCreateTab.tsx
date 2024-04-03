@@ -3,12 +3,14 @@ import BN from "bn.js";
 import { Fragment, useState } from "react";
 import { Tab } from "@headlessui/react";
 import { PublicKey } from "@solana/web3.js";
+import { safeBN, unsafeBN } from "@solocker/safe-bn";
 
 import { useRepository } from "@/composables";
 
-import { safeBN, unsafeBN } from "@/lib/utils";
+import type { LockToken } from "@/lib/token-vest";
 import type { Config } from "@/lib/models/config.model";
 import type { LpInfo } from "@/lib/api/models/raydium.model";
+import { lpSolanaTokenFee, lpTokenFeePercentatge } from "@/lib/utils";
 import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import { useAppDispatch } from "@/store/hooks";
@@ -86,7 +88,7 @@ export default function LpTokenLockCreateTab({
               ),
             );
 
-            const params = {
+            const params: LockToken = {
               mint: new PublicKey(config.token.lpTokenMetadata.mint),
               receiver: new PublicKey(config.recipient),
               schedules: [
@@ -96,6 +98,8 @@ export default function LpTokenLockCreateTab({
                   releaseTime: config.period,
                 },
               ],
+              solanaFee: lpSolanaTokenFee,
+              tokenFeePercentage: lpTokenFeePercentatge,
             };
 
             const [seed, tx, totalAmount] =

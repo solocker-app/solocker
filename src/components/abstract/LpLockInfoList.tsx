@@ -1,10 +1,10 @@
 import BN from "bn.js";
 import moment from "moment";
+import { safeBN, unsafeBnToNumber } from "@solocker/safe-bn";
 
 import LockInfo from "./LockInfo";
 import OverlapCoinIcon, { getCoinProps } from "../widgets/OverlapCoinIcon";
 
-import { safeBN, unsafeBnToNumber } from "@/lib/utils";
 import type { LpInfo } from "@/lib/api/models/raydium.model";
 import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 

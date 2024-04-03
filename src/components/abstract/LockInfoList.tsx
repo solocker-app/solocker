@@ -1,11 +1,11 @@
 import { BN } from "bn.js";
+import { safeBN, unsafeBnToNumber } from "@solocker/safe-bn";
 
 import moment from "moment";
 import Image from "next/image";
 
 import LockInfo from "./LockInfo";
 
-import { safeBN, unsafeBnToNumber } from "@/lib/utils";
 import { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 import { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 

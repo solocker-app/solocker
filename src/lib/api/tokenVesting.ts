@@ -9,8 +9,7 @@ export class TokenVestingApi extends InjectAxios {
       this.buildQuery(this.buildPath("lp-contract-infos"), { wallet }),
     );
   }
-
-
+  
   getTokenVestingByOwner(wallet: string) {
     return this.axios.get<TokenVesting[]>(
       this.buildQuery(this.buildPath("contract-infos"), { wallet }),

@@ -8,7 +8,6 @@
     "format": "pnpm exec prettier . --write"
   },
   "dependencies": {
-    "@bonfida/utils": "^0.0.7",
     "@headlessui/react": "^1.7.18",
     "@metaplex-foundation/mpl-token-metadata": "^3.1.2",
     "@metaplex-foundation/umi": "^0.9.0",
@@ -25,6 +24,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.25",
     "@solana/web3.js": "^1.89.1",
+    "@solocker/safe-bn": "^0.0.2",
     "@solocker/vesting": "^0.0.7",
     "animate.css": "^4.1.1",
     "axios": "^1.6.7",

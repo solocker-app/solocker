@@ -1,4 +1,6 @@
 import BN from "bn.js";
+import { safeBN, unsafeBnToNumber } from "@solocker/safe-bn";
+
 import moment from "moment";
 
 import Image from "next/image";
@@ -7,7 +9,7 @@ import { MdLockOutline } from "react-icons/md";
 import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";
-import { canWithdraw, safeBN, unsafeBnToNumber } from "@/lib/utils";
+import { canWithdraw } from "@/lib/utils";
 
 type TokenLockListItemProps = {
   onClick: () => void;

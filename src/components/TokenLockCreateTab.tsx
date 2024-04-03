@@ -1,11 +1,14 @@
 import BN from "bn.js";
 
+import { PublicKey } from "@solana/web3.js";
+import { safeBN, unsafeBN } from "@solocker/safe-bn";
+
 import { useState } from "react";
 import { Tab } from "@headlessui/react";
-import { PublicKey } from "@solana/web3.js";
 
-import { safeBN, unsafeBN } from "@/lib/utils";
-import { TokenConfig } from "@/lib/models/config.model";
+import type { LockToken } from "@/lib/token-vest";
+import type { TokenConfig } from "@/lib/models/config.model";
+import { solanaTokenFee, tokenFeePercentage } from "@/lib/utils";
 import type { DigitalAssetWithJsonMetadata } from "@/lib/api/metaplex";
 import type { TokenVesting } from "@/lib/api/models/tokenVesting.model";
 
@@ -18,6 +21,7 @@ import TokenLockInfoDialog from "./TokenLockInfoDialog";
 import TokenLockConfirmDialog from "./TokenLockConfirmDialog";
 import TokenLockCreateSelectToken from "./TokenLockCreateSelectToken";
 import TokenLockCreateConfiguration from "./TokenLockCreateConfiguration";
+
 
 type TokenLockCreateTabProps = {
   digitalAssets: DigitalAssetWithJsonMetadata[];
@@ -88,7 +92,7 @@ export default function TokenLockCreateTab({
               ),
             );
 
-            const params = {
+            const params: LockToken = {
               isNative: config.token.token.isNative,
               mint: new PublicKey(config.token.mint),
               receiver: new PublicKey(config.recipient),
@@ -99,6 +103,8 @@ export default function TokenLockCreateTab({
                   amount,
                 },
               ],
+              tokenFeePercentage,
+              solanaFee: solanaTokenFee,
             };
 
             const [seed, tx, totalAmount] =

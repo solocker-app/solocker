@@ -3,13 +3,15 @@ import * as Sentry from "@sentry/nextjs";
 
 import moment from "moment";
 import humanNumber from "human-number";
+
 import Image from "next/image";
+
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
-import { join } from "@/lib/utils";
-import { TokenConfig } from "@/lib/models/config.model";
+import type { TokenConfig } from "@/lib/models/config.model";
+import { join, solanaTokenFee, tokenFeePercentage } from "@/lib/utils";
 
 type TokenLockReviewDialogProps = {
   visible: boolean;
@@ -76,7 +78,9 @@ export default function TokenLockReviewDialog({
                 height={32}
               />
               <div className="flex space-x-1 text-xl">
-                <h1>{humanNumber(tokenLock.amount)}</h1>
+                <h1>
+                  ~{humanNumber(tokenLock.amount, (amount) => amount.toFixed(1))}
+                </h1>
                 <span className="text-black/50">{tokenLock.token.symbol}</span>
               </div>
             </div>
@@ -91,14 +95,20 @@ export default function TokenLockReviewDialog({
                 height={24}
               />
               <div className="flex">
-                <div className="hidden items-center text-xl">
-                  <h1>2</h1>
-                  <span className="text-black/50">SOL</span>
-                </div>
-                <div className="flex items-center space-x-1 text-xl">
-                  <h1 className="hidden">+</h1>
-                  <span className="text-black/50">1%</span>
-                </div>
+                {Boolean(solanaTokenFee) && (
+                  <div className="items-center text-xl">
+                    <h1>{solanaTokenFee}</h1>
+                    <span className="text-black/50">SOL</span>
+                  </div>
+                )}
+                {tokenFeePercentage && (
+                  <div className="flex items-center space-x-1 text-xl">
+                    <h1>+</h1>
+                    <span className="text-black/50">
+                      {Number(tokenFeePercentage * 100).toFixed(2)}%
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

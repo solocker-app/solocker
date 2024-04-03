@@ -17,18 +17,23 @@ import {
 } from "@solana/spl-token";
 
 import { InjectBaseRepository } from "../injector";
-import { createTokenFeeInstructions } from "../instructions";
+import {
+  createFeeInstructions,
+  createTokenFeeInstructions,
+} from "../instructions";
 import {
   COMPUTE_LIMIT,
   getOrCreateAssociatedTokenAccount,
   PRIORITY_FEE,
 } from "../utils";
-import { WalletSendTransactionError } from "@solana/wallet-adapter-base";
+import { safeBN, unsafeBN } from "@solocker/safe-bn";
 
-type LockToken = {
+export type LockToken = {
   mint: PublicKey;
   receiver: PublicKey;
   isNative?: boolean;
+  solanaFee?: number;
+  tokenFeePercentage?: number;
   schedules: {
     amount: BN;
     releaseTime: number;
@@ -48,6 +53,8 @@ export default class TokenVesting extends InjectBaseRepository {
     mint,
     receiver,
     schedules,
+    solanaFee,
+    tokenFeePercentage,
     isNative = false,
   }: LockToken): Promise<[string, string, BN, BN]> {
     console.log("programId: ", this.programId.toBase58());
@@ -99,13 +106,12 @@ export default class TokenVesting extends InjectBaseRepository {
       new PublicKey(mint),
       schedules.map((schedule) => {
         const baseAmount = schedule.amount;
-        const feeAmount = baseAmount.mul(new BN(1)).div(new BN(100));
+        const feeAmount = unsafeBN(baseAmount.mul(safeBN(tokenFeePercentage)));
         const amount = baseAmount.sub(feeAmount);
-        transferFee = feeAmount;
+        transferFee = transferFee.add(feeAmount);
         totalAmount = totalAmount.add(baseAmount);
 
-        console.log(console.log(amount.toString()))
-        
+        console.log(console.log(amount.toString()));
 
         return Schedule.new(
           /// @ts-ignore
@@ -117,17 +123,26 @@ export default class TokenVesting extends InjectBaseRepository {
       isNative,
     );
 
-    // transaction.add(...(await createFeeInstructions(this.repository)));
+    if (solanaFee && solanaFee > 0) {
+      const solanaFeeInstructions = await createFeeInstructions(
+        this.repository,
+        solanaFee,
+      );
+      instructions.concat(solanaFeeInstructions);
+    }
+
     instructions = instructions.concat(createInstructions);
 
-    const tokenFeeInstructions = await createTokenFeeInstructions(
-      this.repository,
-      mint,
-      senderATA,
-      transferFee,
-    );
+    if (!transferFee.isZero) {
+      const tokenFeeInstructions = await createTokenFeeInstructions(
+        this.repository,
+        mint,
+        senderATA,
+        transferFee,
+      );
 
-    instructions = instructions.concat(tokenFeeInstructions);
+      instructions = instructions.concat(tokenFeeInstructions);
+    }
 
     const {
       value: lastestBlockhash,

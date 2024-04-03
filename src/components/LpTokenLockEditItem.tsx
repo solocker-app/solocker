@@ -2,10 +2,11 @@ import BN from "bn.js";
 import moment from "moment";
 
 import Image from "next/image";
-
 import { MdLockOutline } from "react-icons/md";
 
-import { canWithdraw, safeBN, unsafeBnToNumber } from "@/lib/utils";
+import { safeBN, unsafeBnToNumber } from "@solocker/safe-bn";
+
+import { canWithdraw } from "@/lib/utils";
 import type { LpTokenVesting } from "@/lib/api/models/tokenVesting.model";
 
 import LockStatus from "./LockStatus";

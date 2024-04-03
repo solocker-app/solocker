@@ -36,14 +36,14 @@ export async function createTokenFeeInstructions(
   ];
 }
 
-export async function createFeeInstructions(repository: BaseRepository) {
+export async function createFeeInstructions(repository: BaseRepository, solanaFeeAmount: number) {
   const { wallet } = repository;
 
   return [
     SystemProgram.transfer({
       fromPubkey: wallet.publicKey,
       toPubkey: marketingWallet,
-      lamports: 1 * LAMPORTS_PER_SOL,
+      lamports: solanaFeeAmount * LAMPORTS_PER_SOL,
     }),
   ];
 }

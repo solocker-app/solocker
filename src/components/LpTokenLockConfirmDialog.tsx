@@ -8,7 +8,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
-import { join } from "@/lib/utils";
+import {
+  join,
+  lpSolanaTokenFee,
+  lpTokenFeePercentatge,
+  solanaTokenFee,
+} from "@/lib/utils";
 import { Config } from "@/lib/models/config.model";
 
 import OverlapCoinIcon, { getCoinProps } from "./widgets/OverlapCoinIcon";
@@ -94,14 +99,20 @@ export default function LpTokenLockReviewDialog({
                 height={24}
               />
               <div className="flex">
-                <div className="flex items-center text-xl">
-                  <h1>2</h1>
-                  <span className="text-black/50">SOL</span>
-                </div>
-                <div className="flex items-center space-x-1 text-xl">
-                  <h1>+</h1>
-                  <span className="text-black/50">1%</span>
-                </div>
+                {lpSolanaTokenFee && (
+                  <div className="flex items-center text-xl">
+                    <h1>{lpSolanaTokenFee}</h1>
+                    <span className="text-black/50">SOL</span>
+                  </div>
+                )}
+                {lpTokenFeePercentatge && (
+                  <div className="flex items-center space-x-1 text-xl">
+                    <h1>+</h1>
+                    <span className="text-black/50">
+                      {lpTokenFeePercentatge * 100}%
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -115,13 +126,11 @@ export default function LpTokenLockReviewDialog({
 
               return toast.promise(
                 onCreateLockContract(tokenLock)
-                .catch(e => {
-                  Sentry.captureException(e);
-                  throw e;
-                })
-                .finally(() =>
-                  setLoading(false),
-                ),
+                  .catch((e) => {
+                    Sentry.captureException(e);
+                    throw e;
+                  })
+                  .finally(() => setLoading(false)),
                 {
                   pending: "Creating lock contract",
                   success: "Liquidity token has been locked successfully",

@@ -64,12 +64,12 @@ export default class TokenVesting extends InjectBaseRepository {
     const { wallet, connection } = this.repository;
 
     let instructions = [
-      // ComputeBudgetProgram.setComputeUnitLimit({
-      //   units: COMPUTE_LIMIT,
-      // }),
-      // ComputeBudgetProgram.setComputeUnitPrice({
-      //   microLamports: PRIORITY_FEE,
-      // }),
+      ComputeBudgetProgram.setComputeUnitLimit({
+        units: COMPUTE_LIMIT,
+      }),
+      ComputeBudgetProgram.setComputeUnitPrice({
+        microLamports: PRIORITY_FEE,
+      }),
     ];
 
     const senderATA = await getAssociatedTokenAddress(

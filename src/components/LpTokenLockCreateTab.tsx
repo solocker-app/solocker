@@ -109,7 +109,7 @@ export default function LpTokenLockCreateTab({
                 type: "outgoing",
                 totalAmount: totalAmount.toString("hex"),
                 schedules: params.schedules.map((schedule: any) => {
-                  schedule.amount = schedule.amount.toString();
+                  schedule.amount = schedule.amount.toString("hex");
                   return schedule;
                 }),
                 mintAddress: params.mint.toBase58(),

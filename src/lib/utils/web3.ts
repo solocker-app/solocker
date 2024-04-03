@@ -75,7 +75,9 @@ export const safeBN = function (
 
   switch (typeof value) {
     case "number":
-      input = Number(value * Math.pow(10, decimals)).toString(16);
+      input = Number(
+        Number(value.toFixed(decimals)) * Math.pow(10, decimals),
+      ).toString(16);
       break;
     case "string":
       input = new BN(value, "hex").mul(new BN(10).pow(new BN(decimals)));

@@ -17,7 +17,6 @@ import {
 
 import LockInfoList from "./abstract/LockInfoList";
 import TokenLockInfoDialog from "./TokenLockInfoDialog";
-import Link from "next/link";
 
 type TokenUnlockDialogProps = {
   seed: string;

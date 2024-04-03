@@ -113,7 +113,7 @@ export default function TokenLockCreateTab({
                 type: "outgoing",
                 totalAmount: totalAmount.toString("hex"),
                 schedules: params.schedules.map((schedule: any) => {
-                  schedule.amount = new BN(schedule.amount).toString();
+                  schedule.amount = new BN(schedule.amount).toString("hex");
                   return schedule;
                 }),
                 mintAddress: params.mint.toBase58(),

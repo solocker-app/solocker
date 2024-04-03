@@ -24,7 +24,7 @@ export default function InputAddress({ name }: InputAddressProps) {
       className="flex flex-col space-y-4"
     >
       <div className="flex flex-col space-y-2">
-        <label className="font-medium">Who get the unlocked token?</label>
+        <label className="font-medium">Which wallet will receive the unlocked tokens?</label>
         <Tab.List className="flex items-center space-x-4">
           <Tab as={Fragment}>
             {({ selected }) => (
@@ -39,7 +39,7 @@ export default function InputAddress({ name }: InputAddressProps) {
                   publicKey && setFieldValue(name, publicKey.toBase58())
                 }
               >
-                Me
+                Current wallet
               </button>
             )}
           </Tab>
@@ -54,7 +54,7 @@ export default function InputAddress({ name }: InputAddressProps) {
                 )}
                 onClick={() => setFieldValue(name, "")}
               >
-                Someone else
+                Another wallet
               </button>
             )}
           </Tab>

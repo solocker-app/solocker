@@ -17,6 +17,7 @@ import {
 } from "@/store/slices/lpTokenVesting";
 
 import LockInfoList from "./abstract/LpLockInfoList";
+import LpTokenLockInfoDialog from "./LpTokenLockInfoDialog";
 
 type LpTokenUnlockDialogProps = {
   seed: string;
@@ -35,14 +36,17 @@ export default function LpTokenUnlockDialog({
     tokenVesting,
     seed,
   );
-
+   
+  const [unlockTx, setUnlockTx] = useState<string|null>(null);
   const [loading, setLoading] = useState(false);
 
   const onUnlock = async function () {
-    await repository.tokenVesting.unlockToken(
+    const tx = await repository.tokenVesting.unlockToken(
       seed,
       new PublicKey(contractInfo.mintAddress),
     );
+
+    setUnlockTx(tx);
 
     dispatch(
       lpTokenVestingActions.updateOne({
@@ -59,7 +63,7 @@ export default function LpTokenUnlockDialog({
     );
   };
 
-  return createPortal(
+  return <> createPortal(
     <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center overflow-y-scroll">
       <div className="w-sm flex flex-col space-y-4 bg-white text-black p-4 rounded-md">
         <header className="flex space-x-2 items-center">
@@ -107,5 +111,14 @@ export default function LpTokenUnlockDialog({
       </div>
     </div>,
     document.body,
-  );
+  )
+    {unlockTx && (
+        <LpTokenLockInfoDialog
+          tx={unlockTx}
+          lpInfo={lpInfo}
+          contractInfo={contractInfo}
+          onClose={() => setUnlockTx(null)}
+        />
+      )}
+  </>
 }

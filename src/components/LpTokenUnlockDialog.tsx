@@ -67,7 +67,7 @@ export default function LpTokenUnlockDialog({
     <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center overflow-y-scroll">
       <div className="w-sm flex flex-col space-y-4 bg-white text-black p-4 rounded-md">
         <header className="flex space-x-2 items-center">
-          <h1 className="flex-1 text-xl font-extrabold">Unlock Token</h1>
+          <h1 className="flex-1 text-xl font-extrabold">Unlock LP Token</h1>
           <button onClick={onClose}>
             <MdClose className="text-xl" />
           </button>
